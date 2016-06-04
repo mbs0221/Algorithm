@@ -1,0 +1,22 @@
+function addc
+	begin
+		input int a,b
+		output int c
+		begin
+			print "add is called\n"
+			c = a + b
+		end
+	end
+
+int a,b,c
+
+a=2*3
+b=4*5
+c=6*5
+
+addc(2 3)
+c = addc[0]
+
+print "a=".a."\n"
+print "b=".b."\n"
+print "c=".c."\n"
