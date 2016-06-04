@@ -92,11 +92,3 @@ void Josephus_lnk(int n, int s, int m){
 		p = p->next;//转到下一个人
 	}
 }
-
-void main(){
-	int n, s, m;
-	cout << "请按顺序输入人数n，开始位置s，出对位置m" << endl;
-	cin >> n >> s >> m;
-	Josephus_seq(n, s, m);
-	Josephus_lnk(n, s, m);
-}

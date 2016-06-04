@@ -4,6 +4,11 @@
 
 using namespace std;
 
+TrieTree::TrieTree(){
+	root = new node();
+	location = root;
+}
+// 输出叶节点信息
 void TrieTree::print(node *root){
 	static string word;
 	for (int i = 0; i < 26; i++){
@@ -16,11 +21,7 @@ void TrieTree::print(node *root){
 		}
 	}
 }//先序深度优先遍历字典树
-
-TrieTree::TrieTree(){
-	root = new node();
-	location = root;
-}
+// 导入文章，统计词频
 void TrieTree::readline(char *str){
 	int index = 0;
 	while (str[index] != NULL){
@@ -38,8 +39,8 @@ void TrieTree::readline(char *str){
 		}
 		index++;//读取下一字符
 	}
-}//导入文章，统计词频
-
+}
+// 输出词频信息
 void TrieTree::print(){
 	print(root);
 	map<string, int, ltstr>::iterator iter;
@@ -47,8 +48,8 @@ void TrieTree::print(){
 		cout << (*iter).first << ":" << (*iter).second << endl;
 	}
 	cout << "size:" << list.size() << endl;
-}//显示词频
-
+}
+// 添加单词
 void TrieTree::insert(string str){
 	node *location = root;
 	cout << "Insert string \"" << str << "\"" << endl;
@@ -62,8 +63,8 @@ void TrieTree::insert(string str){
 	}
 	location->isWord = true;//最后结束是单词
 	cout << "Insert string \"" << str << "\" finished" << endl;
-}//添加单词
-
+}
+// 查找单词
 bool TrieTree::search(string str){
 	node *location = root;
 	for (int i = 0; i < str.length(); i++){
@@ -76,7 +77,8 @@ bool TrieTree::search(string str){
 	}
 	cout << "This passage has \"" << str << "\" " << location->times << endl;
 	return location->isWord;
-}//查找单词
+}
+// 删除单词
 bool TrieTree::deleteWord(string str){
 	node *location = root;
 	for (int i = 0; i < str.length(); i++){
@@ -90,4 +92,4 @@ bool TrieTree::deleteWord(string str){
 	location->isWord = false;
 	cout << "Delete \"" << str << "\" from passage success" << endl;
 	return true;
-}//删除单词
+}

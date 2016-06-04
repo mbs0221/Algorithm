@@ -70,17 +70,12 @@
     <Text Include="bubble_sort.txt" />
     <Text Include="passage.txt" />
     <Text Include="path.txt" />
-    <Text Include="readme.txt.txt" />
     <Text Include="select_sort.txt" />
     <Text Include="shell_sort.txt" />
     <Text Include="str1.txt" />
     <Text Include="str2.txt" />
-    <Text Include="bp_network.txt" />
-    <Text Include="Text.txt" />
-    <Text Include="Text1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bp_network.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="knapsack.h" />
@@ -89,12 +84,9 @@
     <ClInclude Include="trie.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bp_network.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="Josephus.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="minheap.cpp" />
-    <ClCompile Include="sort.cpp" />
     <ClCompile Include="trie.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

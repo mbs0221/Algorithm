@@ -5,9 +5,6 @@
 #include <fstream>
 #include "sort.h"
 
-#define MAX(a,b) a>b?a:b
-#define MIN(a,b) a<b?a:b
-
 using namespace std;
 
 string lcs(const string str1, const string str2){
@@ -77,7 +74,7 @@ long int lcm(long int a, long int b)
 	return (a*b) / gcd(a, b);
 }
 
-void main2()
+void main()
 {
 	Sort s;
 	int a[] = { 31, 32, 54, 67, 76, 34, 23, 35, 28, 23 };

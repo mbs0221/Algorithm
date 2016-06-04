@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// 字典树节点类
 struct node{
 	bool isWord;
 	int count;//作为前缀的次数
@@ -22,6 +23,7 @@ struct node{
 	}
 };
 
+// 字典树节点比较
 struct ltstr
 {
 	bool operator()(const string& s1, const string& s2) const
@@ -30,11 +32,12 @@ struct ltstr
 	}
 };
 
+// 字典树
 class TrieTree{
 private:
-	node *root;
-	node *location;
-	map<string, int, ltstr> list;
+	node *root;// 树根
+	node *location;// 当前指针的位置，用于在字典树查找单词
+	map<string, int, ltstr> list;// 词频统计数据
 	void print(node *root);//先序深度优先遍历字典树
 public:
 	TrieTree();
