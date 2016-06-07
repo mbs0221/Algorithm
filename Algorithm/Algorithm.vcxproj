@@ -64,6 +64,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="bp_network.txt" />
     <Text Include="data.txt" />
     <Text Include="insert_sort.txt" />
     <Text Include="kuaisu.txt" />
@@ -74,12 +75,15 @@
     <Text Include="shell_sort.txt" />
     <Text Include="str1.txt" />
     <Text Include="str2.txt" />
+    <Text Include="Text.txt" />
+    <Text Include="Text1.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="knapsack.h" />
     <ClInclude Include="minheap.h" />
+    <ClInclude Include="network.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="trie.h" />
   </ItemGroup>

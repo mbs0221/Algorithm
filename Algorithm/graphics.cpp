@@ -151,11 +151,23 @@ void Graphics::polygon(vector<Point> &ps){
 			// 使AET按x递增顺序排列;
 			sort(AET.begin(), AET.end());
 			// 对于扫描线y, 取AET中两两一对x坐标, 填充所需的象素值(color);
+			if (AET.size() > 0){
+				int size = AET.size();
+				for (int j = 0; j < size; j++){
+					AET[j].print();
+				}
+				printf("\n");
+			}
 		}
-		int size = AET.size();
-		for (int j = 1; j < size; j++){
-			line(AET[j].x, y, AET[j - 1].x, y);;
-		}
+		//int size = AET.size();
+		//setlinecolor(WHITE);
+		//line(0, y, 480, y);
+		//for (int j = 1; j < size; j++){
+		//	for (int k = AET[j].x + 1; k < 480; k++){
+		//		COLORREF color = getpixel(k, y);
+		//		putpixel(k, y, 0 - color);
+		//	}
+		//}
 		for (iter = AET.begin(); iter != AET.end(); iter++){
 			if (iter->ymax == y){
 				// 从AET中删去y = ymax的项;

@@ -45,6 +45,15 @@
     <Text Include="path.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="Text.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="Text1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="bp_network.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h">
@@ -63,6 +72,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="trie.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="network.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
