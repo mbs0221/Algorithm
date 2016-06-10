@@ -3,55 +3,61 @@
 #include <graphics.h>
 #include <time.h>
 #include <math.h>
+#include <omp.h>
 
-#define byte unsigned char
-#define word unsigned short
+#define uint unsigned short
+#define real double
 
-#define threshold (double)(rand() % 99998 + 1) / 100000
+#define threshold (real)(rand() % 99998 + 1) / 100000
 
+// 神经网络的层
 class layer{
 private:
 	char name[20];
-	double **data;
-	double *bias;
-	byte row, col;
+	uint row, col;
+	uint x, y;
+	real **data;
+	real *bias;
 public:
 	layer(){
 		strcpy_s(name, "temp");
 		row = 1;
 		col = 3;
-		data = new double*[row];
-		bias = new double[row];
-		for (byte i = 0; i < row; i++){
-			data[i] = new double[col];
+		x = y = 0;
+		data = new real*[row];
+		bias = new real[row];
+		for (uint i = 0; i < row; i++){
+			data[i] = new real[col];
 			bias[i] = threshold;
-			for (byte j = 0; j < col; j++){
+			for (uint j = 0; j < col; j++){
 				data[i][j] = 1;
 			}
 		}
 	}
 	layer(FILE *fp){
-		fscanf_s(fp, "%d %d %s", &row, &col, name);
-		data = new double*[row];
-		bias = new double[row];
-		for (byte i = 0; i < row; i++){
-			data[i] = new double[col];
+		fscanf_s(fp, "%d %d %d %d %s", &row, &col, &x, &y, name);
+		data = new real*[row];
+		bias = new real[row];
+		for (uint i = 0; i < row; i++){
+			data[i] = new real[col];
 			bias[i] = threshold;
-			for (byte j = 0; j < col; j++){
+			for (uint j = 0; j < col; j++){
 				fscanf_s(fp, "%lf", &data[i][j]);
 			}
 		}
 	}
-	layer(byte row, byte col){
+	layer(uint row, uint col){
 		strcpy_s(name, "temp");
 		this->row = row;
 		this->col = col;
-		this->data = new double*[row];
-		this->bias = new double[row];
-		for (byte i = 0; i < row; i++){
-			data[i] = new double[col];
+		this->x = 0;
+		this->y = 0;
+		this->data = new real*[row];
+		this->bias = new real[row];
+		for (uint i = 0; i < row; i++){
+			data[i] = new real[col];
 			bias[i] = threshold;
-			for (byte j = 0; j < col; j++){
+			for (uint j = 0; j < col; j++){
 				data[i][j] = 1.0f;
 			}
 		}
@@ -59,26 +65,27 @@ public:
 	layer(const layer &a){
 		strcpy_s(name, a.name);
 		row = a.row, col = a.col;
-		data = new double*[row];
-		bias = new double[row];
-		for (byte i = 0; i < row; i++){
-			data[i] = new double[col];
+		x = a.x, y = a.y;
+		data = new real*[row];
+		bias = new real[row];
+		for (uint i = 0; i < row; i++){
+			data[i] = new real[col];
 			bias[i] = a.bias[i];
-			for (byte j = 0; j < col; j++){
+			for (uint j = 0; j < col; j++){
 				data[i][j] = a.data[i][j];
 			}
 		}
 	}
 	~layer(){
 		// 删除原有数据
-		for (byte i = 0; i < row; i++){
+		for (uint i = 0; i < row; i++){
 			delete[]data[i];
 		}
 		delete[]data;
 	}
 	layer& operator =(const layer &a){
 		// 删除原有数据
-		for (byte i = 0; i < row; i++){
+		for (uint i = 0; i < row; i++){
 			delete[]data[i];
 		}
 		delete[]data;
@@ -86,12 +93,13 @@ public:
 		// 重新分配空间
 		strcpy_s(name, a.name);
 		row = a.row, col = a.col;
-		data = new double*[row];
-		bias = new double[row];
-		for (byte i = 0; i < row; i++){
-			data[i] = new double[col];
+		x = a.x, y = a.y;
+		data = new real*[row];
+		bias = new real[row];
+		for (uint i = 0; i < row; i++){
+			data[i] = new real[col];
 			bias[i] = a.bias[i];
-			for (byte j = 0; j < col; j++){
+			for (uint j = 0; j < col; j++){
 				data[i][j] = a.data[i][j];
 			}
 		}
@@ -99,8 +107,9 @@ public:
 	}
 	layer operator ~()const{
 		layer arr(col, row);
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		arr.x = x, arr.y = y;
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				arr.data[j][i] = data[i][j];
 			}
 		}
@@ -108,8 +117,9 @@ public:
 	}
 	layer operator *(const layer &b){
 		layer arr(row, col);
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		arr.x = x, arr.y = y;
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				arr.data[i][j] = data[i][j] * b.data[i][j];
 			}
 		}
@@ -117,8 +127,9 @@ public:
 	}
 	layer operator *(const int b){
 		layer arr(row, col);
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		arr.x = x, arr.y = y;
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				arr.data[i][j] = b * data[i][j];
 			}
 		}
@@ -126,11 +137,12 @@ public:
 	}
 	layer operator ()(const layer &b){
 		layer arr(row, b.col);
-		for (byte k = 0; k < b.col; k++){
-			for (byte i = 0; i < row; i++){
+		arr.x = x, arr.y = y;
+		for (uint k = 0; k < b.col; k++){
+			for (uint i = 0; i < row; i++){
 				arr.bias[i] = bias[i];
 				arr.data[i][k] = 0;
-				for (byte j = 0; j < col; j++){
+				for (uint j = 0; j < col; j++){
 					arr.data[i][k] += data[i][j] * b.data[j][k];
 				}
 			}
@@ -139,8 +151,9 @@ public:
 	}
 	layer operator -(const layer &b){
 		layer arr(row, col);
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		arr.x = x, arr.y = y;
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				arr.data[i][j] = data[i][j] - b.data[i][j];
 			}
 		}
@@ -148,8 +161,9 @@ public:
 	}
 	layer operator +(const layer &b){
 		layer arr(row, col);
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		arr.x = x, arr.y = y;
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				arr.data[i][j] = data[i][j] + b.data[i][j];
 			}
 		}
@@ -157,8 +171,9 @@ public:
 	}
 	layer neg(){
 		layer arr(row, col);
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		arr.x = x, arr.y = y;
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				arr.data[i][j] = -data[i][j];
 			}
 		}
@@ -166,8 +181,8 @@ public:
 	}
 	bool operator ==(const layer &a){
 		bool result = true;
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				if (abs(data[i][j] - a.data[i][j]) > 10e-6){
 					result = false;
 					break;
@@ -177,154 +192,153 @@ public:
 		return result;
 	}
 	void randomize(){
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
 				data[i][j] = threshold;
 			}
-			bias[i] = threshold;
+			bias[i] = 0.3;
 		}
 	}
 	void print(){
-		for (byte i = 0; i < row; i++){
-			for (byte j = 0; j < col; j++){
-				printf("%lf ", data[i][j]);
+		outtextxy(x, y - 20, name);
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
+				COLORREF color = HSVtoRGB(360 * data[i][j], 1, 1);
+				putpixel(x + i, y + j, color);
 			}
-			printf("\n");
+		}
+	}
+	void save(FILE *fp){
+		fprintf_s(fp, "%d %d %d %d %s\n", row, col, x, y, name);
+		for (uint i = 0; i < row; i++){
+			for (uint j = 0; j < col; j++){
+				fprintf_s(fp, "%lf ", data[i][j]);
+			}
+			fprintf_s(fp, "\n");
 		}
 	}
 	friend class network;
+	friend layer operator *(const double a, const layer &b);
 };
+
+layer operator *(const double a, const layer &b){
+	layer arr(b.row, b.col);
+	arr.x = b.x, arr.y = b.y;
+	for (uint i = 0; i < arr.row; i++){
+		for (uint j = 0; j < arr.col; j++){
+			arr.data[i][j] = a * b.data[i][j];
+		}
+	}
+	return arr;
+}
+
+// 神经网络
 class network{
 	int iter;
-	layer arr[5];
-	layer data, target;
+	double learn;
+	layer arr[3];
+	layer data, target, test;
 	layer& unit(layer &x){
-		for (byte i = 0; i < x.row; i++){
-			for (byte j = 0; j < x.col; j++){
+		for (uint i = 0; i < x.row; i++){
+			for (uint j = 0; j < x.col; j++){
 				x.data[i][j] = i == j ? 1.0 : 0.0;
 			}
 		}
 		return x;
 	}
 	layer& bias(layer &x){
-		for (byte i = 0; i < x.row; i++){
-			for (byte j = 0; j < x.col; j++){
-				x.data[i][j] = 1 / (1 + exp(-x.data[i][j])); // 1/(1+exp(-z))
+		for (uint i = 0; i < x.row; i++){
+			for (uint j = 0; j < x.col; j++){
+				//x.data[i][j] = (exp(x.data[i][j]) - exp(-x.data[i][j])) / ((exp(x.data[i][j])) + exp(-x.data[i][j]));
+				x.data[i][j] = 1 / (1 + exp(-x.data[i][j]));// 1/(1+exp(-z))
 			}
 		}
 		return x;
 	}
 	layer nonlin(layer &x){
 		layer e(x.row, x.col);
-		e = x*(e - x);
-		for (byte i = 0; i < x.row; i++){
-			for (byte j = 0; j < x.col; j++){
-				e.data[i][j] * x.bias[i];
-			}
-		}
+		e = x*(e - x);// O[j]*(1-O[j])
 		return e;// 误差函数
 	}
 public:
 	network(FILE *fp){
-		srand(time(0));
-		fscanf_s(fp, "%d", &iter);
+		fscanf_s(fp, "%d %lf", &iter, &learn);
+		// 输入数据
 		data = layer(fp);
-		for (byte i = 0; i < 5; i++){
+		for (uint i = 0; i < 3; i++){
 			arr[i] = layer(fp);
-			arr[i].randomize();
+			//arr[i].randomize();
 		}
 		target = layer(fp);
+		// 测试数据
+		test = layer(2, 40000);
+		for (uint i = 0; i < test.col; i++){
+			test.data[0][i] = ((double)i / 200) / 200.0f;
+			test.data[1][i] = (double)(i % 200) / 200.0f;
+		}
 	}
 	void train(){
 		int i = 0;
-		printf("Training network\n");
-		printf("Training...\n");
+		char str[20];
+		data.print();
+		target.print();
 		for (i = 0; i < iter; i++){
-			printf("Iterate:%4d\r", i);
+			sprintf_s(str, "Iterate:%d", i);
+			outtextxy(0, 0, str);
 			// 正向传播
 			layer l0 = data;
 			layer l1 = bias(arr[0](l0));
 			layer l2 = bias(arr[1](l1));
 			layer l3 = bias(arr[2](l2));
-			layer l4 = bias(arr[3](l3));
-			layer l5 = bias(arr[4](l4));
-			if (l5 == target){
-				printf("exit because taining results is equals to target.\n");
+			// 显示输出结果
+			l1.print();
+			l2.print();
+			l3.print();
+			if (l3 == target){
 				break;
 			}
 			// 反向传播
-			layer l5_error = (target - l5);// [1 8] = [1 8] - [1 8]
-			layer l5_delta = l5_error * nonlin(l5);
-			layer l4_error = (~arr[4])(l5_delta);// [4 8] = [4 1] . [1 8]
-			layer l4_delta = l4_error * nonlin(l4);
-			layer l3_error = (~arr[3])(l4_delta);// [5 8] = [5 4] . [4 8]
-			layer l3_delta = l3_error * nonlin(l3);
-			layer l2_error = (~arr[2])(l3_delta);// [6 8] = [6 5] . [5 8]
-			layer l2_delta = l2_error * nonlin(l2);
-			layer l1_error = (~arr[1])(l2_delta);// [5 8] = [5 6] . [6 8]
-			layer l1_delta = l1_error * nonlin(l1);
+			layer l3_delta = (target - l3) * nonlin(l3);// Err[j] = (T[j]-O[j]) * O[j]*(1-O[j])
+			layer l2_delta = (~arr[2])(l3_delta) * nonlin(l2);// [W[j][j+1]]^-1 * Err[j+1] * O[j]*(1-O[j])
+			layer l1_delta = (~arr[1])(l2_delta) * nonlin(l1);// [W[j][j+1]]^-1 * Err[j+1] * O[j]*(1-O[j])
 			// 计算新的权值
-			arr[4] = arr[4] + l5_delta(~l4);// [1 4] = [1 4] + [1 8](~[4 8])
-			arr[3] = arr[3] + l4_delta(~l3);// [4 5] = [4 5] + [4 8](~[5 8])
-			arr[2] = arr[2] + l3_delta(~l2);// [5 6] = [5 6] + [5 8](~[6 8])
-			arr[1] = arr[1] + l2_delta(~l1);// [6 5] = [6 5] + [6 8](~[5 8])
-			arr[0] = arr[0] + l1_delta(~l0);// [5 8] = [5 8] + [5 8](~[8 8])
+			arr[2] = arr[2] + learn * l3_delta(~l2);// [5 6] = [5 6] + [5 8](~[6 8]) // learn * Err3 * O2
+			arr[1] = arr[1] + learn * l2_delta(~l1);// [6 5] = [6 5] + [6 8](~[5 8]) // learn * Err2 * O1
+			arr[0] = arr[0] + learn * l1_delta(~l0);// [5 8] = [5 8] + [5 8](~[8 8]) // learn * Err1 * O0
 		}
-		printf("Iterate:%4d\n", i);
-		printf("Training complete\n");
+		sprintf_s(str, "Iterate:%d", i);
+		outtextxy(0, 0, str);
+		// 测试输出
+		selftest();
 	}
 	void selftest(){
-		printf("network self test\n");
-		printf("data:\n");
-		data.print();
-		// 正向传播
-		layer l0 = data;
+		// 测试
+		layer l0 = test;
 		layer l1 = bias(arr[0](l0));
 		layer l2 = bias(arr[1](l1));
 		layer l3 = bias(arr[2](l2));
-		layer l4 = bias(arr[3](l3));
-		layer l5 = bias(arr[4](l4));
-		layer l5_error = (target - l5);// [1 8] = [1 8] - [1 8]
-		layer l5_delta = l5_error * nonlin(l5);
-		printf("target:\n");
-		target.print();
-		printf("result:\n");
-		l5.print();
-		printf("error:\n");
-		l5_error.print();
-		printf("delta:\n");
-		l5_delta.print();
-	}
-	void test(layer &data){
-		printf("test data\n");
-		data.print();
-		// 正向传播
-		layer l0 = data;
-		layer l1 = bias(arr[0](l0));
-		layer l2 = bias(arr[1](l1));
-		layer l3 = bias(arr[2](l2));
-		layer l4 = bias(arr[3](l3));
-		layer l5 = bias(arr[4](l4));
-		printf("result:\n");
-		l5.print();
-	}
-	void test(){
-		printf("user test:\n");
-		do{
-			layer data(3, 1);
-			for (byte i = 0; i < 3; i++){
-				scanf_s("%lf", &data.data[i][0]);
-			}
-			test(data);
-			printf("continue? [n]:\n");
-		} while (getchar() == 'n');
-	}
-	void print(){
-		printf("print network\n");
-		data.print();
-		for (byte i = 0; i < 5; i++){
-			arr[i].print();
+		setlinecolor(WHITE);
+		// 测试例
+		for (uint j = 0; j < test.col; j++){
+			COLORREF color = HSVtoRGB(360 * l3.data[0][j], 1, 1);// 输出颜色
+			putpixel((int)(test.data[0][j] * 160) + 400, (int)(test.data[1][j] * 160) + 30, color);
 		}
-		target.print();
+		// 标准例
+		for (uint j = 0; j < data.col; j++){
+			COLORREF color = HSVtoRGB(360 * target.data[0][j], 1, 1);// 输出颜色
+			setfillcolor(color);
+			fillcircle((int)(data.data[0][j] * 160) + 400, (int)(data.data[1][j] * 160) + 30, 3);
+		}
+		line(400, 30, 400, 230);
+		line(400, 30, 600, 30);
+	}
+	void save(FILE *fp){
+		srand(time(0));
+		fprintf_s(fp, "%d %lf\n", iter, learn);
+		data.save(fp);
+		for (uint i = 0; i < 3; i++){
+			arr[i].save(fp);
+		}
+		target.save(fp);
 	}
 };
