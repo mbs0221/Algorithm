@@ -82,6 +82,7 @@
     <ClInclude Include="graph.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="knapsack.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="minheap.h" />
     <ClInclude Include="network.h" />
     <ClInclude Include="sort.h" />

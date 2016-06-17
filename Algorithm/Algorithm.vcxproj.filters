@@ -65,16 +65,19 @@
     <ClInclude Include="knapsack.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="minheap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="network.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="sort.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="trie.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="network.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

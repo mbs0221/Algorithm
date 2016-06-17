@@ -10,7 +10,6 @@
 
 #define threshold (real)(rand() % 99998 + 1) / 100000
 
-// Éñ¾­ÍøÂçµÄ²ã
 class layer{
 private:
 	char name[20];
@@ -333,7 +332,6 @@ public:
 		line(400, 30, 600, 30);
 	}
 	void save(FILE *fp){
-		srand(time(0));
 		fprintf_s(fp, "%d %lf\n", iter, learn);
 		data.save(fp);
 		for (uint i = 0; i < 3; i++){
