@@ -269,11 +269,15 @@ public:
 			//arr[i].randomize();
 		}
 		target = layer(fp);
+		// 初始化
+		//for (uint i = 0; i < data.col; i++){
+		//	data.data[0][i] = (double)i / data.col*3.1415926F;
+		//	target.data[0][i] = sin(data.data[0][i]);
+		//}
 		// 测试数据
-		test = layer(2, 40000);
+		test = layer(1, 200);
 		for (uint i = 0; i < test.col; i++){
-			test.data[0][i] = ((double)i / 200) / 200.0f;
-			test.data[1][i] = (double)(i % 200) / 200.0f;
+			test.data[0][i] = ((double)i / 200);
 		}
 	}
 	void train(){
@@ -319,14 +323,11 @@ public:
 		setlinecolor(WHITE);
 		// 测试例
 		for (uint j = 0; j < test.col; j++){
-			COLORREF color = HSVtoRGB(360 * l3.data[0][j], 1, 1);// 输出颜色
-			putpixel((int)(test.data[0][j] * 160) + 400, (int)(test.data[1][j] * 160) + 30, color);
+			putpixel((int)(test.data[0][j] * 200) + 400, (int)(l3.data[0][j] * 200) + 30, YELLOW);
 		}
 		// 标准例
 		for (uint j = 0; j < data.col; j++){
-			COLORREF color = HSVtoRGB(360 * target.data[0][j], 1, 1);// 输出颜色
-			setfillcolor(color);
-			fillcircle((int)(data.data[0][j] * 160) + 400, (int)(data.data[1][j] * 160) + 30, 3);
+			putpixel((int)(test.data[0][j] * 200) + 400, (int)(l3.data[0][j] * 200) + 30, GREEN);
 		}
 		line(400, 30, 400, 230);
 		line(400, 30, 600, 30);
