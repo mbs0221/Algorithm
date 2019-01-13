@@ -49,7 +49,3 @@ void test_2_8()
 	delete[] b;
 	getchar();
 }
-
-void main() {
-	test_2_8();
-}

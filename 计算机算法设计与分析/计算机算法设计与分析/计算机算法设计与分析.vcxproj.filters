@@ -36,5 +36,8 @@
     <ClCompile Include="2.11 循环赛日程表.cpp">
       <Filter>源文件\第二章 递归与分治策略</Filter>
     </ClCompile>
+    <ClCompile Include="3.3 最长公共子序列.cpp">
+      <Filter>源文件\第三章 动态规划</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

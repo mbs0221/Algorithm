@@ -115,6 +115,7 @@
     <ClCompile Include="2.8 快速排序.cpp" />
     <ClCompile Include="3.1 矩阵连乘问题.cpp" />
     <ClCompile Include="2.11 循环赛日程表.cpp" />
+    <ClCompile Include="3.3 最长公共子序列.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
