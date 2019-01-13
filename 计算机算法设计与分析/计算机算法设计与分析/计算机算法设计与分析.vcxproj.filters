@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\第二章 递归与分治策略">
+      <UniqueIdentifier>{40846a91-143c-43ce-9839-368c0e6f66a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\第三章 动态规划">
+      <UniqueIdentifier>{c380e42b-eeb3-4207-a42a-b8fe32c1ebf1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="2.6 棋盘覆盖.cpp">
+      <Filter>源文件\第二章 递归与分治策略</Filter>
+    </ClCompile>
+    <ClCompile Include="2.7 合并排序.cpp">
+      <Filter>源文件\第二章 递归与分治策略</Filter>
+    </ClCompile>
+    <ClCompile Include="2.8 快速排序.cpp">
+      <Filter>源文件\第二章 递归与分治策略</Filter>
+    </ClCompile>
+    <ClCompile Include="3.1 矩阵连乘问题.cpp">
+      <Filter>源文件\第三章 动态规划</Filter>
+    </ClCompile>
+    <ClCompile Include="2.11 循环赛日程表.cpp">
+      <Filter>源文件\第二章 递归与分治策略</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
