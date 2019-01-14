@@ -84,8 +84,3 @@ void test_3_3() {
 	delete[] c;
 	delete[] s;
 }
-
-void main() {
-	test_3_3();
-	getchar();
-}

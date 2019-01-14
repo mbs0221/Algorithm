@@ -39,5 +39,8 @@
     <ClCompile Include="3.3 最长公共子序列.cpp">
       <Filter>源文件\第三章 动态规划</Filter>
     </ClCompile>
+    <ClCompile Include="3.4 最大子段和.cpp">
+      <Filter>源文件\第三章 动态规划</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
