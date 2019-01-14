@@ -117,6 +117,13 @@
     <ClCompile Include="2.11 循环赛日程表.cpp" />
     <ClCompile Include="3.3 最长公共子序列.cpp" />
     <ClCompile Include="3.4 最大子段和.cpp" />
+    <ClCompile Include="测试.cpp" />
+    <ClCompile Include="第三章 动态规划.cpp" />
+    <ClCompile Include="第二章 递归与分治策略.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="第三章 动态规划.h" />
+    <ClInclude Include="第二章 递归与分治策略.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -42,5 +42,22 @@
     <ClCompile Include="3.4 最大子段和.cpp">
       <Filter>源文件\第三章 动态规划</Filter>
     </ClCompile>
+    <ClCompile Include="第三章 动态规划.cpp">
+      <Filter>源文件\第三章 动态规划</Filter>
+    </ClCompile>
+    <ClCompile Include="第二章 递归与分治策略.cpp">
+      <Filter>源文件\第二章 递归与分治策略</Filter>
+    </ClCompile>
+    <ClCompile Include="测试.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="第三章 动态规划.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="第二章 递归与分治策略.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
