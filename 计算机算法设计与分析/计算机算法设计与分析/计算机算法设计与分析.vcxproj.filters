@@ -69,6 +69,9 @@
     <ClCompile Include="第五章 回溯法.cpp">
       <Filter>源文件\第五章 回溯法</Filter>
     </ClCompile>
+    <ClCompile Include="计算机算法设计与分析.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="第三章 动态规划.h">
@@ -78,6 +81,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="第五章 回溯法.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="计算机算法设计与分析.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
