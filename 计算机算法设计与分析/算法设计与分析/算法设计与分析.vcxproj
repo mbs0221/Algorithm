@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{67287FA1-5A36-4D43-A6C7-BA63416FCA2D}</ProjectGuid>
-    <RootNamespace>计算机算法设计与分析</RootNamespace>
+    <ProjectGuid>{B4FF612D-62BC-4903-A6A6-12E3FFF048CF}</ProjectGuid>
+    <RootNamespace>算法设计与分析</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -110,21 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2.6 棋盘覆盖.cpp" />
-    <ClCompile Include="2.7 合并排序.cpp" />
-    <ClCompile Include="2.8 快速排序.cpp" />
-    <ClCompile Include="3.1 矩阵连乘问题.cpp" />
-    <ClCompile Include="2.11 循环赛日程表.cpp" />
-    <ClCompile Include="3.3 最长公共子序列.cpp" />
-    <ClCompile Include="3.4 最大子段和.cpp" />
-    <ClCompile Include="5.2 装载问题.cpp" />
-    <ClCompile Include="测试.cpp" />
-    <ClCompile Include="第三章 动态规划.cpp" />
-    <ClCompile Include="第二章 递归与分治策略.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="第三章 动态规划.h" />
-    <ClInclude Include="第二章 递归与分治策略.h" />
+    <ClCompile Include="2.8 希尔排序.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

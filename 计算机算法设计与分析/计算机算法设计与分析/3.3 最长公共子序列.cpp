@@ -68,8 +68,8 @@ namespace DynamicProgramming {
 		string a = "ABCBDAB";
 		string b = "BDCABA";
 		int **c, **s;
-		c = DynamicProgramming::InitMatrix(a.length(), b.length());
-		s = DynamicProgramming::InitMatrix(a.length(), b.length());
+		c = InitMatrix(a.length(), b.length());
+		s = InitMatrix(a.length(), b.length());
 		cout << "3.3 最长公共子序列" << endl;
 		cout << "a:" << a << endl;
 		cout << "b:" << b << endl;

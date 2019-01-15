@@ -19,6 +19,15 @@
     <Filter Include="源文件\第三章 动态规划">
       <UniqueIdentifier>{c380e42b-eeb3-4207-a42a-b8fe32c1ebf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\第四章 贪心算法">
+      <UniqueIdentifier>{dc9f0ddb-78ad-489a-ac4f-0853aa434066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\第五章 回溯法">
+      <UniqueIdentifier>{e42d2099-3645-4a02-9726-e2a34c7d1340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\第六章 分支限界法">
+      <UniqueIdentifier>{9909b20f-c1ec-4e01-946b-2d5c25134c92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2.6 棋盘覆盖.cpp">
@@ -50,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="测试.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="5.2 装载问题.cpp">
+      <Filter>源文件\第五章 回溯法</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
