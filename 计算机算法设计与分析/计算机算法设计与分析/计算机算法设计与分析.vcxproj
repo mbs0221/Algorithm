@@ -122,10 +122,12 @@
     <ClCompile Include="测试.cpp" />
     <ClCompile Include="第三章 动态规划.cpp" />
     <ClCompile Include="第二章 递归与分治策略.cpp" />
+    <ClCompile Include="第五章 回溯法.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="第三章 动态规划.h" />
     <ClInclude Include="第二章 递归与分治策略.h" />
+    <ClInclude Include="第五章 回溯法.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

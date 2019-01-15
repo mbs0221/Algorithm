@@ -66,12 +66,18 @@
     <ClCompile Include="5.3 批处理作业调度.cpp">
       <Filter>源文件\第五章 回溯法</Filter>
     </ClCompile>
+    <ClCompile Include="第五章 回溯法.cpp">
+      <Filter>源文件\第五章 回溯法</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="第三章 动态规划.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="第二章 递归与分治策略.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="第五章 回溯法.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
