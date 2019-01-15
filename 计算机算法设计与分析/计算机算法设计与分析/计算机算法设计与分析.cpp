@@ -1,10 +1,10 @@
 #include "计算机算法设计与分析.h"
 
+using namespace std;
+
 namespace Algorithm {
 
-	int ** InitMatrix(int rows, int cols)
-	{
-
+	int ** InitMatrix(int rows, int cols) {
 		int **mat = new int*[rows];
 		for (int i = 0; i < rows; i++) {
 			mat[i] = new int[cols];
@@ -14,8 +14,7 @@ namespace Algorithm {
 		}
 		return mat;
 	}
-
-
+	
 	/**
 	* 初始化矩阵
 	* mat 矩阵
@@ -45,13 +44,23 @@ namespace Algorithm {
 			std::cout << std::endl;
 		}
 	}
-
-
-	template<class T>
-	void PrintArray(T a[], int n) {
+	
+	template<class T> void PrintArray(T a[], int n) {
 		for (int i = 0; i < n; i++) {
 			std::cout << std::setw(4) << a[i];
 		}
 		std::cout << std::endl;
 	}
+
+	void test() {
+		DivideAndConquer::test();
+		DynamicProgramming::test();
+		Backtracking::test();
+	}
+}
+
+void main()
+{
+	Algorithm::test();
+	getchar();
 }

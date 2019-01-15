@@ -110,16 +110,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2.6 棋盘覆盖.cpp" />
-    <ClCompile Include="2.7 合并排序.cpp" />
-    <ClCompile Include="2.8 快速排序.cpp" />
-    <ClCompile Include="3.1 矩阵连乘问题.cpp" />
-    <ClCompile Include="2.11 循环赛日程表.cpp" />
-    <ClCompile Include="3.3 最长公共子序列.cpp" />
-    <ClCompile Include="3.4 最大子段和.cpp" />
-    <ClCompile Include="5.2 装载问题.cpp" />
-    <ClCompile Include="5.3 批处理作业调度.cpp" />
-    <ClCompile Include="测试.cpp" />
     <ClCompile Include="第三章 动态规划.cpp" />
     <ClCompile Include="第二章 递归与分治策略.cpp" />
     <ClCompile Include="第五章 回溯法.cpp" />

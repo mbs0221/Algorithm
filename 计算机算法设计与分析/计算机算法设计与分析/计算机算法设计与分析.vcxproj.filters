@@ -13,63 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\第二章 递归与分治策略">
-      <UniqueIdentifier>{40846a91-143c-43ce-9839-368c0e6f66a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\第三章 动态规划">
-      <UniqueIdentifier>{c380e42b-eeb3-4207-a42a-b8fe32c1ebf1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\第四章 贪心算法">
-      <UniqueIdentifier>{dc9f0ddb-78ad-489a-ac4f-0853aa434066}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\第五章 回溯法">
-      <UniqueIdentifier>{e42d2099-3645-4a02-9726-e2a34c7d1340}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\第六章 分支限界法">
-      <UniqueIdentifier>{9909b20f-c1ec-4e01-946b-2d5c25134c92}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2.6 棋盘覆盖.cpp">
-      <Filter>源文件\第二章 递归与分治策略</Filter>
-    </ClCompile>
-    <ClCompile Include="2.7 合并排序.cpp">
-      <Filter>源文件\第二章 递归与分治策略</Filter>
-    </ClCompile>
-    <ClCompile Include="2.8 快速排序.cpp">
-      <Filter>源文件\第二章 递归与分治策略</Filter>
-    </ClCompile>
-    <ClCompile Include="3.1 矩阵连乘问题.cpp">
-      <Filter>源文件\第三章 动态规划</Filter>
-    </ClCompile>
-    <ClCompile Include="2.11 循环赛日程表.cpp">
-      <Filter>源文件\第二章 递归与分治策略</Filter>
-    </ClCompile>
-    <ClCompile Include="3.3 最长公共子序列.cpp">
-      <Filter>源文件\第三章 动态规划</Filter>
-    </ClCompile>
-    <ClCompile Include="3.4 最大子段和.cpp">
-      <Filter>源文件\第三章 动态规划</Filter>
-    </ClCompile>
-    <ClCompile Include="第三章 动态规划.cpp">
-      <Filter>源文件\第三章 动态规划</Filter>
-    </ClCompile>
-    <ClCompile Include="第二章 递归与分治策略.cpp">
-      <Filter>源文件\第二章 递归与分治策略</Filter>
-    </ClCompile>
-    <ClCompile Include="测试.cpp">
+    <ClCompile Include="计算机算法设计与分析.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="5.2 装载问题.cpp">
-      <Filter>源文件\第五章 回溯法</Filter>
-    </ClCompile>
-    <ClCompile Include="5.3 批处理作业调度.cpp">
-      <Filter>源文件\第五章 回溯法</Filter>
+    <ClCompile Include="第二章 递归与分治策略.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="第五章 回溯法.cpp">
-      <Filter>源文件\第五章 回溯法</Filter>
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="计算机算法设计与分析.cpp">
+    <ClCompile Include="第三章 动态规划.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

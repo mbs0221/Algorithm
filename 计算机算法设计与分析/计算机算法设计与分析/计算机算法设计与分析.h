@@ -35,4 +35,6 @@ namespace Algorithm {
 	*/
 	template<class T>
 	void PrintArray(T a[], int n);
+
+	void test();
 };
