@@ -18,26 +18,8 @@
     <ClCompile Include="计算机算法设计与分析.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="第二章 递归与分治策略.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="第五章 回溯法.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="第三章 动态规划.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="第三章 动态规划.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="第二章 递归与分治策略.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="第五章 回溯法.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="计算机算法设计与分析.h">
       <Filter>头文件</Filter>
     </ClInclude>
