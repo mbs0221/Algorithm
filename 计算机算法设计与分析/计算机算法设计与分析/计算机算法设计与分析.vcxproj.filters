@@ -63,6 +63,9 @@
     <ClCompile Include="5.2 装载问题.cpp">
       <Filter>源文件\第五章 回溯法</Filter>
     </ClCompile>
+    <ClCompile Include="5.3 批处理作业调度.cpp">
+      <Filter>源文件\第五章 回溯法</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="第三章 动态规划.h">

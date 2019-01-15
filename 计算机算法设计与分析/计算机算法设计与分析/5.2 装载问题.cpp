@@ -12,8 +12,7 @@ private:
 };
 
 template<class T>
-class XLoading
-{
+class XLoading {
 public:
 	XLoading(T[] w, T c, int n, int[] bestx);
 	~XLoading();
@@ -124,7 +123,8 @@ template<class T> T MaxXLoading(T w[], T c, int n, int[] bestx)
 }
 
 // MLoading
-template<class T> T MaxXLoading(T w[], T c, int n, int[] bestx) {
+
+template<class T> T MaxMLoading(T w[], T c, int n, int[] bestx) {
 	// 返回最优载重量及其相应解，初始化根节点
 
 	int i = 0; // 当前层
