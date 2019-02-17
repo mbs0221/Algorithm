@@ -13,7 +13,7 @@ namespace Exam2015 {
 	}
 
 	namespace Problem1 {
-		void ShellSort(int *a, int left, int right)
+		void ShellSort(int*a, int left, int right)
 		{
 			// 选取步长
 			for (int k = right / 2; k > 1; k /= 2) {
@@ -33,11 +33,11 @@ namespace Exam2015 {
 			}
 		}
 		class Polynomial {
-			Polynomial *child;
+			Polynomial*child;
 		};
 	}
 	// 第三题
-	void SimplePath(int *path, int depth, int **G, int u, int v) {
+	void SimplePath(int*path, int depth, int**G, int u, int v) {
 		// 记录路径
 		path[depth] = u;
 		// 输出路径
@@ -57,13 +57,13 @@ namespace Exam2015 {
 	// 第四题
 	class DigitalSearchTree {
 	private:
-		DigitalSearchTree *child[27];
+		DigitalSearchTree*child[27];
 	public:
 		void Add(string name) {
-			DigitalSearchTree *tree = this;
+			DigitalSearchTree*tree = this;
 			for (string::iterator iter = name.begin(); iter != name.end(); iter++)
 			{
-				int i = *iter == ' ' ? 26 : *iter - 'A';
+				int i =*iter == ' ' ? 26 :*iter - 'A';
 				tree->child[i] = new DigitalSearchTree();
 				tree = tree->child[i];
 			}
@@ -126,7 +126,7 @@ namespace Algorithm {
 	template<class T>
 	void SMatrix<T>::insertOLNode(int row, int col, T val)
 	{
-		OLNode<T> *p, *q, *r, *u, *v;
+		OLNode<T>*p,*q,*r,*u,*v;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
 			return;
 		r = new OLNode<T>(row, col, val);
@@ -156,7 +156,7 @@ namespace Algorithm {
 	template<class T>
 	T SMatrix<T>::deleteOLNode(int row, int col)
 	{
-		OLNode<T> *p, *q, *r, *u, *v;
+		OLNode<T>*p,*q,*r,*u,*v;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
 			return;
 		// 行
@@ -190,7 +190,7 @@ namespace Algorithm {
 	template<class T>
 	T SMatrix<T>::getElement(int row, int col)
 	{
-		OLNode<T> *p, *q;
+		OLNode<T>*p,*q;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
 			return;
 		// 查找
@@ -208,7 +208,7 @@ namespace Algorithm {
 	template<class T>
 	SMatrix<T> & SMatrix<T>::MatrixAdd(SMatrix<T>& m1, SMatrix<T>& m2)
 	{
-		OLNode *p, *q, *u, *v;
+		OLNode*p,*q,*u,*v;
 		SMatrix r(m1.rowNum, m2.colNum);
 		p = m1.rowhead;
 		u = m2.rowhead;
@@ -249,7 +249,36 @@ namespace Algorithm {
 		return b;
 	}
 
+	// 二叉树节点类
+	template<class T>
+	inline BinaryTreeNode<T>::BinaryTreeNode(T element, BinaryTreeNode<T>* left, BinaryTreeNode<T>* right)
+	{
+		this->element = element;
+		this->left = left;
+		this->right = right;
+	}
+
 	// 二叉树
+	template<class T>
+	BinaryTree<T>::DeleteBinaryTree(BinaryTreeNode<T>* root)
+	{
+		if (root) {
+			DeleteBinaryTree(root->left);
+			DeleteBinaryTree(root->right);
+			delete root;
+		}
+	}
+	template<class T>
+	BinaryTree<T>::BinaryTree(const T & elem, BinaryTree<T>& leftTree, BinaryTree<T>& rightTree)
+	{
+		root = new BinaryTreeNode<T>(elem, leftTree.root, rightTree.root);
+		leftTree.root = rightTree.root = NULL;
+	}
+	template<class T>
+	BinaryTree<T>::~BinaryTree()
+	{
+		DeleteBinaryTree(root);
+	}
 	template<class T>
 	int BinaryTree<T>::LeafNumber(BinaryTreeNode<T>* root)
 	{
@@ -268,7 +297,7 @@ namespace Algorithm {
 	template<class T>
 	int BinaryTree<T>::Exchange(BinaryTreeNode<T>* root)
 	{
-		BinaryTreeNode<T> *temp;
+		BinaryTreeNode<T>*temp;
 		if (root != NULL) {
 			// 交换当前节点左右子树
 			temp = root->left;
@@ -279,6 +308,49 @@ namespace Algorithm {
 			Exchange(root->right);
 		}
 		return 0;
+	}
+	template<class T>
+	BinaryTreeNode<T>* BinaryTree<T>::Parent(BinaryTreeNode<T>* current)
+	{
+		//求current双亲返回
+		using std::stack;
+		stack <BinaryTreeNode<T>*> aStack;
+		BinaryTreeNode<T>*p = root;
+		if (root != NULL&& current != NULL) {
+			while (!aStack.empty() || p) {
+				if (p != NULL) {
+					if (current == p->left || current == p->right) 
+						return p; //返回双亲
+					aStack.push(p);	 p = p->left;
+				}//入栈 指左子
+				else {
+					p = aStack.top();
+					aStack.pop(); //出栈
+					p = p->right; //指向右子
+				}
+			}
+		}
+	}
+	template<class T>
+	BinaryTreeNode<T>* BinaryTree<T>::LeftSibling(BinaryTreeNode<T>* current)
+	{
+		//返回current结点的左兄弟
+		if (current) //current不为空
+		{
+			//返回current结点的父结点
+			BinaryTreeNode<T>* temp = Parent(current);
+			//如果父结点为空，或者current没有左兄弟
+			if((temp == NULL) || current == temp->left)
+				return  NULL;
+			else
+				return temp->getLeftChild();
+		}
+		return NULL;
+	}
+	template<class T>
+	bool BinaryTree<T>::isEmpty() const
+	{
+		return ((root) ? false : true);
 	}
 	template<class T>
 	void BinaryTree<T>::DepthOrder(BinaryTreeNode<T>* root, void (*Visit)(T element))
@@ -337,7 +409,7 @@ namespace Algorithm {
 		using std::stack;
 		StackElement<T> element;
 		stack<StackElement<T>> aStack;
-		BinaryTreeNode<T> *p;
+		BinaryTreeNode<T>*p;
 		if (root == NULL)
 			return;
 		else
@@ -387,14 +459,88 @@ namespace Algorithm {
 		}
 	}
 
+	// 二叉搜索树
+	template<class T>
+	void BinarySearchTree<T>::Insert(BinaryTreeNode<T>* root, BinaryTreeNode<T>* node)
+	{
+		BinaryTreeNode<T>* p = NULL;
+		if (root == NULL) {
+			//新结点作根
+			Initialize(node);
+			return;
+		}
+		else
+			p = root;
+		while (p != NULL) {
+			//相等 则不用插入
+			if (node->getValue() == p->getValue())
+				return;
+			else if (node->getValue() < p->getValue()) { 
+				//待插小
+				if (p->getLeftChild() == NULL) {
+					//作为左子树
+					p->left = node;
+					return;
+				}
+				else
+					p = p->getLeftChild();
+			}
+			else {
+				if (p->getRightChild() == NULL) {
+					//作为右子树
+					p->right = node;
+					return;
+				}
+				else   p = p->getRightChild();
+			}
+		}
+	}
+	template<class T>
+	void BinarySearchTree<T>::Delete(BinaryTreeNode<T>* p)
+	{
+		if (p == NULL)
+			return;
+		BinaryTreeNode<T>* s;
+		BinaryTreeNode<T>* tempparent = NULL;
+		BinaryTreeNode<T>* parent = GetParent(root, p);
+		if (p->left == NULL) {
+			// 无左子树
+			s = p->right;
+		}
+		else {
+			// 有左子树
+			s = p->left;
+			while (s->right != NULL) {
+				tempparent = s;
+				s = s->right;
+			}
+			//p->lc没右子(Cr为空没向右下移动)
+			if (tempparent == NULL)
+				p->left = s->left;  //p左子树中C最大,p->lc指Cl
+			else 
+				tempparent->right = s->left; //tempp左子Sl作其父Q右子树
+			s->left = p->left;//tempp(即S)代替p接管p左子右子
+			s->right = p->right;
+		}
+		if (parent == NULL) //F为空用p左子树最大tempp替换被删p作根
+			root = s;
+		else if (parent->left == p) //if删parent的左子p
+			parent->left = s;  //让s(即tempp)替代p做parent左子
+		else 
+			parent->right = s; //删的是parent右子p
+		delete p;
+		p = NULL;
+		return;
+	}
+
 	// 森林
 	template<class T>
 	TreeNode<T>* Tree<T>::Parent(TreeNode<T>* current)
 	{
 		using std::queue;
 		queue<TreeNode<T>*> aQueue;
-		TreeNode<T> *pointer = root;
-		TreeNode<T> *parent = NULL;
+		TreeNode<T>*pointer = root;
+		TreeNode<T>*parent = NULL;
 		if (current != NULL && pointer != current) {
 			// 森林的所有树根入队
 			while (pointer != NULL) {
@@ -433,7 +579,7 @@ namespace Algorithm {
 	template<class T>
 	void Tree<T>::DeletSubTree(TreeNode<T>* subroot)
 	{
-		TreeNode<T> *pointer;
+		TreeNode<T>*pointer;
 		// 空树不必删
 		if (subroot == NULL) return;
 		// point指向subroot(被删子树根的)父结点
@@ -446,7 +592,7 @@ namespace Algorithm {
 			}
 			else {
 				// 删后面树:从root起找被删树前驱(左兄)
-				TreeNode<T> * r = root;
+				TreeNode<T>* r = root;
 				while (r->RightSibling() != subroot) {
 					r = r->RightSibling();
 				}
@@ -481,9 +627,120 @@ namespace Algorithm {
 		
 	}
 	
+	// 最小堆
+	template<class T>
+	void MinHeap<T>::BuildHeap()
+	{
+		//从最后一个父结点至根逐一筛选
+		for (int i = CurrentSize / 2 - 1; i >= 0; i--) 	
+			SiftDown(i);
+	}
+	template<class T>
+	MinHeap<T>::MinHeap(const int n)
+	{
+		if (n <= 0)	
+			return;
+		CurrentSize = 0;
+		MaxSize = n; 			//初始化堆容量为n
+		heapArray = new T[MaxSize]; //创建堆空间
+		BuildHeap();  			//建堆
+	}
+	template<class T>
+	bool MinHeap<T>::isEmpty()
+	{
+		return false;
+	}
+	template<class T>
+	bool MinHeap<T>::isLeaf(int pos) const
+	{
+		return (pos >= CurrentSize / 2) && (pos<CurrentSize);
+	}
+	template<class T>
+	int MinHeap<T>::LeftChild(int pos) const
+	{
+		return 2 * pos + 1;	//返回pos的左孩子位置
+	}
+	template<class T>
+	int MinHeap<T>::RightChild(int pos) const
+	{
+		return 2 * pos + 2;  	//返回pos的右孩子位置
+	}
+	template<class T>
+	int MinHeap<T>::Parent(int pos) const
+	{
+		return (pos - 1) / 2; 	//返回pos的父结点位置
+	}
+	template<class T>
+	bool MinHeap<T>::Remove(int pos, T & node)
+	{
+		// 删除给定下标的元素
+		if ((pos<0) || (pos >= CurrentSize))
+			return false;
+		node = heapArray[pos]; //被删元素由node返回
+		heapArray[pos] = heapArray[--CurrentSize];
+		//最后元素替代被删元素，长-1	
+		if (heapArry[Parent(pos)] > heapArry[pos]))
+			SiftUp(pos);	//小于父结点，上升筛
+		else
+			SiftDown(pos);	//大于父向下筛(不是SiftDown(0)) return true;
+	}
+	template<class T>
+	bool MinHeap<T>::Insert(const T & newNode)
+	{
+		if (CurrentSize == MaxSize)	//if堆空间已经满
+			return FALSE;
+		heapArray[CurrentSize] = newNode; //追加至尾
+		SiftUp(CurrentSize); //向上调整
+		CurrentSize++; //长+1
+	}
+	template<class T>
+	T & MinHeap<T>::RemoveMin()
+	{
+		if (CurrentSize == 0) {//空堆
+			cout << "Can't Delete";	exit(1);
+		}
+		else {
+			swap(0, --CurrentSize); //交换堆顶和尾元素
+			if (CurrentSize >1)         // <=1不用调整  
+				SiftDown(0); 	//从堆顶开始筛选
+			return heapSize[CurrentSize];
+		}
+	}
+	template<class T>
+	void MinHeap<T>::SiftUp(int position)
+	{
+		//从position向上开始调整，使序列成为堆
+		int temppos = position;
+		T temp = heapArray[temppos];  //temp暂存被调结点值
+		while ((temppos>0) && (heapArray[parent(temppos)]>temp))
+		{
+			//有父&&父>子：父子交换
+			heapArray[temppos] = heapArray[parent(temppos)];
+			temppos = parent(temppos);
+		}  //继续向上找父
+		heapArray[temppos] = temp; 	//子最终就位
+	}
+	template<class T>
+	void MinHeap<T>::SiftDown(int left)
+	{
+		int i = left;  //标识父结点i
+		int j = 2 * i + 1;     //标识关键值较小的子结点		
+		T	temp = heapArray[i]; //保存父结点
+		while (j< CurrentSize) {
+			if ((j<CurrentSize - 1) && (heapArray[j] >heapArray[j + 1]))
+				j++;  //j指向数值较小的子结点
+			if (temp>heapArray[j]) {   //父>较小孩子
+				heapArray[i] = heapArray[j];  //小子替换父
+				i = j;     	j = 2 * j + 1;
+			}  //父向下继续与孩子比
+			else break;
+		}
+		heapArray[i] = temp;
+	}
+
 	// 红黑树
 	template<class KEY, class COLOR>
-	RBNode<KEY, COLOR>::RBNode(RBNode * parent, RBNode * left, RBNode * right, KEY key, COLOR color)
+	RBNode<KEY, COLOR>::RBNode(RBNode* parent, RBNode* left, RBNode* right, KEY key, COLOR color)
 	{
 		this->key = key;
 		this->color = color;
@@ -492,7 +749,7 @@ namespace Algorithm {
 		this->right = right;
 	}
 	template<class KEY, class COLOR>
-	void RBTree<KEY, COLOR>::insert(RBNode<KEY, COLOR> *root, const KEY & key)
+	void RBTree<KEY, COLOR>::insert(RBNode<KEY, COLOR>*root, const KEY & key)
 	{
 		if (root->isLeaf()) {
 			root->key = key;
@@ -515,7 +772,7 @@ namespace Algorithm {
 	template<class KEY, class COLOR>
 	void RBTree<KEY, COLOR>::RedToBlack(RBNode<KEY, COLOR>* root)
 	{
-		RBNode<KEY, COLOR> *parent = root->parent;
+		RBNode<KEY, COLOR>*parent = root->parent;
 		if (parent->left->color == parent->right->color) {
 			// 叔父同为红色
 			// 父辈祖辈换色
@@ -538,7 +795,7 @@ namespace Algorithm {
 					root->right->key = root->left->key;
 					root->left->key = NULL;
 					// 左子和右子交换即可
-					RBNode<KEY, COLOR> *temp = root->left;
+					RBNode<KEY, COLOR>*temp = root->left;
 					root->left = root->right;
 					root->right = temp;
 					temp = NULL;

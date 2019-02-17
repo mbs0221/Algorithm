@@ -71,17 +71,30 @@ namespace Algorithm {
 	class BinaryTreeNode {
 		T element;
 		BinaryTreeNode<T> *left, *right;
+	public:
+		BinaryTreeNode(T element, BinaryTreeNode<T> *left, BinaryTreeNode<T> *right);
 		bool isLeaf() { return left == NULL && right == NULL; }
+		T getValue() { return element; }
+		BinaryTreeNode<T>* getLeftChild() { return left; }
+		BinaryTreeNode<T>* getRightChild() { return right; }
 	};
 	
 	// 二叉树
 	template<class T>
 	class BinaryTree {
+	private:
 		BinaryTreeNode<T> *root;
+	protected:
+		DeleteBinaryTree(BinaryTreeNode<T>* root);
 	public:
+		BinaryTree(const T& elem, BinaryTree<T>& leftTree, BinaryTree<T>& rightTree);
+		~BinaryTree();
 		int LeafNumber(BinaryTreeNode<T> *root);
 		int GetHeight(BinaryTreeNode<T> *root);
 		int Exchange(BinaryTreeNode<T> *root);
+		BinaryTreeNode<T>* Parent(BinaryTreeNode<T>* current);
+		BinaryTreeNode<T>* LeftSibling(BinaryTreeNode<T>* current);
+		bool isEmpty() const;
 		bool RootPath(BinaryTreeNode<T> *root, BinaryTreeNode<T> *current);
 		void CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild);
 		void DepthOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
@@ -89,6 +102,14 @@ namespace Algorithm {
 		void InOrderWithoutRecursion(BinaryTreeNode<T> *root, void (*Visit)(T element));
 		void PostOrderWithoutRecursion(BinaryTreeNode<T> *root, void (*Visit)(T element));
 		void LevelOrder(BinaryTreeNode<T> *root, void (*Visit)(T element));
+	};
+
+	// 二叉搜索树
+	template<class T>
+	class BinarySearchTree : BinaryTree {
+	public:
+		void Insert(BinaryTreeNode<T> *root, BinaryTreeNode *node);
+		void Delete(BinaryTreeNode<T> *node);
 	};
 
 	enum Tag { LEFT, RIGHT };
@@ -150,6 +171,29 @@ namespace Algorithm {
 		DualTagTreeNode<T> *root;
 	public:
 		DualTagTree(DualTagTreeNode<T> *nodeArray, int count);
+	};
+
+	// 最小堆ADT定义
+	template <class T>
+	class MinHeap {
+	private:
+		T* heapArray;		//存放堆数据的数组
+		int CurrentSize;	//当前堆中元素数目
+		int MaxSize;		//堆所能容纳的最大元素数目
+		void BuildHeap();	//建堆
+	public:
+		MinHeap(const int n);//n最大元素数
+		~MinHeap() { delete[] heapArray; }; //析构函数
+		bool isEmpty();
+		bool isLeaf(int pos) const; //如果是叶结点，返回true
+		int LeftChild(int pos) const; 	//返回左孩子位置
+		int RightChild(int pos) const; 	//返回右孩子位置
+		int Parent(int pos) const; 		// 返回父结点位置	
+		bool Remove(int pos, T& node); 	// 删除给定下标的元素
+		bool Insert(const T& newNode);	//向堆中插入新元素
+		T&  RemoveMin(); 		//从堆顶删除最小值
+		void SiftUp(int position); //从position向上开始调整，使序列成为堆
+		void SiftDown(int left);//筛选法函数，参数left表示开始处理的数组下标
 	};
 
 	// 红黑树节点
