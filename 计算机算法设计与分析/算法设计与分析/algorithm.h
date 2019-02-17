@@ -50,22 +50,26 @@ namespace Algorithm {
 	};
 
 #define MAX_SIZE 100
+
 	// 三元组
 	template<class T>
 	class Triple {
-	public:
 		int row, col;
 		T e;
+		Triple(int row, int col, int e) :row(row), col(col), e(e) {  }
+		//friend class TSMatrix<T>;
 	};
 
 	// 稀疏矩阵 - 三元组表示
 	template<class T>
 	class TSMatrix {
 	private:
-		Triple<T> data[MAX_SIZE + 1];
-		int m, n, lenght;
+		int row, col, length;
+		Triple<T> data[MAX_SIZE];
 	public:
-		TSMatrix<T> & Transpose(TSMatrix<T> & a);
+		TSMatrix<T>() :row(0), col(0), length(0) {  }
+		TSMatrix<T>(int row, int col, int length) :row(row), col(col), length(length) {  }
+		TSMatrix<T>& Transpose();
 	};
 
 	// 二叉树节点

@@ -191,7 +191,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	SMatrix<T> & SMatrix<T>::MatrixAdd(SMatrix<T>& m1, SMatrix<T>& m2)
+	SMatrix<T> & SMatrix<T>::MatrixAdd(SMatrix<T> & m1, SMatrix<T>& m2)
 	{
 		OLNode*p, *q, *u, *v;
 		SMatrix r(m1.rowNum, m2.colNum);
@@ -203,38 +203,35 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	TSMatrix<T>& TSMatrix<T>::Transpose(TSMatrix<T>& a)
+	TSMatrix<T> & TSMatrix<T>::Transpose()
 	{
 		int num[MAX_SIZE], position[MAX_SIZE];
-		TSMatrix<T> b;
-		b.lenght = a.lenght; b.n = a.m; b.m = a.n;
-		if (b.lenght) {
-			for (int col = 0; col < a.m; col++) {
-				num[col] = 0;
+		TSMatrix<T> mat(col, row, length);
+		if (length > 0) {
+			for (int i = 0; i < row; i++) {
+				num[i] = 0;
 			}
 			// 计算每一列非零元素个数
-			for (int t = 0; t < a.lenght; t++) {
-				num[a.data[t].col]++;
+			for (int i = 0; i < length; i++) {
+				num[data[i].col]++;
 			}
 			// 计算每一列的起始位置
 			position[0] = 0;
-			for (int col = 1; col < a.n; col++) {
-				position[col] = position[col - 1] + num[col - 1];
+			for (int j = 1; j < col; j++) {
+				position[j] = position[j - 1] + num[j - 1];
 			}
 			// 转置
-			for (int p = 0; p < a.lenght; p++) {
-				int col = a.data[p].col;
-				int q = position[col];
-				b.data[q].row = a.data[p].col;
-				b.data[q].col = a.data[p].row;
-				b.data[q].e = a.data[p].data;
+			for (int i = 0; i < length; i++) {
+				int col = data[i].col;
+				int p = position[col];
+				mat.data[p].row = data[i].col;
+				mat.data[p].col = data[i].row;
+				mat.data[p].e = data[i].e;
 				position[col]++;
 			}
 		}
-		// TODO: 在此处插入 return 语句
-		return b;
+		return mat;
 	}
-
 
 	// 二叉树节点类
 	template<class T>
