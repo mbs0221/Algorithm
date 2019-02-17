@@ -86,7 +86,16 @@ namespace Algorithm {
 		void CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild);
 		void DepthOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
 		void PreOrderWithoutRecursion(BinaryTreeNode<T> *root, void（*Visit)(T element));
-		void InOrderWithoutRecursion(BinaryTreeNode<T> *root, void(*Visit)(T element));
+		void InOrderWithoutRecursion(BinaryTreeNode<T> *root, void (*Visit)(T element));
+		void PostOrderWithoutRecursion(BinaryTreeNode<T> *root, void (*Visit)(T element));
+		void LevelOrder(BinaryTreeNode<T> *root, void (*Visit)(T element));
+	};
+
+	enum Tag { LEFT, RIGHT };
+	template<class T>
+	class StackElement {
+		BinaryTreeNode<T> *pointer;
+		Tag tag;
 	};
 
 	// 树节点-左子右兄表示法

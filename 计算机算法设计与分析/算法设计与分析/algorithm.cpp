@@ -312,6 +312,7 @@ namespace Algorithm {
 	template<class T>
 	void BinaryTree<T>::InOrderWithoutRecursion(BinaryTreeNode<T>* root, void (*Visit)(T element))
 	{
+		// 中序非递归周游二叉树
 		using std::stack;
 		stack<BinaryTreeNode<T>*> aStack;
 		BinaryTreeNode<T>* p = root;
@@ -330,8 +331,64 @@ namespace Algorithm {
 		}
 	}
 	template<class T>
+	void BinaryTree<T>::PostOrderWithoutRecursion(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	{
+		// 后序非递归周游二叉树
+		using std::stack;
+		StackElement<T> element;
+		stack<StackElement<T>> aStack;
+		BinaryTreeNode<T> *p;
+		if (root == NULL)
+			return;
+		else
+			p = root;
+		while (!aStack.empty() || p) {
+			// 进入p的左子树
+			while (p != NULL) {
+				element.pointer = p;
+				element.tag = LEFT;
+				aStack.push(element);
+				p = p->left;
+			}
+			// 取栈顶元素，出栈
+			element = aStack.top();
+			aStack.pop();
+			p = element.pointer;
+			// 从左子树回来
+			if (element.tag == LEFT) {
+				element.tag = RIGHT;
+				aStack.push(element);
+				// p移到右子树
+				p = p->right;
+			}
+			else {
+				// 访问当前节点
+				(*Visit)(p->element);
+				p = NULL; // 清空为了继续入栈
+			}
+		}
+	}
+	template<class T>
+	void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	{
+		//广度优先周游二叉树
+		using std::queue;
+		queue<BinaryTreeNode<T>*> aQueue;
+		BinaryTreeNode<T>*p = root;
+		if (p) aQueue.push(p);
+		while (!aQueue.empty()) {
+			p = aQueue.front();
+			(*Visit)(p->element);
+			aQueue.pop();
+			if (p->left)
+				aQueue.push(p->left);
+			if (p->right)
+				aQueue.push(p->right);
+		}
+	}
 
 	// 森林
+	template<class T>
 	TreeNode<T>* Tree<T>::Parent(TreeNode<T>* current)
 	{
 		using std::queue;
