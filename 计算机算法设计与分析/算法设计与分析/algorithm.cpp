@@ -459,6 +459,65 @@ namespace Algorithm {
 		}
 	}
 
+	// 穿线二叉树
+	template<class T>
+	void ThreadBinaryTree<T>::Insert(ThreadBinaryTreeNode<T>* p, ThreadBinaryTreeNode<T>* r)
+	{
+		// r为待插入的新节点，p指向穿线二叉树的一个节点
+		ThreadBinaryTreeNode<T> *temp = NULL;
+		if (p->left == NULL) {
+			temp = NULL;
+		}
+		else if (p->ltag == true) {
+			// 左孩子为线索，前驱为左孩子
+			temp = p->left;
+		}
+		else {
+			// 前驱为左子树中序周游的最后一个点
+			temp = p->left;
+			while (temp->rtag == false) {
+				temp = temp->right;
+			}
+		}
+		// 此时，temp指向p的中序前驱
+		if (temp != NULL && temp->rtag == true) {
+			temp->right = r;
+		}
+		// 建立新节点的左指针或左线索
+		r->ltag = p->ltag;
+		r->left = p->left;
+		// 插入新节点
+		p->ltag = false;
+		p->left = r;
+		// 建立新节点右线索
+		r->rtag = true;
+		r->right = p;
+	}
+	template<class T>
+	void ThreadBinaryTree<T>::PostOrder(ThreadBinaryTreeNode<T> *root, void(*Visit)(ThreadBinaryTreeNode<T> *node))
+	{
+		if (root->ltag == 0)
+			PostOrder(root->left);
+		if (root->rtag == 0)
+			PostOrder(root->right);
+		Visit(root);
+	}
+	template<class T>
+	ThreadBinaryTreeNode<T> ThreadBinaryTree<T>::FindPreInPostOrder(ThreadBinaryTreeNode<T> *pointer)
+	{
+		// 在中序穿线二叉树中查找指定节点在后序下的前驱
+		ThreadBinaryTreeNode<T> * temp = NULL;
+		if (pointer->rtag == 0)
+			return pointer->right;
+		else
+			temp = pointer;
+		while (temp->ltag == 1) {
+			temp = temp->left;
+		}
+		temp = temp->left;
+		return temp;
+	}
+
 	// 二叉搜索树
 	template<class T>
 	void BinarySearchTree<T>::Insert(BinaryTreeNode<T>* root, BinaryTreeNode<T>* node)

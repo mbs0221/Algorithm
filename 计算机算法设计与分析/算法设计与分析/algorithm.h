@@ -105,9 +105,23 @@ namespace Algorithm {
 		void LevelOrder(BinaryTreeNode<T> *root, void (*Visit)(T element));
 	};
 
+	// ´©Ïß¶þ²æÊ÷
+	template<class T>
+	class ThreadBinaryTreeNode :BinaryTreeNode<T> {
+		bool ltag, rtag;
+	};
+
+	template<class T>
+	class ThreadBinaryTree : BinaryTree<T> {
+	public:
+		void Insert(ThreadBinaryTreeNode<T>* p, ThreadBinaryTreeNode<T> *r);
+		void PostOrder(ThreadBinaryTreeNode<T> *root, void (*Visit)(ThreadBinaryTreeNode<T> *node));
+		ThreadBinaryTreeNode<T> FindPreInPostOrder(ThreadBinaryTreeNode<T> *pointer);
+	};
+
 	// ¶þ²æËÑË÷Ê÷
 	template<class T>
-	class BinarySearchTree : BinaryTree {
+	class BinarySearchTree : BinaryTree<T> {
 	public:
 		void Insert(BinaryTreeNode<T> *root, BinaryTreeNode *node);
 		void Delete(BinaryTreeNode<T> *node);
