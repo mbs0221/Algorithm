@@ -63,7 +63,7 @@ namespace Exam2015 {
 			DigitalSearchTree*tree = this;
 			for (string::iterator iter = name.begin(); iter != name.end(); iter++)
 			{
-				int i =*iter == ' ' ? 26 :*iter - 'A';
+				int i = *iter == ' ' ? 26 : *iter - 'A';
 				tree->child[i] = new DigitalSearchTree();
 				tree = tree->child[i];
 			}
@@ -126,7 +126,7 @@ namespace Algorithm {
 	template<class T>
 	void SMatrix<T>::insertOLNode(int row, int col, T val)
 	{
-		OLNode<T>*p,*q,*r,*u,*v;
+		OLNode<T>*p, *q, *r, *u, *v;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
 			return;
 		r = new OLNode<T>(row, col, val);
@@ -156,7 +156,7 @@ namespace Algorithm {
 	template<class T>
 	T SMatrix<T>::deleteOLNode(int row, int col)
 	{
-		OLNode<T>*p,*q,*r,*u,*v;
+		OLNode<T>*p, *q, *r, *u, *v;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
 			return;
 		// 行
@@ -190,7 +190,7 @@ namespace Algorithm {
 	template<class T>
 	T SMatrix<T>::getElement(int row, int col)
 	{
-		OLNode<T>*p,*q;
+		OLNode<T>*p, *q;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
 			return;
 		// 查找
@@ -208,11 +208,11 @@ namespace Algorithm {
 	template<class T>
 	SMatrix<T> & SMatrix<T>::MatrixAdd(SMatrix<T>& m1, SMatrix<T>& m2)
 	{
-		OLNode*p,*q,*u,*v;
+		OLNode*p, *q, *u, *v;
 		SMatrix r(m1.rowNum, m2.colNum);
 		p = m1.rowhead;
 		u = m2.rowhead;
-		
+
 		// TODO: 在此处插入 return 语句
 		return r;
 	}
@@ -319,7 +319,7 @@ namespace Algorithm {
 		if (root != NULL&& current != NULL) {
 			while (!aStack.empty() || p) {
 				if (p != NULL) {
-					if (current == p->left || current == p->right) 
+					if (current == p->left || current == p->right)
 						return p; //返回双亲
 					aStack.push(p);	 p = p->left;
 				}//入栈 指左子
@@ -340,7 +340,7 @@ namespace Algorithm {
 			//返回current结点的父结点
 			BinaryTreeNode<T>* temp = Parent(current);
 			//如果父结点为空，或者current没有左兄弟
-			if((temp == NULL) || current == temp->left)
+			if ((temp == NULL) || current == temp->left)
 				return  NULL;
 			else
 				return temp->getLeftChild();
@@ -353,7 +353,7 @@ namespace Algorithm {
 		return ((root) ? false : true);
 	}
 	template<class T>
-	void BinaryTree<T>::DepthOrder(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	void BinaryTree<T>::DepthOrder(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
 		if (!root) {
 			(*Visit)(root->element);
@@ -362,7 +362,7 @@ namespace Algorithm {
 		}
 	}
 	template<class T>
-	void BinaryTree<T>::PreOrderWithoutRecursion(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	void BinaryTree<T>::PreOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
 		using std::stack;
 		stack<BinaryTreeNode<T>*> aStack;
@@ -382,7 +382,7 @@ namespace Algorithm {
 		}
 	}
 	template<class T>
-	void BinaryTree<T>::InOrderWithoutRecursion(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	void BinaryTree<T>::InOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
 		// 中序非递归周游二叉树
 		using std::stack;
@@ -403,7 +403,7 @@ namespace Algorithm {
 		}
 	}
 	template<class T>
-	void BinaryTree<T>::PostOrderWithoutRecursion(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	void BinaryTree<T>::PostOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
 		// 后序非递归周游二叉树
 		using std::stack;
@@ -441,7 +441,7 @@ namespace Algorithm {
 		}
 	}
 	template<class T>
-	void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root, void (*Visit)(T element))
+	void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
 		//广度优先周游二叉树
 		using std::queue;
@@ -475,7 +475,7 @@ namespace Algorithm {
 			//相等 则不用插入
 			if (node->getValue() == p->getValue())
 				return;
-			else if (node->getValue() < p->getValue()) { 
+			else if (node->getValue() < p->getValue()) {
 				//待插小
 				if (p->getLeftChild() == NULL) {
 					//作为左子树
@@ -517,7 +517,7 @@ namespace Algorithm {
 			//p->lc没右子(Cr为空没向右下移动)
 			if (tempparent == NULL)
 				p->left = s->left;  //p左子树中C最大,p->lc指Cl
-			else 
+			else
 				tempparent->right = s->left; //tempp左子Sl作其父Q右子树
 			s->left = p->left;//tempp(即S)代替p接管p左子右子
 			s->right = p->right;
@@ -526,7 +526,7 @@ namespace Algorithm {
 			root = s;
 		else if (parent->left == p) //if删parent的左子p
 			parent->left = s;  //让s(即tempp)替代p做parent左子
-		else 
+		else
 			parent->right = s; //删的是parent右子p
 		delete p;
 		p = NULL;
@@ -607,7 +607,7 @@ namespace Algorithm {
 			// 被删(subroot不是最左子)有左兄,让subroot左兄pSibling指被删点右兄
 			pointer = pointer->LeftMostChild();
 			// 则找直接左兄
-			while (pointer->RightSibling() != subroot) 
+			while (pointer->RightSibling() != subroot)
 				pointer = pointer->RightSibling();
 			//让左兄pointer右兄是被删点subroot右兄
 			pointer->setSibling(subroot->RightSibling());
@@ -624,21 +624,21 @@ namespace Algorithm {
 	{
 		using std::stack;
 		stack<DualTagTreeNode<T>*> aStack;
-		
+
 	}
-	
+
 	// 最小堆
 	template<class T>
 	void MinHeap<T>::BuildHeap()
 	{
 		//从最后一个父结点至根逐一筛选
-		for (int i = CurrentSize / 2 - 1; i >= 0; i--) 	
+		for (int i = CurrentSize / 2 - 1; i >= 0; i--)
 			SiftDown(i);
 	}
 	template<class T>
 	MinHeap<T>::MinHeap(const int n)
 	{
-		if (n <= 0)	
+		if (n <= 0)
 			return;
 		CurrentSize = 0;
 		MaxSize = n; 			//初始化堆容量为n
@@ -653,7 +653,7 @@ namespace Algorithm {
 	template<class T>
 	bool MinHeap<T>::isLeaf(int pos) const
 	{
-		return (pos >= CurrentSize / 2) && (pos<CurrentSize);
+		return (pos >= CurrentSize / 2) && (pos < CurrentSize);
 	}
 	template<class T>
 	int MinHeap<T>::LeftChild(int pos) const
@@ -674,13 +674,13 @@ namespace Algorithm {
 	bool MinHeap<T>::Remove(int pos, T & node)
 	{
 		// 删除给定下标的元素
-		if ((pos<0) || (pos >= CurrentSize))
+		if ((pos < 0) || (pos >= CurrentSize))
 			return false;
 		node = heapArray[pos]; //被删元素由node返回
 		heapArray[pos] = heapArray[--CurrentSize];
 		//最后元素替代被删元素，长-1	
 		if (heapArry[Parent(pos)] > heapArry[pos]))
-			SiftUp(pos);	//小于父结点，上升筛
+		SiftUp(pos);	//小于父结点，上升筛
 		else
 			SiftDown(pos);	//大于父向下筛(不是SiftDown(0)) return true;
 	}
@@ -701,7 +701,7 @@ namespace Algorithm {
 		}
 		else {
 			swap(0, --CurrentSize); //交换堆顶和尾元素
-			if (CurrentSize >1)         // <=1不用调整  
+			if (CurrentSize > 1)         // <=1不用调整  
 				SiftDown(0); 	//从堆顶开始筛选
 			return heapSize[CurrentSize];
 		}
@@ -712,7 +712,7 @@ namespace Algorithm {
 		//从position向上开始调整，使序列成为堆
 		int temppos = position;
 		T temp = heapArray[temppos];  //temp暂存被调结点值
-		while ((temppos>0) && (heapArray[parent(temppos)]>temp))
+		while ((temppos > 0) && (heapArray[parent(temppos)] > temp))
 		{
 			//有父&&父>子：父子交换
 			heapArray[temppos] = heapArray[parent(temppos)];
@@ -726,16 +726,57 @@ namespace Algorithm {
 		int i = left;  //标识父结点i
 		int j = 2 * i + 1;     //标识关键值较小的子结点		
 		T	temp = heapArray[i]; //保存父结点
-		while (j< CurrentSize) {
-			if ((j<CurrentSize - 1) && (heapArray[j] >heapArray[j + 1]))
+		while (j < CurrentSize) {
+			if ((j < CurrentSize - 1) && (heapArray[j] > heapArray[j + 1]))
 				j++;  //j指向数值较小的子结点
-			if (temp>heapArray[j]) {   //父>较小孩子
+			if (temp > heapArray[j]) {   //父>较小孩子
 				heapArray[i] = heapArray[j];  //小子替换父
 				i = j;     	j = 2 * j + 1;
 			}  //父向下继续与孩子比
 			else break;
 		}
 		heapArray[i] = temp;
+	}
+
+	// Huffman树
+	template<class T>
+	void HuffmanTree<T>::MergeTree(HuffmanTreeNode<T>& ht1, HuffmanTreeNode<T>& ht2, HuffmanTreeNode<T>* parent)
+	{
+		parent->element = ht1.element + ht2->element;
+		parent->left = &ht1;
+		parent->right = &ht2;
+	}
+	template<class T>
+	void HuffmanTree<T>::DeleteTree(HuffmanTreeNode<T>* root)
+	{
+		DeleteBinaryTree(root);
+	}
+	template<class T>
+	HuffmanTree<T>::HuffmanTree(T weight[], int n)
+	{
+		//weight存权值数组;n数组长
+		//定义最小值堆
+		MinHeap<HuffmanTreeNode<T>> heap(n);
+		//parent：指向对象的指针， firstchild, secondchild ：2个对象
+		HuffmanTreeNode<T>* parent, firstchild, secondchild;
+		HuffmanTreeNode<T>* NodeList = new HuffmanTreeNode<T>[n];
+		for (int i = 0; i < n; i++) {		//初始化
+			NodeList[i].element = weight[i]; //权值
+			NodeList[i].parent = NodeList[i].left = NodeList[i].right = NULL;
+			heap.Insert(NodeList[i]); //向堆中添加元素
+		}
+		for (i = 0; i < n - 1; i++)
+		{ //通过n-1次合并建立Huffman树
+			parent = new HuffmanTreeNode<T>;
+			firstchild = heap.RemoveMin();
+			secondchild = heap.RemoveMin();
+			//合并权值最小的两棵树
+			MergeTree(firstchild, secondchild, parent);
+			//把parent所指结点插入到堆中去
+			heap.Insert(*parent);
+			root = parent;  //建立根结点
+		}
+		delete[] NodeList;
 	}
 
 	// 红黑树

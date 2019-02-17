@@ -69,6 +69,7 @@ namespace Algorithm {
 	// 二叉树节点
 	template<class T>
 	class BinaryTreeNode {
+	private:
 		T element;
 		BinaryTreeNode<T> *left, *right;
 	public:
@@ -194,6 +195,25 @@ namespace Algorithm {
 		T&  RemoveMin(); 		//从堆顶删除最小值
 		void SiftUp(int position); //从position向上开始调整，使序列成为堆
 		void SiftDown(int left);//筛选法函数，参数left表示开始处理的数组下标
+	};
+
+	// HuffmanTreeNode类继承自BinaryTreeNode类
+	template<class T>
+	class HuffmanTreeNode : BinaryTreeNode<T> {
+		
+	};
+
+	// Huffman树的类定义[代码5.12]
+	template <class T>
+	class HuffmanTree : BinaryTree<T> {
+	private:
+		HuffmanTreeNode<T>* root; //Huffman树的树根
+		void MergeTree(HuffmanTreeNode<T> &ht1, HuffmanTreeNode<T> &ht2, HuffmanTreeNode<T>* parent);
+		//把ht1和ht2为根的子树合并成一棵以parent为根的二叉树
+		void DeleteTree(HuffmanTreeNode<T>* root);//删
+	public:
+		HuffmanTree(T weight[], int n);//weight存权值数组;n数组长
+		virtual ~HuffmanTree() { DeleteTree(root); } //析构函数
 	};
 
 	// 红黑树节点
