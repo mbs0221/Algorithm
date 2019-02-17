@@ -46,7 +46,7 @@ namespace Algorithm {
 		void insertOLNode(int row, int col, T val);
 		T deleteOLNode(int row, int col);
 		T getElement(int row, int col);
-		SMatrix<T> & MatrixAdd(SMatrix<T> & m1, SMatrix<T> & m2);
+		SMatrix<T>& operator +(SMatrix<T> &a, SMatrix<T> &b);
 	};
 
 #define MAX_SIZE 100
@@ -255,6 +255,27 @@ namespace Algorithm {
 	public:
 		HuffmanTree(T weight[], int n);//weight存权值数组;n数组长
 		virtual ~HuffmanTree() { DeleteTree(root); } //析构函数
+	};
+
+	// Trie字典树
+#define KIND 26
+
+	template<class T>
+	class TrieNode {
+	public:
+		TrieNode<T> *next[KIND];
+		TrieNode<T> *fail;
+		int count;
+		TrieNode() :fail(NULL), count(0) { memset(next, NULL, sizeof(next)); }
+	};
+
+	template<class T>
+	class TrieTree {
+		TrieNode<T> *root;
+	public:
+		void insert(char *str);
+		void build_ac_automation();
+		int query(char *str);
 	};
 
 	// 红黑树节点

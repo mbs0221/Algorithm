@@ -191,15 +191,11 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	SMatrix<T> & SMatrix<T>::MatrixAdd(SMatrix<T> & m1, SMatrix<T>& m2)
+	SMatrix<T>& SMatrix<T>::operator+(SMatrix<T>& a, SMatrix<T>& b)
 	{
-		OLNode*p, *q, *u, *v;
-		SMatrix r(m1.rowNum, m2.colNum);
-		p = m1.rowhead;
-		u = m2.rowhead;
-
+		SMatrix<T> c;
+		OLNode<T> *pa, *pb;
 		// TODO: 在此处插入 return 语句
-		return r;
 	}
 
 	template<class T>
@@ -1036,6 +1032,95 @@ namespace Algorithm {
 			root = parent;  //建立根结点
 		}
 		delete[] NodeList;
+	}
+
+	// Trie字典树
+
+	template<class T>
+	void TrieTree<T>::insert(char * str)
+	{
+		TrieNode<T> *node = root;
+		int i = 0, index;
+		while (str[i] != '\0') {
+			index = str[i] - 'a';
+			if (next[index] == NULL)
+				next[index] = new TrieNode<T>();
+			node = node->next[index];
+			i++;
+		}
+		node->count++;
+	}
+
+	template<class T>
+	void TrieTree<T>::build_ac_automation()
+	{
+		using std::queue;
+		int i;
+		root->fail = NULL;
+		queue<TrieNode*> q;
+		q.push(root);
+		while (!q.empty()) { 
+			TrieNode<T> *temp = q.front();
+			q.pop();
+			TrieNode<T> *p = NULL;
+			// 广度优先遍历
+			for (int i = 0; i < KIND; i++) {
+				if (temp->next[i] != NULL) {
+					if (temp == root) {
+						// 当前节点是根节点
+						temp->next[i]->fail = root;
+					}
+					else
+					{
+						// 是子节点
+						p = temp->fail;
+						while (p != NULL) {
+							if(p->next[i]!=NULL)
+							{
+								// 求child的Fail指针时，首先我们要找到其father的Fail指针所指向的节点, 
+								// 假如是t的话，我们就要看t的孩子中有没有和child节点所表示的字母相同的节点，
+								// 如果有的话，这个节点就是child的fail指针
+								temp->next[i]->fail = p->next[i];
+								break;
+							}
+							// 如果发现没有，则需要找father->fail->fail这个节点，然后重复上面过程，
+							p = p->fail;
+						}
+						// 如果一直找都找不到，则child的Fail指针就要指向root。
+						if (p == NULL)
+							temp->next[i]->fail = root;
+					}
+					q.push(temp->next[i]);
+				}
+			}
+		}
+	}
+
+	template<class T>
+	int TrieTree<T>::query(char * str)
+	{
+		int i = 0, count = 0, index, len = strlen(str);
+		TrieNode<T> *p = root;
+		while (str[i] != '\0') {
+			index = str[i] - 'a';
+			// 对于i=0,1。Trie中没有对应的路径，故不做任何操作；
+			while (p->next[index] == NULL&&p != root) {
+				p = p->fail;
+			}
+			// i=2,3,4时，指针p走到左下节点e。
+			p = p->next[index];
+			p = (p == NULL) ? root : p;
+			TrieNode<T> *t;
+			while (t != root && t->count != -1) {
+				// 因为节点e的count信息为1，所以cnt+1，
+				count += t->count;
+				//并且讲节点e的count值设置为-1，表示改单词已经出现过了，防止重复计数，
+				t->count = -1;
+				// 最后temp指向e节点的失败指针所指向的节点继续查找，以此类推，
+				t = t->fail;
+			}
+		}
+		return count;
 	}
 
 	// 红黑树
