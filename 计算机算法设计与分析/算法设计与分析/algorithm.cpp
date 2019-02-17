@@ -153,6 +153,7 @@ namespace Algorithm {
 		u->down = r; r->down = v;
 		return;
 	}
+
 	template<class T>
 	T SMatrix<T>::deleteOLNode(int row, int col)
 	{
@@ -187,6 +188,7 @@ namespace Algorithm {
 		p->right = q; u->down = v;
 		return val;
 	}
+
 	template<class T>
 	T SMatrix<T>::getElement(int row, int col)
 	{
@@ -205,6 +207,7 @@ namespace Algorithm {
 			return NULL;
 		return q->element;
 	}
+
 	template<class T>
 	SMatrix<T> & SMatrix<T>::MatrixAdd(SMatrix<T>& m1, SMatrix<T>& m2)
 	{
@@ -216,6 +219,7 @@ namespace Algorithm {
 		// TODO: 在此处插入 return 语句
 		return r;
 	}
+
 	template<class T>
 	TSMatrix<T>& TSMatrix<T>::Transpose(TSMatrix<T>& a)
 	{
@@ -249,9 +253,10 @@ namespace Algorithm {
 		return b;
 	}
 
+
 	// 二叉树节点类
 	template<class T>
-	inline BinaryTreeNode<T>::BinaryTreeNode(T element, BinaryTreeNode<T>* left, BinaryTreeNode<T>* right)
+	BinaryTreeNode<T>::BinaryTreeNode(T element, BinaryTreeNode<T>* left, BinaryTreeNode<T>* right)
 	{
 		this->element = element;
 		this->left = left;
@@ -268,17 +273,20 @@ namespace Algorithm {
 			delete root;
 		}
 	}
+
 	template<class T>
 	BinaryTree<T>::BinaryTree(const T & elem, BinaryTree<T>& leftTree, BinaryTree<T>& rightTree)
 	{
 		root = new BinaryTreeNode<T>(elem, leftTree.root, rightTree.root);
 		leftTree.root = rightTree.root = NULL;
 	}
+
 	template<class T>
 	BinaryTree<T>::~BinaryTree()
 	{
 		DeleteBinaryTree(root);
 	}
+
 	template<class T>
 	int BinaryTree<T>::LeafNumber(BinaryTreeNode<T>* root)
 	{
@@ -286,6 +294,7 @@ namespace Algorithm {
 		if (root->isLeaf()) return 1;
 		return LeafNumber(root->left) + LeafNumber(root->right);
 	}
+
 	template<class T>
 	int BinaryTree<T>::GetHeight(BinaryTreeNode<T>* root)
 	{
@@ -294,6 +303,7 @@ namespace Algorithm {
 		int h2 = GetHeight(root->right) + 1;
 		return h1 > h2 ? h1 : h2;
 	}
+
 	template<class T>
 	int BinaryTree<T>::Exchange(BinaryTreeNode<T>* root)
 	{
@@ -309,6 +319,7 @@ namespace Algorithm {
 		}
 		return 0;
 	}
+
 	template<class T>
 	BinaryTreeNode<T>* BinaryTree<T>::Parent(BinaryTreeNode<T>* current)
 	{
@@ -331,6 +342,7 @@ namespace Algorithm {
 			}
 		}
 	}
+
 	template<class T>
 	BinaryTreeNode<T>* BinaryTree<T>::LeftSibling(BinaryTreeNode<T>* current)
 	{
@@ -347,11 +359,26 @@ namespace Algorithm {
 		}
 		return NULL;
 	}
+
 	template<class T>
 	bool BinaryTree<T>::isEmpty() const
 	{
 		return ((root) ? false : true);
 	}
+
+	template<class T>
+	bool BinaryTree<T>::Compare(BinaryTreeNode<T>* root1, BinaryTreeNode<T>* root2)
+	{
+		if (root1 == NULL&&root2 == NULL)
+			return true;
+		else if (root1->element == root2->element
+			&&Compare(root1->left, root2->left)
+			&& Compare(root1->right, root2->right))
+			return true;
+		else
+			return false;
+	}
+
 	template<class T>
 	void BinaryTree<T>::DepthOrder(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
@@ -361,6 +388,7 @@ namespace Algorithm {
 			DepthOrder(root->right);
 		}
 	}
+
 	template<class T>
 	void BinaryTree<T>::PreOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
@@ -381,6 +409,7 @@ namespace Algorithm {
 			]
 		}
 	}
+
 	template<class T>
 	void BinaryTree<T>::InOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
@@ -402,6 +431,7 @@ namespace Algorithm {
 			}
 		}
 	}
+
 	template<class T>
 	void BinaryTree<T>::PostOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
@@ -440,6 +470,7 @@ namespace Algorithm {
 			}
 		}
 	}
+
 	template<class T>
 	void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root, void(*Visit)(T element))
 	{
@@ -458,6 +489,7 @@ namespace Algorithm {
 				aQueue.push(p->right);
 		}
 	}
+
 
 	// 穿线二叉树
 	template<class T>
@@ -493,6 +525,7 @@ namespace Algorithm {
 		r->rtag = true;
 		r->right = p;
 	}
+
 	template<class T>
 	void ThreadBinaryTree<T>::PostOrder(ThreadBinaryTreeNode<T> *root, void(*Visit)(ThreadBinaryTreeNode<T> *node))
 	{
@@ -502,6 +535,7 @@ namespace Algorithm {
 			PostOrder(root->right);
 		Visit(root);
 	}
+
 	template<class T>
 	ThreadBinaryTreeNode<T> ThreadBinaryTree<T>::FindPreInPostOrder(ThreadBinaryTreeNode<T> *pointer)
 	{
@@ -519,6 +553,105 @@ namespace Algorithm {
 	}
 
 	// 二叉搜索树
+
+	template<class T>
+	int BinarySearchTree<T>::PrintRange(BinaryTreeNode<T>* root, T min, T max)
+	{
+		if (root->element < min)
+			return 0;
+		else if (root->element == min) {
+			cout << root->element << endl;
+			return PrintRange(root->right, min, max) + 1;
+		}
+		else if (min < root->element && root->element <= max) {
+			cout << root->element << endl;
+			return PrintRange(root->left, min, max) + PrintRange(root->right, min, max) + 1;
+		}
+		else if (root->element > max)
+			return PrintRange(root->left, min, max);
+	}
+
+	template<class T>
+	int BinarySearchTree<T>::SmallCount(BinaryTreeNode<T> *root, T key)
+	{
+		if (root == NULL)
+			return 0;
+		else if (root->element <= key)
+			return (1 + SmallCount(root->left, key) + SmallCount(root->right, key));
+		else
+			return SmallCount(root->left, key);
+	}
+
+	template<class T>
+	int BinarySearchTree<T>::SmallCountWithoutRecursion(BinaryTreeNode<T> *root, T key)
+	{
+		// 非递归中序遍历二叉树
+		int n = 0;
+		using std::stack;
+		stack<BinaryTreeNode<T>*> aStack;
+		BinaryTreeNode<T>* pointer = root;
+		while (aStack.empty() || pointer) {
+			if (pointer) {
+				aStack.push(pointer);
+				pointer = pointer->left;
+			}
+			else {
+				pointer = aStack.top();
+				if (pointer->element <= key)
+					n++;
+				else
+					break;
+				pointer = pointer->right;
+				aStack.pop();
+			}
+		}
+		return n;
+	}
+
+	template<class T>
+	bool BinarySearchTree<T>::isBST(BinaryTreeNode<T>* root)
+	{
+		if (root == NULL)
+			return true;
+		if (root->left&&root->element <= root->left->element)
+			return false;
+		if (root->right&&root->element > root->right->element)
+			return false;
+		return isBST(root->left) && isBST(root->right);
+	}
+
+	template<class T>
+	bool BinarySearchTree<T>::Search(BinaryTreeNode<T>* root, T key)
+	{
+		if (root == NULL)
+			return false;
+		if (root->element == key)
+			return true;
+		return Search(root->left) || Search(root->right);
+	}
+
+	template<class T>
+	bool BinarySearchTree<T>::SearchWithoutRecursion(BinaryTreeNode<T>* root, T key)
+	{
+		using std::stack;
+		stack<BinaryTreeNode<T>> aStack;
+		BinaryTreeNode<T>* pointer == root;
+		while (!aStack.empty() || pointer) {
+			if (pointer) {
+				aStack.push(pointer);
+				pointer = pointer->left;
+			}
+			else {
+				pointer = aStack.top();
+				if (pointer->element == key) 
+					return true;
+				pointer = pointer->right;
+				aStack.pop();
+			}
+		}
+		return false;
+	}
+
 	template<class T>
 	void BinarySearchTree<T>::Insert(BinaryTreeNode<T>* root, BinaryTreeNode<T>* node)
 	{
@@ -554,6 +687,7 @@ namespace Algorithm {
 			}
 		}
 	}
+
 	template<class T>
 	void BinarySearchTree<T>::Delete(BinaryTreeNode<T>* p)
 	{
@@ -592,6 +726,29 @@ namespace Algorithm {
 		return;
 	}
 
+	template<class T>
+	void BinarySearchTree<T>::DeleteNode(BinaryTreeNode<T>* root, T key)
+	{
+		if (root == NULL)
+			return;
+		if (root->element < key)
+			DeleteNode(root->right, key);
+		else if (root->element > key)
+			DeleteNode(root->left, key);
+		else
+			DeleteNodeEx(root);
+	}
+
+	template<class T>
+	void BinarySearchTree<T>::DeleteNodeEx(BinaryTreeNode<T>* root)
+	{
+		if (root == NULL)
+			return;
+		DeleteNodeEx(root->left);
+		DeleteNodeEx(root->right);
+		delete root;
+	}
+
 	// 森林
 	template<class T>
 	TreeNode<T>* Tree<T>::Parent(TreeNode<T>* current)
@@ -626,6 +783,7 @@ namespace Algorithm {
 		}
 		return NULL;
 	}
+
 	template<class T>
 	void Tree<T>::DestroyNodes(TreeNode<T>* root)
 	{
@@ -635,6 +793,7 @@ namespace Algorithm {
 			delete root;
 		}
 	}
+
 	template<class T>
 	void Tree<T>::DeletSubTree(TreeNode<T>* subroot)
 	{
@@ -676,9 +835,9 @@ namespace Algorithm {
 		//删树
 		DestroyNodes(subroot);
 	}
-	template<class T>
 
 	// 树 - 双标记表示法
+	template<class T>
 	DualTagTree<T>::DualTagTree(DualTagTreeNode<T>* nodeArray, int count)
 	{
 		using std::stack;
@@ -694,6 +853,7 @@ namespace Algorithm {
 		for (int i = CurrentSize / 2 - 1; i >= 0; i--)
 			SiftDown(i);
 	}
+
 	template<class T>
 	MinHeap<T>::MinHeap(const int n)
 	{
@@ -704,31 +864,51 @@ namespace Algorithm {
 		heapArray = new T[MaxSize]; //创建堆空间
 		BuildHeap();  			//建堆
 	}
+
 	template<class T>
 	bool MinHeap<T>::isEmpty()
 	{
 		return false;
 	}
+
 	template<class T>
 	bool MinHeap<T>::isLeaf(int pos) const
 	{
 		return (pos >= CurrentSize / 2) && (pos < CurrentSize);
 	}
+
+	template<class T>
+	bool MinHeap<T>::isMinHeap()
+	{
+		for (int i = 0; i < (CurrentSize - 1) / 2; i++) {
+			if ((2 * i + 2 <= CurrentSize)) {
+				if (!((heapArray[i] <= heapArray[LeftChild(i)]) && (heapArray[i] <= heapArray[RightChild(i)])))
+					return false;
+			}
+			else if (!(heapArray[i] <= heapArray[LeftChild(i))
+				return false;
+		}
+		return true;
+	}
+
 	template<class T>
 	int MinHeap<T>::LeftChild(int pos) const
 	{
 		return 2 * pos + 1;	//返回pos的左孩子位置
 	}
+
 	template<class T>
 	int MinHeap<T>::RightChild(int pos) const
 	{
 		return 2 * pos + 2;  	//返回pos的右孩子位置
 	}
+
 	template<class T>
 	int MinHeap<T>::Parent(int pos) const
 	{
 		return (pos - 1) / 2; 	//返回pos的父结点位置
 	}
+
 	template<class T>
 	bool MinHeap<T>::Remove(int pos, T & node)
 	{
@@ -743,6 +923,7 @@ namespace Algorithm {
 		else
 			SiftDown(pos);	//大于父向下筛(不是SiftDown(0)) return true;
 	}
+
 	template<class T>
 	bool MinHeap<T>::Insert(const T & newNode)
 	{
@@ -752,6 +933,7 @@ namespace Algorithm {
 		SiftUp(CurrentSize); //向上调整
 		CurrentSize++; //长+1
 	}
+
 	template<class T>
 	T & MinHeap<T>::RemoveMin()
 	{
@@ -765,6 +947,7 @@ namespace Algorithm {
 			return heapSize[CurrentSize];
 		}
 	}
+
 	template<class T>
 	void MinHeap<T>::SiftUp(int position)
 	{
@@ -779,6 +962,7 @@ namespace Algorithm {
 		}  //继续向上找父
 		heapArray[temppos] = temp; 	//子最终就位
 	}
+
 	template<class T>
 	void MinHeap<T>::SiftDown(int left)
 	{
@@ -805,11 +989,13 @@ namespace Algorithm {
 		parent->left = &ht1;
 		parent->right = &ht2;
 	}
+
 	template<class T>
 	void HuffmanTree<T>::DeleteTree(HuffmanTreeNode<T>* root)
 	{
 		DeleteBinaryTree(root);
 	}
+
 	template<class T>
 	HuffmanTree<T>::HuffmanTree(T weight[], int n)
 	{
@@ -848,6 +1034,7 @@ namespace Algorithm {
 		this->left = left;
 		this->right = right;
 	}
+
 	template<class KEY, class COLOR>
 	void RBTree<KEY, COLOR>::insert(RBNode<KEY, COLOR>*root, const KEY & key)
 	{
@@ -869,6 +1056,7 @@ namespace Algorithm {
 			throw exception();
 		}
 	}
+
 	template<class KEY, class COLOR>
 	void RBTree<KEY, COLOR>::RedToBlack(RBNode<KEY, COLOR>* root)
 	{
@@ -915,6 +1103,7 @@ namespace Algorithm {
 			}
 		}
 	}
+
 }
 
 void main() {

@@ -96,6 +96,7 @@ namespace Algorithm {
 		BinaryTreeNode<T>* Parent(BinaryTreeNode<T>* current);
 		BinaryTreeNode<T>* LeftSibling(BinaryTreeNode<T>* current);
 		bool isEmpty() const;
+		bool Compare(BinaryTreeNode<T> *root1, BinaryTreeNode<T> *root2);
 		bool RootPath(BinaryTreeNode<T> *root, BinaryTreeNode<T> *current);
 		void CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild);
 		void DepthOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
@@ -123,8 +124,16 @@ namespace Algorithm {
 	template<class T>
 	class BinarySearchTree : BinaryTree<T> {
 	public:
+		int PrintRange(BinaryTreeNode<T> *root, T min, T max);
+		int SmallCount(BinaryTreeNode<T> *root, T key);
+		int SmallCountWithoutRecursion(BinaryTreeNode<T> root*, T key);
+		bool isBST(BinaryTreeNode<T> *root);
+		bool Search(BinaryTreeNode<T> *root, T key);
+		bool SearchWithoutRecursion(BinaryTreeNode<T> *root, T key);
 		void Insert(BinaryTreeNode<T> *root, BinaryTreeNode *node);
 		void Delete(BinaryTreeNode<T> *node);
+		void DeleteNode(BinaryTreeNode<T> *root, T key);
+		void DeleteNodeEx(BinaryTreeNode<T> *root);
 	};
 
 	enum Tag { LEFT, RIGHT };
@@ -200,15 +209,16 @@ namespace Algorithm {
 		MinHeap(const int n);//n最大元素数
 		~MinHeap() { delete[] heapArray; }; //析构函数
 		bool isEmpty();
-		bool isLeaf(int pos) const; //如果是叶结点，返回true
+		bool isLeaf(int pos) const;		//如果是叶结点，返回true
+		bool isMinHeap();				// 是最小堆
 		int LeftChild(int pos) const; 	//返回左孩子位置
 		int RightChild(int pos) const; 	//返回右孩子位置
 		int Parent(int pos) const; 		// 返回父结点位置	
 		bool Remove(int pos, T& node); 	// 删除给定下标的元素
 		bool Insert(const T& newNode);	//向堆中插入新元素
-		T&  RemoveMin(); 		//从堆顶删除最小值
-		void SiftUp(int position); //从position向上开始调整，使序列成为堆
-		void SiftDown(int left);//筛选法函数，参数left表示开始处理的数组下标
+		T&  RemoveMin(); 				//从堆顶删除最小值
+		void SiftUp(int position);		//从position向上开始调整，使序列成为堆
+		void SiftDown(int left);		//筛选法函数，参数left表示开始处理的数组下标
 	};
 
 	// HuffmanTreeNode类继承自BinaryTreeNode类
