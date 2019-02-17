@@ -7,6 +7,8 @@
 #include <stack>
 #include <queue>
 
+using namespace std;
+
 namespace Algorithm {
 
 	template<class T>
@@ -65,7 +67,7 @@ namespace Algorithm {
 	public:
 		TSMatrix<T> & Transpose(TSMatrix<T> & a);
 	};
-	
+
 	// 二叉树节点
 	template<class T>
 	class BinaryTreeNode {
@@ -79,7 +81,14 @@ namespace Algorithm {
 		BinaryTreeNode<T>* getLeftChild() { return left; }
 		BinaryTreeNode<T>* getRightChild() { return right; }
 	};
-	
+
+	enum Tag { LEFT, RIGHT };
+	template<class T>
+	class StackElement {
+		BinaryTreeNode<T> *pointer;
+		Tag tag;
+	};
+
 	// 二叉树
 	template<class T>
 	class BinaryTree {
@@ -101,9 +110,9 @@ namespace Algorithm {
 		void CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild);
 		void DepthOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
 		void PreOrderWithoutRecursion(BinaryTreeNode<T> *root, void（*Visit)(T element));
-		void InOrderWithoutRecursion(BinaryTreeNode<T> *root, void (*Visit)(T element));
-		void PostOrderWithoutRecursion(BinaryTreeNode<T> *root, void (*Visit)(T element));
-		void LevelOrder(BinaryTreeNode<T> *root, void (*Visit)(T element));
+		void InOrderWithoutRecursion(BinaryTreeNode<T> *root, void(*Visit)(T element));
+		void PostOrderWithoutRecursion(BinaryTreeNode<T> *root, void(*Visit)(T element));
+		void LevelOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
 	};
 
 	// 穿线二叉树
@@ -116,7 +125,7 @@ namespace Algorithm {
 	class ThreadBinaryTree : BinaryTree<T> {
 	public:
 		void Insert(ThreadBinaryTreeNode<T>* p, ThreadBinaryTreeNode<T> *r);
-		void PostOrder(ThreadBinaryTreeNode<T> *root, void (*Visit)(ThreadBinaryTreeNode<T> *node));
+		void PostOrder(ThreadBinaryTreeNode<T> *root, void(*Visit)(ThreadBinaryTreeNode<T> *node));
 		ThreadBinaryTreeNode<T> FindPreInPostOrder(ThreadBinaryTreeNode<T> *pointer);
 	};
 
@@ -136,11 +145,32 @@ namespace Algorithm {
 		void DeleteNodeEx(BinaryTreeNode<T> *root);
 	};
 
-	enum Tag { LEFT, RIGHT };
+	// 带左链的层次表示
 	template<class T>
-	class StackElement {
-		BinaryTreeNode<T> *pointer;
-		Tag tag;
+	class LLinkRTag {
+		T element;
+		int LLink, RTag;
+	};
+
+	// 带右链的先根次序表示法
+	template<class T>
+	class LTagRLink {
+		T element;
+		int LTag, RLink;
+	};
+
+	// 带双标记位的先根次序表示法
+	template<class T>
+	class LTagRTag {
+		T element;
+		int LTag, RTag;
+	};
+
+	// 带度数的后跟次序表示法
+	template<class T>
+	class DegreePost {
+		T element;
+		int degree;
 	};
 
 	// 树节点-左子右兄表示法
@@ -149,6 +179,7 @@ namespace Algorithm {
 		T mValue;
 		TreeNode<T> *pChild, *pSibling;
 	public:
+		TreeNode(T value) :mValue(value) {  }
 		bool isLeaf() { return pChild == NULL; }
 		void setValue(T value) { mValue = value; }
 		void insertFirst(TreeNode<T>* node) {
@@ -167,34 +198,16 @@ namespace Algorithm {
 		void setSibling(TreeNode<T> *sibling) { pSibling = sibling; }
 	};
 
-	// 树
+	// 树-左子右兄表示法
 	template<class T>
 	class Tree {
 	private:
 		TreeNode<T> *root;
 		Tree() { root = NULL; }
+		TreeNode<T>* Convert(vector<DegreePost<T>> nodes);
 		TreeNode<T>* Parent(TreeNode<T> *current);
 		void DestroyNodes(TreeNode<T> *root);
 		void DeletSubTree(TreeNode<T> *root);
-	};
-
-	// 带右链的先根次序表示法
-	template<class T>
-	class TreeNode {
-		T info;
-		TreeNode *llink, *rlink;
-		bool ltag;
-	};
-	template<class T>
-	class DualTagTreeNode {
-		T info;
-		int ltag, rtag;
-	};
-	template<class T>
-	class DualTagTree {
-		DualTagTreeNode<T> *root;
-	public:
-		DualTagTree(DualTagTreeNode<T> *nodeArray, int count);
 	};
 
 	// 最小堆ADT定义
@@ -224,7 +237,7 @@ namespace Algorithm {
 	// HuffmanTreeNode类继承自BinaryTreeNode类
 	template<class T>
 	class HuffmanTreeNode : BinaryTreeNode<T> {
-		
+
 	};
 
 	// Huffman树的类定义[代码5.12]
@@ -264,4 +277,91 @@ namespace Algorithm {
 		void remove(const KEY & key);
 		void RedToBlack(RBNode<KEY, COLOR> *root);
 	};
+
+	// 邻接多重表
+	class AdjacencyMultiListNode {
+		int u, v; // 顶点u，v
+		int u_next, v_next; // 与u，v关联的下一条边
+		int weight; // 权重
+	};
+
+	class AdjacencyMultiList{
+		vector<AdjacencyMultiListNode> list;
+	};
+
+	// 十字链表
+	template<class T>
+	class Point {
+		int id;
+		T element;
+	};
+
+	template<class T>
+	class Edge {
+		int from, to;
+		T element;
+	};
+
+	template<class TA>
+	class Arc {
+		int head, tail;
+		Arc<TA> *hLink, *tLink;
+		TA element;
+	};
+
+	template<class TV, class TA>
+	class Vertex {
+		TV element;
+		Arc<TA> *first_in, *first_out;
+		Vertex(TV e) {
+			element = e;
+			first_in = NULL;
+			first_out = NULL;
+		}
+	};
+
+	// 邻接矩阵
+	class Graph {
+		int **matrix;
+		void toposort();
+	};
+
+	template<class TV, class TA>
+	class OLGraph{
+		vector<Vertex<TV, TA>> vertices;
+		int numVertices, numArcs;
+	public:
+		OLGraph() {  }
+		OLGraph(vector<Point<TV>> points, vector<Edge<TA>> edges);
+	};
+
+	namespace Sort {
+		// 插入排序算法
+		template<class T>
+		void InsertSort(T *vec, int n);
+
+		// 折半插入排序
+		template<class T>
+		void BinaryInsertSort(T *vec, int n);
+
+		// 2-路插入排序
+		template<class T>
+		void TwoWayInsertSort(T *vec, T *dst, int n);
+
+		// 希尔排序
+		template<class T>
+		void ShellSort(T *vec, int left, int right);
+
+		// 冒泡排序
+		template<class T>
+		void BubbleSort(T *vec, int n);
+
+		// 快速排序
+		template<class T>
+		void QuickSort(T *vec, int left, int right);
+
+		// 选择排序
+		template<class T>
+		void SelectSort(T *vec, int n);
+	}
 }

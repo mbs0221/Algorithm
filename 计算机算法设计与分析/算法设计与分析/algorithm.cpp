@@ -13,25 +13,7 @@ namespace Exam2015 {
 	}
 
 	namespace Problem1 {
-		void ShellSort(int*a, int left, int right)
-		{
-			// 选取步长
-			for (int k = right / 2; k > 1; k /= 2) {
-				// 对于每一列
-				for (int i = 0; i < k; i++) {
-					// 插入排序
-					for (int j = k; j < right; j += k) {
-						int p = j - k;
-						int t = a[p];
-						while ((p >= left) && (a[p] > t)) {
-							a[p + k] = a[p];
-							p -= k;
-						}
-						a[p + k] = t;
-					}
-				}
-			}
-		}
+
 		class Polynomial {
 			Polynomial*child;
 		};
@@ -490,8 +472,8 @@ namespace Algorithm {
 		}
 	}
 
-
 	// 穿线二叉树
+
 	template<class T>
 	void ThreadBinaryTree<T>::Insert(ThreadBinaryTreeNode<T>* p, ThreadBinaryTreeNode<T>* r)
 	{
@@ -643,7 +625,7 @@ namespace Algorithm {
 			}
 			else {
 				pointer = aStack.top();
-				if (pointer->element == key) 
+				if (pointer->element == key)
 					return true;
 				pointer = pointer->right;
 				aStack.pop();
@@ -749,7 +731,42 @@ namespace Algorithm {
 		delete root;
 	}
 
-	// 森林
+	// 森林 - 左子右兄表示法
+
+	template<class T>
+	TreeNode<T>* Tree<T>::Convert(vector<DegreePost<T>> nodes)
+	{
+		TreeNode<T> *cur, *temp1, *temp2;
+		stack<TreeNode<T>*> aStack;
+		for (DegreePost<T> node : nodes) {
+			if (node.degree == 0) {
+				aStack.push(new TreeNode<T>(node.element));
+			}
+			else {
+				cur = new TreeNode<T>(node.element);
+				temp2 = aStack.top();
+				aStack.pop();
+				for (int j = 1; j < node.degree; j++) {
+					temp1 = aStack.top();
+					aStack->pop();
+					temp1->setSibling(temp2);
+					temp2 = temp1;
+				}
+				cur->setChild(temp2);
+				aStack.push(cur);
+			}
+		}
+		temp2 = aStack.top();
+		aStack.pop();
+		while (!aStack.empty()) {
+			cur = aStack.top();
+			aStack.pop();
+			cur->setSibling(temp2);
+			temp2 = cur;
+		}
+		return temp2;
+	}
+
 	template<class T>
 	TreeNode<T>* Tree<T>::Parent(TreeNode<T>* current)
 	{
@@ -919,7 +936,7 @@ namespace Algorithm {
 		heapArray[pos] = heapArray[--CurrentSize];
 		//最后元素替代被删元素，长-1	
 		if (heapArry[Parent(pos)] > heapArry[pos]))
-		SiftUp(pos);	//小于父结点，上升筛
+				SiftUp(pos);	//小于父结点，上升筛
 		else
 			SiftDown(pos);	//大于父向下筛(不是SiftDown(0)) return true;
 	}
@@ -1104,6 +1121,154 @@ namespace Algorithm {
 		}
 	}
 
+	// 十字链表
+
+	template<class TV, class TA>
+	OLGraph<TV, TA>::OLGraph(vector<Point<TV>> points, vector<Edge<TA>> edges)
+	{
+		// 添加所有节点
+		for (Point<TV> point : points) {
+			vertices.push_back(Vertex<TV, TA>(point.element));
+		}
+		for (Edge<TA> edge : edges) {
+			// 建立弧
+			Arc<TA> *arc = new Arc<TA>();
+			arc->head = edge.from;
+			arc->tail = edge.to;
+			// 插入节点
+			arc->hLink = vertices[edge.from]->first_in;
+			arc->tLink = vertices[edge.to]->first_out;
+			vertices[edge.from]->first_in = arc;
+			vertices[edge.to]->first_out = arc;
+		}
+	}
+
+	namespace Sort {
+
+		template<class T>
+		void InsertSort(T * vec, int n)
+		{
+		}
+
+		template<class T>
+		void BinaryInsertSort(T *vec, int n)
+		{
+			int i, j, low, high, mid, temp;
+			low = high = temp = 0;
+			for (i = 1; i < n; i++) {
+				low = 0;
+				high = i - 1;
+				temp = vec[i];
+				// low表示二分查找插入的位置
+				while (low < high) {
+					mid = (low + high) / 2;
+					if (vec[mid] > temp) {
+						high = mid - 1;
+					}
+					else {
+						low = mid + 1;
+					}
+				}
+				// 有序表中插入位置后的元素后移
+				for (j = i; j > low; j--) {
+					vec[j] = vec[j - 1];
+				}
+				vec[low] = temp;
+			}
+		}
+
+		template<class T>
+		void TwoWayInsertSort(T * vec, T * dst, int n)
+		{
+			int head, tail;
+			head = tail = 0;
+			dst[head] = vec[head];
+			for (int i = 1; i < n; i++) {
+				if (vec[i] < dst[head]) {
+					head = (head - 1 + n) % n;
+					dst[head] = vec[i];
+				}
+				else if (vec[i] > dst[tail]) {
+					tail = (tail + 1 + n) % n;
+					dst[tail] = vec[i];
+				}
+				else {
+					int k = (tail + 1 + n) % n; // 尾部
+					while (dst[(k - 1 + n) % n] > vec[i]) {
+						// 大的往后移动
+						dst[(k + n) % n] = dst[(k - 1 + n) % n];
+						k = (k - 1 + n) % n;
+					}
+					// 插入该值
+					dst[(k + n) % n] = vec[i];
+					// 改变tail的位置
+					tail = (tail + 1 + n) % n;
+				}
+			}
+			// 将排序记录复制到原来的顺序表中
+			for (int k = 0; k < n; k++) {
+				vec[k] = dst[(head + k) % n];
+			}
+		}
+
+		template<class T>
+		void ShellSort(T *vec, int left, int right)
+		{
+			// 选取步长
+			for (int k = right / 2; k > 1; k /= 2) {
+				// 对于每一列
+				for (int i = 0; i < k; i++) {
+					// 插入排序
+					for (int j = k; j < right; j += k) {
+						int p = j - k;
+						T t = vec[p];
+						while ((p >= left) && (vec[p] > t)) {
+							vec[p + k] = vec[p];
+							p -= k;
+						}
+						vec[p + k] = t;
+					}
+				}
+			}
+		}
+
+		template<class T>
+		void BubbleSort(T * vec, int n)
+		{
+			bool key = false;
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n - i; j++) {
+					if (vec[j] > vec[j + 1]) {
+						swap(&vec[j], &vec[j + 1);
+						key = true;
+					}
+				}
+				if (key == 0)
+					break;
+			}
+		}
+
+		template<class T>
+		void QuickSort(T * vec, int left, int right)
+		{
+		}
+
+		template<class T>
+		void SelectSort(T * vec, int n)
+		{
+			for (int i = 0; i < n - 1; i++) {
+				int min = i;
+				for (int j = i + 1; j < n; j++) {
+					if (vec[min] > vec[j]) {
+						min = j;
+					}
+				}
+				if (min != i) {
+					swap(&vec[i], &vec[min]);
+				}
+			}
+		}
+	}
 }
 
 void main() {
