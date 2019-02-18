@@ -43,10 +43,10 @@ namespace Algorithm {
 		SMatrix(int row, int col) :rowNum(row), colNum(col) {
 			rowhead = colhead = NULL;
 		}
-		void insertOLNode(int row, int col, T val);
-		T deleteOLNode(int row, int col);
-		T getElement(int row, int col);
-		SMatrix<T>& operator +(SMatrix<T> &a, SMatrix<T> &b);
+		void Insert(int row, int col, T val);
+		T Remove(int row, int col);
+		T Get(int row, int col);
+		SMatrix<T>& operator +(SMatrix<T> &b);
 	};
 
 #define MAX_SIZE 100
@@ -80,10 +80,17 @@ namespace Algorithm {
 		BinaryTreeNode<T> *left, *right;
 	public:
 		BinaryTreeNode(T element, BinaryTreeNode<T> *left, BinaryTreeNode<T> *right);
+		// 基本操作
 		bool isLeaf() { return left == NULL && right == NULL; }
 		T getValue() { return element; }
 		BinaryTreeNode<T>* getLeftChild() { return left; }
 		BinaryTreeNode<T>* getRightChild() { return right; }
+		// 比较
+		bool operator < (const BinaryTreeNode & B) { return element < B.element; }
+		bool operator <= (const BinaryTreeNode & B) { return element <= B.element; }
+		bool operator == (const BinaryTreeNode & B) { return element == B.element; }
+		bool operator >= (const BinaryTreeNode & B) { return element >= B.element; }
+		bool operator > (const BinaryTreeNode & B) { return element > B.element; }
 	};
 
 	enum Tag { LEFT, RIGHT };
@@ -99,7 +106,7 @@ namespace Algorithm {
 	private:
 		BinaryTreeNode<T> *root;
 	protected:
-		DeleteBinaryTree(BinaryTreeNode<T>* root);
+		void DeleteBinaryTree(BinaryTreeNode<T>* root);
 	public:
 		BinaryTree(const T& elem, BinaryTree<T>& leftTree, BinaryTree<T>& rightTree);
 		~BinaryTree();
@@ -109,14 +116,17 @@ namespace Algorithm {
 		BinaryTreeNode<T>* Parent(BinaryTreeNode<T>* current);
 		BinaryTreeNode<T>* LeftSibling(BinaryTreeNode<T>* current);
 		bool isEmpty() const;
+		// 增删查改
+		virtual void Insert(BinaryTreeNode<T> *node);
 		bool Compare(BinaryTreeNode<T> *root1, BinaryTreeNode<T> *root2);
 		bool RootPath(BinaryTreeNode<T> *root, BinaryTreeNode<T> *current);
 		void CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild);
-		void DepthOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
-		void PreOrderWithoutRecursion(BinaryTreeNode<T> *root, void（*Visit)(T element));
-		void InOrderWithoutRecursion(BinaryTreeNode<T> *root, void(*Visit)(T element));
-		void PostOrderWithoutRecursion(BinaryTreeNode<T> *root, void(*Visit)(T element));
-		void LevelOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
+		// 遍历
+		void DepthOrder(BinaryTreeNode<T> *root, void (*Visit)(T element));
+		void PreOrderWithoutRecursion(void (*Visit)(T element));
+		void InOrderWithoutRecursion(void (*Visit)(T element));
+		void PostOrderWithoutRecursion(void (*Visit)(T element));
+		void LevelOrder(void (*Visit)(T element));
 	};
 
 	// 穿线二叉树
@@ -139,11 +149,11 @@ namespace Algorithm {
 	public:
 		int PrintRange(BinaryTreeNode<T> *root, T min, T max);
 		int SmallCount(BinaryTreeNode<T> *root, T key);
-		int SmallCountWithoutRecursion(BinaryTreeNode<T> root*, T key);
+		int SmallCountWithoutRecursion(T key);
 		bool isBST(BinaryTreeNode<T> *root);
-		bool Search(BinaryTreeNode<T> *root, T key);
-		bool SearchWithoutRecursion(BinaryTreeNode<T> *root, T key);
-		void Insert(BinaryTreeNode<T> *root, BinaryTreeNode *node);
+		bool Search(T key);
+		bool SearchWithoutRecursion(T key);
+		virtual void Insert(BinaryTreeNode<T> *node);
 		void Delete(BinaryTreeNode<T> *node);
 		void DeleteNode(BinaryTreeNode<T> *root, T key);
 		void DeleteNodeEx(BinaryTreeNode<T> *root);
@@ -211,26 +221,26 @@ namespace Algorithm {
 		TreeNode<T>* Convert(vector<DegreePost<T>> nodes);
 		TreeNode<T>* Parent(TreeNode<T> *current);
 		void DestroyNodes(TreeNode<T> *root);
-		void DeletSubTree(TreeNode<T> *root);
+		void DeleteSubTree(TreeNode<T> *root);
 	};
 
 	// 最小堆ADT定义
 	template <class T>
 	class MinHeap {
 	private:
-		T* heapArray;		//存放堆数据的数组
+		T *heapArray;		//存放堆数据的数组
 		int CurrentSize;	//当前堆中元素数目
 		int MaxSize;		//堆所能容纳的最大元素数目
 		void BuildHeap();	//建堆
 	public:
 		MinHeap(const int n);//n最大元素数
 		~MinHeap() { delete[] heapArray; }; //析构函数
-		bool isEmpty();
-		bool isLeaf(int pos) const;		//如果是叶结点，返回true
-		bool isMinHeap();				// 是最小堆
 		int LeftChild(int pos) const; 	//返回左孩子位置
 		int RightChild(int pos) const; 	//返回右孩子位置
-		int Parent(int pos) const; 		// 返回父结点位置	
+		int Parent(int pos) const; 		// 返回父结点位置
+		bool isEmpty();
+		bool isLeaf(int pos) const;		//如果是叶结点，返回true
+		bool isMinHeap();				// 是最小堆	
 		bool Remove(int pos, T& node); 	// 删除给定下标的元素
 		bool Insert(const T& newNode);	//向堆中插入新元素
 		T&  RemoveMin(); 				//从堆顶删除最小值
@@ -238,23 +248,23 @@ namespace Algorithm {
 		void SiftDown(int left);		//筛选法函数，参数left表示开始处理的数组下标
 	};
 
-	// HuffmanTreeNode类继承自BinaryTreeNode类
+	// HuffmanTreeNode类
+
 	template<class T>
 	class HuffmanTreeNode : BinaryTreeNode<T> {
 
 	};
 
-	// Huffman树的类定义[代码5.12]
+	// Huffman树
 	template <class T>
 	class HuffmanTree : BinaryTree<T> {
 	private:
-		HuffmanTreeNode<T>* root; //Huffman树的树根
+		HuffmanTreeNode<T>* root;
 		void MergeTree(HuffmanTreeNode<T> &ht1, HuffmanTreeNode<T> &ht2, HuffmanTreeNode<T>* parent);
-		//把ht1和ht2为根的子树合并成一棵以parent为根的二叉树
-		void DeleteTree(HuffmanTreeNode<T>* root);//删
+		void DeleteTree(HuffmanTreeNode<T>* root);
 	public:
-		HuffmanTree(T weight[], int n);//weight存权值数组;n数组长
-		virtual ~HuffmanTree() { DeleteTree(root); } //析构函数
+		HuffmanTree(T weight[], int n);
+		virtual ~HuffmanTree() { DeleteTree(root); }
 	};
 
 	// Trie字典树
@@ -298,8 +308,8 @@ namespace Algorithm {
 	template<class KEY, class COLOR>
 	class RBTree {
 		RBNode<KEY, COLOR> *root;
-		void insert(RBNode<KEY, COLOR> *root, const KEY & key);
-		void remove(const KEY & key);
+		void Insert(RBNode<KEY, COLOR> *root, const KEY & key);
+		void Remove(const KEY & key);
 		void RedToBlack(RBNode<KEY, COLOR> *root);
 	};
 

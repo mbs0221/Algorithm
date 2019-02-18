@@ -4,14 +4,6 @@ namespace Exam2015 {
 
 	using namespace std;
 
-	template<class T>
-	void PrintArray(T a[], int n) {
-		for (int i = 0; i < n; i++) {
-			std::cout << std::setw(4) << a[i];
-		}
-		std::cout << std::endl;
-	}
-
 	namespace Problem1 {
 
 		class Polynomial {
@@ -91,22 +83,13 @@ namespace Exam2015 {
 			return -1;
 	}
 
-	void test_2_8()
-	{
-		int a[] = { 10,9,8,7,6,5,4,3,2,1,0 };
-		cout << "2.8 希尔排序" << endl;
-		Problem1::ShellSort(a, 0, 10);
-		std::cout << "a:" << std::endl;
-		PrintArray(a, 11);
-		getchar();
-	}
 }
 
 namespace Algorithm {
 
 	// 稀疏矩阵 - 十字链表
 	template<class T>
-	void SMatrix<T>::insertOLNode(int row, int col, T val)
+	void SMatrix<T>::Insert(int row, int col, T val)
 	{
 		OLNode<T>*p, *q, *r, *u, *v;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
@@ -137,7 +120,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	T SMatrix<T>::deleteOLNode(int row, int col)
+	T SMatrix<T>::Remove(int row, int col)
 	{
 		OLNode<T>*p, *q, *r, *u, *v;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
@@ -172,7 +155,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	T SMatrix<T>::getElement(int row, int col)
+	T SMatrix<T>::Get(int row, int col)
 	{
 		OLNode<T>*p, *q;
 		if (row<0 || row>rowNum || col<0 || col>colNum)
@@ -191,11 +174,10 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	SMatrix<T>& SMatrix<T>::operator+(SMatrix<T>& a, SMatrix<T>& b)
+	SMatrix<T>& SMatrix<T>::operator+(SMatrix<T>& b)
 	{
-		SMatrix<T> c;
-		OLNode<T> *pa, *pb;
 		// TODO: 在此处插入 return 语句
+		return SMatrix<T>(rowNum, colNum);
 	}
 
 	template<class T>
@@ -231,7 +213,7 @@ namespace Algorithm {
 
 	// 二叉树节点类
 	template<class T>
-	BinaryTreeNode<T>::BinaryTreeNode(T element, BinaryTreeNode<T>* left, BinaryTreeNode<T>* right)
+	BinaryTreeNode<T>::BinaryTreeNode(T element, BinaryTreeNode<T> *left, BinaryTreeNode<T> *right)
 	{
 		this->element = element;
 		this->left = left;
@@ -240,7 +222,7 @@ namespace Algorithm {
 
 	// 二叉树
 	template<class T>
-	BinaryTree<T>::DeleteBinaryTree(BinaryTreeNode<T>* root)
+	void BinaryTree<T>::DeleteBinaryTree(BinaryTreeNode<T> *root)
 	{
 		if (root) {
 			DeleteBinaryTree(root->left);
@@ -263,7 +245,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	int BinaryTree<T>::LeafNumber(BinaryTreeNode<T>* root)
+	int BinaryTree<T>::LeafNumber(BinaryTreeNode<T> *root)
 	{
 		if (root == NULL) return 0;
 		if (root->isLeaf()) return 1;
@@ -271,7 +253,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	int BinaryTree<T>::GetHeight(BinaryTreeNode<T>* root)
+	int BinaryTree<T>::GetHeight(BinaryTreeNode<T> *root)
 	{
 		if (root == NULL) return 0;
 		int h1 = GetHeight(root->left) + 1;
@@ -280,7 +262,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	int BinaryTree<T>::Exchange(BinaryTreeNode<T>* root)
+	int BinaryTree<T>::Exchange(BinaryTreeNode<T> *root)
 	{
 		BinaryTreeNode<T>*temp;
 		if (root != NULL) {
@@ -296,7 +278,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	BinaryTreeNode<T>* BinaryTree<T>::Parent(BinaryTreeNode<T>* current)
+	BinaryTreeNode<T> *BinaryTree<T>::Parent(BinaryTreeNode<T> *current)
 	{
 		//求current双亲返回
 		using std::stack;
@@ -319,13 +301,13 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	BinaryTreeNode<T>* BinaryTree<T>::LeftSibling(BinaryTreeNode<T>* current)
+	BinaryTreeNode<T> *BinaryTree<T>::LeftSibling(BinaryTreeNode<T> *current)
 	{
 		//返回current结点的左兄弟
 		if (current) //current不为空
 		{
 			//返回current结点的父结点
-			BinaryTreeNode<T>* temp = Parent(current);
+			BinaryTreeNode<T> *temp = Parent(current);
 			//如果父结点为空，或者current没有左兄弟
 			if ((temp == NULL) || current == temp->left)
 				return  NULL;
@@ -342,7 +324,13 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	bool BinaryTree<T>::Compare(BinaryTreeNode<T>* root1, BinaryTreeNode<T>* root2)
+	void BinaryTree<T>::Insert(BinaryTreeNode<T> *node)
+	{
+		return;
+	}
+
+	template<class T>
+	bool BinaryTree<T>::Compare(BinaryTreeNode<T> *root1, BinaryTreeNode<T> *root2)
 	{
 		if (root1 == NULL&&root2 == NULL)
 			return true;
@@ -355,7 +343,18 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinaryTree<T>::DepthOrder(BinaryTreeNode<T>* root, void(*Visit)(T element))
+	bool BinaryTree<T>::RootPath(BinaryTreeNode<T> *root, BinaryTreeNode<T> *current)
+	{
+		return false;
+	}
+
+	template<class T>
+	void BinaryTree<T>::CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild)
+	{
+	}
+
+	template<class T>
+	void BinaryTree<T>::DepthOrder(BinaryTreeNode<T> *root, void (*Visit)(T element))
 	{
 		if (!root) {
 			(*Visit)(root->element);
@@ -365,11 +364,11 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinaryTree<T>::PreOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
+	void BinaryTree<T>::PreOrderWithoutRecursion(void (*Visit)(T element))
 	{
 		using std::stack;
 		stack<BinaryTreeNode<T>*> aStack;
-		BinaryTreeNode<T>* p = root;
+		BinaryTreeNode<T> *p = root;
 		aStack.push(NULL);
 		while (p) {
 			// 先访问当前节点
@@ -386,12 +385,12 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinaryTree<T>::InOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
+	void BinaryTree<T>::InOrderWithoutRecursion(void (*Visit)(T element))
 	{
 		// 中序非递归周游二叉树
 		using std::stack;
 		stack<BinaryTreeNode<T>*> aStack;
-		BinaryTreeNode<T>* p = root;
+		BinaryTreeNode<T> *p = root;
 		while (!aStack.empty() || p) {
 			if (p) {
 				// 向左下走到底，不访问只入栈
@@ -408,7 +407,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinaryTree<T>::PostOrderWithoutRecursion(BinaryTreeNode<T>* root, void(*Visit)(T element))
+	void BinaryTree<T>::PostOrderWithoutRecursion(void (*Visit)(T element))
 	{
 		// 后序非递归周游二叉树
 		using std::stack;
@@ -447,7 +446,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinaryTree<T>::LevelOrder(BinaryTreeNode<T>* root, void(*Visit)(T element))
+	void BinaryTree<T>::LevelOrder(void (*Visit)(T element))
 	{
 		//广度优先周游二叉树
 		using std::queue;
@@ -468,7 +467,7 @@ namespace Algorithm {
 	// 穿线二叉树
 
 	template<class T>
-	void ThreadBinaryTree<T>::Insert(ThreadBinaryTreeNode<T>* p, ThreadBinaryTreeNode<T>* r)
+	void ThreadBinaryTree<T>::Insert(ThreadBinaryTreeNode<T> *p, ThreadBinaryTreeNode<T> *r)
 	{
 		// r为待插入的新节点，p指向穿线二叉树的一个节点
 		ThreadBinaryTreeNode<T> *temp = NULL;
@@ -530,7 +529,7 @@ namespace Algorithm {
 	// 二叉搜索树
 
 	template<class T>
-	int BinarySearchTree<T>::PrintRange(BinaryTreeNode<T>* root, T min, T max)
+	int BinarySearchTree<T>::PrintRange(BinaryTreeNode<T> *root, T min, T max)
 	{
 		if (root->element < min)
 			return 0;
@@ -558,13 +557,13 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	int BinarySearchTree<T>::SmallCountWithoutRecursion(BinaryTreeNode<T> *root, T key)
+	int BinarySearchTree<T>::SmallCountWithoutRecursion(T key)
 	{
 		// 非递归中序遍历二叉树
 		int n = 0;
 		using std::stack;
 		stack<BinaryTreeNode<T>*> aStack;
-		BinaryTreeNode<T>* pointer = root;
+		BinaryTreeNode<T> *pointer = root;
 		while (aStack.empty() || pointer) {
 			if (pointer) {
 				aStack.push(pointer);
@@ -584,7 +583,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	bool BinarySearchTree<T>::isBST(BinaryTreeNode<T>* root)
+	bool BinarySearchTree<T>::isBST(BinaryTreeNode<T> *root)
 	{
 		if (root == NULL)
 			return true;
@@ -596,7 +595,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	bool BinarySearchTree<T>::Search(BinaryTreeNode<T>* root, T key)
+	bool BinarySearchTree<T>::Search(T key)
 	{
 		if (root == NULL)
 			return false;
@@ -606,11 +605,11 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	bool BinarySearchTree<T>::SearchWithoutRecursion(BinaryTreeNode<T>* root, T key)
+	bool BinarySearchTree<T>::SearchWithoutRecursion(T key)
 	{
 		using std::stack;
 		stack<BinaryTreeNode<T>> aStack;
-		BinaryTreeNode<T>* pointer == root;
+		BinaryTreeNode<T> *pointer == root;
 		while (!aStack.empty() || pointer) {
 			if (pointer) {
 				aStack.push(pointer);
@@ -628,12 +627,12 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinarySearchTree<T>::Insert(BinaryTreeNode<T>* root, BinaryTreeNode<T>* node)
+	void BinarySearchTree<T>::Insert(BinaryTreeNode<T> *node)
 	{
-		BinaryTreeNode<T>* p = NULL;
+		BinaryTreeNode<T> *p = NULL;
 		if (root == NULL) {
 			//新结点作根
-			Initialize(node);
+			root = node;
 			return;
 		}
 		else
@@ -658,19 +657,20 @@ namespace Algorithm {
 					p->right = node;
 					return;
 				}
-				else   p = p->getRightChild();
+				else
+					p = p->getRightChild();
 			}
 		}
 	}
 
 	template<class T>
-	void BinarySearchTree<T>::Delete(BinaryTreeNode<T>* p)
+	void BinarySearchTree<T>::Delete(BinaryTreeNode<T> *p)
 	{
 		if (p == NULL)
 			return;
-		BinaryTreeNode<T>* s;
-		BinaryTreeNode<T>* tempparent = NULL;
-		BinaryTreeNode<T>* parent = GetParent(root, p);
+		BinaryTreeNode<T> *s;
+		BinaryTreeNode<T> *tempparent = NULL;
+		BinaryTreeNode<T> *parent = GetParent(root, p);
 		if (p->left == NULL) {
 			// 无左子树
 			s = p->right;
@@ -702,7 +702,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinarySearchTree<T>::DeleteNode(BinaryTreeNode<T>* root, T key)
+	void BinarySearchTree<T>::DeleteNode(BinaryTreeNode<T> *root, T key)
 	{
 		if (root == NULL)
 			return;
@@ -715,7 +715,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void BinarySearchTree<T>::DeleteNodeEx(BinaryTreeNode<T>* root)
+	void BinarySearchTree<T>::DeleteNodeEx(BinaryTreeNode<T> *root)
 	{
 		if (root == NULL)
 			return;
@@ -727,7 +727,7 @@ namespace Algorithm {
 	// 森林 - 左子右兄表示法
 
 	template<class T>
-	TreeNode<T>* Tree<T>::Convert(vector<DegreePost<T>> nodes)
+	TreeNode<T> *Tree<T>::Convert(vector<DegreePost<T>> nodes)
 	{
 		TreeNode<T> *cur, *temp1, *temp2;
 		stack<TreeNode<T>*> aStack;
@@ -761,7 +761,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	TreeNode<T>* Tree<T>::Parent(TreeNode<T>* current)
+	TreeNode<T> *Tree<T>::Parent(TreeNode<T> *current)
 	{
 		using std::queue;
 		queue<TreeNode<T>*> aQueue;
@@ -795,7 +795,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void Tree<T>::DestroyNodes(TreeNode<T>* root)
+	void Tree<T>::DestroyNodes(TreeNode<T> *root)
 	{
 		if (root != NULL) {
 			DestroyNodes(root->LeftMostChild());
@@ -805,7 +805,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void Tree<T>::DeletSubTree(TreeNode<T>* subroot)
+	void Tree<T>::DeleteSubTree(TreeNode<T> *subroot)
 	{
 		TreeNode<T>*pointer;
 		// 空树不必删
@@ -820,7 +820,7 @@ namespace Algorithm {
 			}
 			else {
 				// 删后面树:从root起找被删树前驱(左兄)
-				TreeNode<T>* r = root;
+				TreeNode<T> *r = root;
 				while (r->RightSibling() != subroot) {
 					r = r->RightSibling();
 				}
@@ -844,15 +844,6 @@ namespace Algorithm {
 		subroot->setSibling(NULL);
 		//删树
 		DestroyNodes(subroot);
-	}
-
-	// 树 - 双标记表示法
-	template<class T>
-	DualTagTree<T>::DualTagTree(DualTagTreeNode<T>* nodeArray, int count)
-	{
-		using std::stack;
-		stack<DualTagTreeNode<T>*> aStack;
-
 	}
 
 	// 最小堆
@@ -895,7 +886,7 @@ namespace Algorithm {
 				if (!((heapArray[i] <= heapArray[LeftChild(i)]) && (heapArray[i] <= heapArray[RightChild(i)])))
 					return false;
 			}
-			else if (!(heapArray[i] <= heapArray[LeftChild(i))
+			else if (!(heapArray[i] <= heapArray[LeftChild(i)]))
 				return false;
 		}
 		return true;
@@ -925,13 +916,13 @@ namespace Algorithm {
 		// 删除给定下标的元素
 		if ((pos < 0) || (pos >= CurrentSize))
 			return false;
-		node = heapArray[pos]; //被删元素由node返回
+		node = heapArray[pos];
 		heapArray[pos] = heapArray[--CurrentSize];
-		//最后元素替代被删元素，长-1	
-		if (heapArry[Parent(pos)] > heapArry[pos]))
-				SiftUp(pos);	//小于父结点，上升筛
+		if (heapArray[Parent(pos)] > heapArray[pos])
+			SiftUp(pos);
 		else
-			SiftDown(pos);	//大于父向下筛(不是SiftDown(0)) return true;
+			SiftDown(pos);
+		return true;
 	}
 
 	template<class T>
@@ -993,7 +984,7 @@ namespace Algorithm {
 
 	// Huffman树
 	template<class T>
-	void HuffmanTree<T>::MergeTree(HuffmanTreeNode<T>& ht1, HuffmanTreeNode<T>& ht2, HuffmanTreeNode<T>* parent)
+	void HuffmanTree<T>::MergeTree(HuffmanTreeNode<T>& ht1, HuffmanTreeNode<T>& ht2, HuffmanTreeNode<T> *parent)
 	{
 		parent->element = ht1.element + ht2->element;
 		parent->left = &ht1;
@@ -1001,7 +992,7 @@ namespace Algorithm {
 	}
 
 	template<class T>
-	void HuffmanTree<T>::DeleteTree(HuffmanTreeNode<T>* root)
+	void HuffmanTree<T>::DeleteTree(HuffmanTreeNode<T> *root)
 	{
 		DeleteBinaryTree(root);
 	}
@@ -1013,8 +1004,8 @@ namespace Algorithm {
 		//定义最小值堆
 		MinHeap<HuffmanTreeNode<T>> heap(n);
 		//parent：指向对象的指针， firstchild, secondchild ：2个对象
-		HuffmanTreeNode<T>* parent, firstchild, secondchild;
-		HuffmanTreeNode<T>* NodeList = new HuffmanTreeNode<T>[n];
+		HuffmanTreeNode<T> *parent, firstchild, secondchild;
+		HuffmanTreeNode<T> *NodeList = new HuffmanTreeNode<T>[n];
 		for (int i = 0; i < n; i++) {		//初始化
 			NodeList[i].element = weight[i]; //权值
 			NodeList[i].parent = NodeList[i].left = NodeList[i].right = NULL;
@@ -1059,7 +1050,7 @@ namespace Algorithm {
 		root->fail = NULL;
 		queue<TrieNode*> q;
 		q.push(root);
-		while (!q.empty()) { 
+		while (!q.empty()) {
 			TrieNode<T> *temp = q.front();
 			q.pop();
 			TrieNode<T> *p = NULL;
@@ -1075,7 +1066,7 @@ namespace Algorithm {
 						// 是子节点
 						p = temp->fail;
 						while (p != NULL) {
-							if(p->next[i]!=NULL)
+							if (p->next[i] != NULL)
 							{
 								// 求child的Fail指针时，首先我们要找到其father的Fail指针所指向的节点, 
 								// 假如是t的话，我们就要看t的孩子中有没有和child节点所表示的字母相同的节点，
@@ -1135,7 +1126,7 @@ namespace Algorithm {
 	}
 
 	template<class KEY, class COLOR>
-	void RBTree<KEY, COLOR>::insert(RBNode<KEY, COLOR>*root, const KEY & key)
+	void RBTree<KEY, COLOR>::Insert(RBNode<KEY, COLOR>*root, const KEY & key)
 	{
 		if (root->isLeaf()) {
 			root->key = key;
@@ -1146,10 +1137,10 @@ namespace Algorithm {
 			}
 		}
 		else if (key < root->key) {
-			insert(root->left, key);
+			Insert(root->left, key);
 		}
 		else if (key > root->key) {
-			insert(root->right, key);
+			Insert(root->right, key);
 		}
 		else {
 			throw exception();
@@ -1315,13 +1306,13 @@ namespace Algorithm {
 		}
 
 		template<class T>
-		void BubbleSort(T * vec, int n)
+		void BubbleSort(T *vec, int n)
 		{
 			bool key = false;
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n - i; j++) {
 					if (vec[j] > vec[j + 1]) {
-						swap(&vec[j], &vec[j + 1);
+						swap(&vec[j], &vec[j + 1]);
 						key = true;
 					}
 				}
@@ -1350,9 +1341,56 @@ namespace Algorithm {
 				}
 			}
 		}
+
+		template<class T>
+		void PrintArray(T a[], int n) {
+			for (int i = 0; i < n; i++) {
+				std::cout << std::setw(4) << a[i];
+			}
+			std::cout << std::endl;
+		}
+
+		void test_2_8()
+		{
+			int a[] = { 10,9,8,7,6,5,4,3,2,1,0 };
+			cout << "2.8 希尔排序" << endl;
+			ShellSort(a, 0, 10);
+			std::cout << "a:" << std::endl;
+			PrintArray(a, 11);
+			getchar();
+		}
+	}
+
+	namespace String {
+		void GetNextVal(char *p, int next[]) {
+			int len = strlen(p);
+			next[0] = -1;
+			int i = -1;
+			int j = 0;
+			while (j < len) {
+				if (i == -1 || p[i] == p[j]) {
+					i++, j++;
+					if (p[i] != p[j])
+						next[j] = i;
+					else
+						next[j] = next[i];
+				}
+				else {
+					i = next[i];
+				}
+				printf("%3d --- %3d --- %3d\n", i, j, next[j]);
+			}
+		}
+		void test() {
+			char p[] = "abab";
+			int next[4];
+			GetNextVal(p, next);
+			getchar();
+		}
 	}
 }
 
 void main() {
-	Exam2015::test_2_8();
+	//Exam2015::test_2_8();
+	Algorithm::String::test();
 }
