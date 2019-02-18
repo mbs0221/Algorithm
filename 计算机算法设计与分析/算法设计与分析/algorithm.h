@@ -6,6 +6,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <list>
 
 using namespace std;
 
@@ -295,39 +296,50 @@ namespace Algorithm {
 	};
 
 	// 红黑树节点
-#define RED 0
-#define BLACK 1
+	enum COLOR { RED, BLACK };
 
-	template<class KEY, class COLOR>
-	class RBNode {
-	public:
-		KEY key;
+	template<class T>
+	class RBNode : BinaryTreeNode<T> {
+		T key;
 		COLOR color;
-		RBNode *left;
-		RBNode *right;
-		RBNode *parent;
-		RBNode(RBNode *parent = NULL, RBNode *left = NULL, RBNode *right = NULL, KEY key = NULL, COLOR color = RED);
+		RBNode<T> *parent;
+	public:
+		RBNode(RBNode<T> *parent = NULL, RBNode<T> *left = NULL, RBNode<T> *right = NULL, T key = NULL, COLOR color = RED);
 		bool isLeaf() { return key = NULL; }
 	};
 
 	// 红黑树
-	template<class KEY, class COLOR>
-	class RBTree {
-		RBNode<KEY, COLOR> *root;
-		void Insert(RBNode<KEY, COLOR> *root, const KEY & key);
-		void Remove(const KEY & key);
-		void RedToBlack(RBNode<KEY, COLOR> *root);
+	template<class T>
+	class RBTree :BinarySearchTree<T> {
+	public:
+		void Insert(const T & key);
+		void Remove(const T & key);
+		void Find(const T & key);
+		void RedToBlack(RBNode<T> *root);
 	};
 
 	// 邻接多重表
-	class AdjacencyMultiListNode {
+	template<class T>
+	class AMEdge {
 		int u, v; // 顶点u，v
-		int u_next, v_next; // 与u，v关联的下一条边
-		int weight; // 权重
+		AMEdge<T> *ulink, *vlink;
+		T element;
 	};
 
-	class AdjacencyMultiList{
-		vector<AdjacencyMultiListNode> list;
+	template<class TV, class TE>
+	class AMVertex {
+		TV element;
+		AMEdge<TE> *head;
+	};
+
+	template<class TV, class TE>
+	class AMGraph{
+		vector<AMVertex<TV, TE>*> vec;
+	public:
+		void AddVertex(AMVertex<TV, TE> *v);
+		void AddEdge(AMEdge<TE> *e);
+		void RemoveVertex(int v);
+		void RemoveEdge(int u, v);
 	};
 
 	// 十字链表

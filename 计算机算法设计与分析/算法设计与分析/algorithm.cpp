@@ -1216,8 +1216,9 @@ namespace Algorithm {
 	}
 
 	// 红黑树
-	template<class KEY, class COLOR>
-	RBNode<KEY, COLOR>::RBNode(RBNode* parent, RBNode* left, RBNode* right, KEY key, COLOR color)
+
+	template<class T>
+	RBNode<T>::RBNode(RBNode<T> *parent, RBNode<T> *left, RBNode<T> *right, T key, COLOR color)
 	{
 		this->key = key;
 		this->color = color;
@@ -1226,35 +1227,44 @@ namespace Algorithm {
 		this->right = right;
 	}
 
-	template<class KEY, class COLOR>
-	void RBTree<KEY, COLOR>::Insert(RBNode<KEY, COLOR>*root, const KEY & key)
+	template<class T>
+	void RBTree<T>::Insert(const T & key)
 	{
-		if (root->isLeaf()) {
-			root->key = key;
-			root->left = new RBNode<KEY, COLOR>(root);
-			root->right = new RBNode<KEY, COLOR>(root);
-			if (root->parent->color == RED) {
-				RedToBlack(root);
-			}
-		}
-		else if (key < root->key) {
-			Insert(root->left, key);
-		}
-		else if (key > root->key) {
-			Insert(root->right, key);
-		}
-		else {
-			throw exception();
-		}
+		//if (root->isLeaf()) {
+		//	root->key = key;
+		//	root->left = new RBNode<T>(root);
+		//	root->right = new RBNode<T>(root);
+		//	if (root->parent->color == RED) {
+		//		RedToBlack(root);
+		//	}
+		//}
+		//else if (key < root->key) {
+		//	Insert(root->left, key);
+		//}
+		//else if (key > root->key) {
+		//	Insert(root->right, key);
+		//}
+		//else {
+		//	throw exception();
+		//}
 	}
 
-	template<class KEY, class COLOR>
-	void RBTree<KEY, COLOR>::RedToBlack(RBNode<KEY, COLOR>* root)
+	template<class T>
+	void RBTree<T>::Remove(const T & key)
 	{
-		RBNode<KEY, COLOR>*parent = root->parent;
+	}
+
+	template<class T>
+	void RBTree<T>::Find(const T & key)
+	{
+	}
+
+	template<class T>
+	void RBTree<T>::RedToBlack(RBNode<T> *root)
+	{
+		RBNode<T>*parent = root->parent;
 		if (parent->left->color == parent->right->color) {
-			// 叔父同为红色
-			// 父辈祖辈换色
+			// 叔父同为红色 父辈祖辈换色
 			parent->color = RED;
 			parent->left->color = BLACK;
 			parent->right->color = BLACK;
@@ -1265,8 +1275,7 @@ namespace Algorithm {
 		else {
 			// 叔父不同色，分左旋或右旋
 			if (root->parent->left) {
-				// 父节点是左子节点，则右旋
-				// 如果新增节点是右子节点，则调整为左子节点
+				// 父节点是左子节点，则右旋 如果新增节点是右子节点，则调整为左子节点
 				if (root->left->key == NULL) {
 					// 借助空节点作为temp节点
 					root->left->key = root->key;
@@ -1274,7 +1283,7 @@ namespace Algorithm {
 					root->right->key = root->left->key;
 					root->left->key = NULL;
 					// 左子和右子交换即可
-					RBNode<KEY, COLOR>*temp = root->left;
+					RBNode<T>*temp = root->left;
 					root->left = root->right;
 					root->right = temp;
 					temp = NULL;
@@ -1293,6 +1302,47 @@ namespace Algorithm {
 				// 父节点是右子节点，则左旋
 			}
 		}
+	}
+
+	// 邻接多重表
+
+	template<class TV, class TE>
+	void AMGraph<TV, TE>::AddVertex(AMVertex<TV, TE> *v)
+	{
+		vec.push_back(v);
+	}
+
+	template<class TV, class TE>
+	void AMGraph<TV, TE>::AddEdge(AMEdge<TE> *e)
+	{
+		// 添加u指向的边
+		AMVertex<TV, TE> *u = vec.at(e->u);
+		if (u->head = NULL)
+			u->head = e;
+		else {
+			AMEdge<TE> *t = u->head;
+			while (t->ulink != NULL) {
+				t = t->ulink;
+			}
+			t->ulink = e;
+		}
+		// 添加到达v的边
+		AMVertex<TV, TE> *v = vec.at(e->v);
+		if (v->head == NULL)
+			v->head = e;
+		else {
+			v->head->v
+		}
+	}
+
+	template<class TV, class TE>
+	void AMGraph<TV, TE>::RemoveVertex(int v)
+	{
+	}
+
+	template<class TV, class TE>
+	void AMGraph<TV, TE>::RemoveEdge(int u, v)
+	{
 	}
 
 	// 十字链表
