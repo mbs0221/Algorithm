@@ -131,15 +131,21 @@ namespace Algorithm {
 
 	// 穿线二叉树
 	template<class T>
-	class ThreadBinaryTreeNode :BinaryTreeNode<T> {
+	class ThreadBinaryTreeNode : BinaryTreeNode<T> {
 		bool ltag, rtag;
 	};
 
 	template<class T>
 	class ThreadBinaryTree : BinaryTree<T> {
 	public:
-		void Insert(ThreadBinaryTreeNode<T>* p, ThreadBinaryTreeNode<T> *r);
-		void PostOrder(ThreadBinaryTreeNode<T> *root, void(*Visit)(ThreadBinaryTreeNode<T> *node));
+		void Insert(ThreadBinaryTreeNode<T> *p, ThreadBinaryTreeNode<T> *r);
+		// 线索化
+		void PreOrderThreading();
+		void InOrderThreading();
+		// 遍历
+		void PreOrderThread(void (*Visit)(T elem));
+		void InOrderThread(void(*Visit)(T elem));
+		void PostOrder(ThreadBinaryTreeNode<T> *root, void (*Visit)(ThreadBinaryTreeNode<T> *node));
 		ThreadBinaryTreeNode<T> FindPreInPostOrder(ThreadBinaryTreeNode<T> *pointer);
 	};
 

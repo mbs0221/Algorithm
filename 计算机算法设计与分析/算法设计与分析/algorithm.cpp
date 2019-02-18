@@ -464,7 +464,7 @@ namespace Algorithm {
 		}
 	}
 
-	// 穿线二叉树
+	// 线索二叉树
 
 	template<class T>
 	void ThreadBinaryTree<T>::Insert(ThreadBinaryTreeNode<T> *p, ThreadBinaryTreeNode<T> *r)
@@ -498,6 +498,107 @@ namespace Algorithm {
 		// 建立新节点右线索
 		r->rtag = true;
 		r->right = p;
+	}
+
+	template<class T>
+	void ThreadBinaryTree<T>::PreOrderThreading()
+	{
+		stack<ThreadBinaryTreeNode<T>*> s;
+		ThreadBinaryTreeNode<T> *last = NULL, *p;
+		if (root != NULL) {
+			s.push(root);
+			while (!s.empty()) {
+				p = s.top();
+				s.pop();
+				// 线索化左子节点
+				if (p->left != NULL)
+					p->ltag = false;
+				else 
+				{
+					p->ltag = true; p->left = last; 
+				}
+				// 线索化右子节点
+				if (last != NULL)
+					if (last->right != NULL)
+						last->rtag = false;
+					else
+					{
+						last->rtag = true, last->right = p;
+					}
+				last = p;
+				// 先序遍历
+				if (p->right != NULL)
+					s.push(p->right);
+				if (p->left != NULL)
+					s.push(p->left);
+			}
+			last->rtag = true;
+		}
+	}
+
+	template<class T>
+	void ThreadBinaryTree<T>::InOrderThreading()
+	{
+		stack<ThreadBinaryTreeNode<T>*> s;
+		ThreadBinaryTreeNode<T> *last, *p = root;
+		while (p != NULL || !s.empty()) {
+			if (p != NULL) {
+				s.push(p);
+				p = p->left;
+			}
+			else {
+				p = s.top();
+				s.pop();
+				// 当前节点的左线索
+				if (p->left != NULL) p->ltag = false;
+				else { p->ltag = true; p->left = last; }
+				// 上一个节点的右线索
+				if (last != NULL)
+					if (last->right != NULL) last->rtag = false;
+					else { last->rtag = true; last->right = p; }
+				// 记录当前节点
+				last = p;
+				// 访问右节点
+				p = p->right;
+			}
+			last->rtag = true; // 最后一个节点是叶子节点
+		}
+	}
+
+	template<class T>
+	void ThreadBinaryTree<T>::PreOrderThread(void(*Visit)(T elem))
+	{
+		// 先序线索二叉树的先序遍历
+		ThreadBinaryTreeNode<T> *p = root;
+		while (p != NULL) {
+			Visit(p->element);
+			if (p->ltag == false)
+				p = p->left;
+			else
+				p = p->right;
+		}
+	}
+
+	template<class T>
+	void ThreadBinaryTree<T>::InOrderThread(void(*Visit)(T elem))
+	{
+		ThreadBinaryTreeNode<T> *p;
+		if (root != NULL) {
+			p = root;
+			while (p->ltag == false)
+				p = p->left; // 寻找最左的节点
+			while (p != NULL) {
+				Visit(p->element);
+				if (p->rtag = true)
+					p = p->right; // 通过右线索找到后继
+				else {
+					// 否则右子树的最左节点为后继
+					p = p->right;
+					while (p->ltag == 0)
+						p = p->left;
+				}
+			}
+		}
 	}
 
 	template<class T>
