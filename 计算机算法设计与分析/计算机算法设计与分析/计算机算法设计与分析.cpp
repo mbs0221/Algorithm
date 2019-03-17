@@ -4,47 +4,48 @@ using namespace std;
 
 namespace Algorithm {
 
-	int ** InitMatrix(int rows, int cols) {
-		int **mat = new int*[rows];
-		for (int i = 0; i < rows; i++) {
-			mat[i] = new int[cols];
-			for (int j = 0; j < cols; j++) {
-				mat[i][j] = 0;
-			}
-		}
-		return mat;
-	}
-	
-	/**
-	* 初始化矩阵
-	* mat 矩阵
-	* size 大小
-	*/
-	int **InitMatrix(int size) {
-		int **mat = new int*[size];
-		for (int i = 0; i < size; i++) {
-			mat[i] = new int[size];
-			for (int j = 0; j < size; j++) {
+	template<class T>
+	Matrix<T>::Matrix(int size)
+	{
+		row = col = size;
+		mat = new T*[row];
+		for (int i = 0; i < row; i++) {
+			mat[i] = new T[col];
+			for (int j = 0; j < col; j++) {
 				mat[i][j] = -1;
 			}
 		}
-		return mat;
+	}
+	
+	template<class T>
+	Matrix<T>::Matrix(int r, int c)
+	{
+		row = r, col = c;
+		mat = new T*[row];
+		for (int i = 0; i < row; i++) {
+			mat[i] = new T[col];
+			for (int j = 0; j < col; j++) {
+				mat[i][j] = -1;
+			}
+		}
 	}
 
-	/**
-	* 打印矩阵
-	* mat 矩阵
-	* size 大小
-	*/
-	void PrintMatrix(int **mat, int size) {
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				std::cout << std::setw(4) << mat[i][j];
+	template<class T>
+	T * Matrix<T>::operator[](int i)
+	{
+		return mat[i];
+	}
+
+	template<class T>
+	void Matrix<T>::Print() {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				std::cout << std::setw(8) << mat[i][j];
 			}
 			std::cout << std::endl;
 		}
 	}
-	
+
 	template<class T>
 	void PrintArray(T a[], int n) {
 		for (int i = 0; i < n; i++) {
@@ -54,98 +55,96 @@ namespace Algorithm {
 	}
 
 	// 第二章 分治算法
+
 	namespace DivideAndConquer {
 
 		// 2.6 棋盘覆盖
-		namespace ChessBoard {
+		ChessBoard::ChessBoard(int n)
+		{
+			size = n;
+			board = Matrix<int>(n);
+		}
 
-			void Init(int **board, int dr, int dc) {
-				tile = 0;
-				board[dr][dc] = tile++;
+		void ChessBoard::Init(int dr, int dc) {
+			tile = 0;
+			board[dr][dc] = tile++;
+		}
+
+		void ChessBoard::Solve(int tr, int tc, int dr, int dc, int size)
+		{
+			if (size == 1) {
+				return;
+			}
+			int t = tile++;
+			int sz = size / 2;
+			// 覆盖左上角子棋盘
+			if (dr < tr + sz && dc < tc + sz) {
+				// 特殊方格在此棋盘中
+				Solve(tr, tc, dr, dc, sz);
+			}
+			else {
+				// 此棋盘无特殊方格，用t号L型骨牌覆盖右下角
+				board[tr + sz - 1][tc + sz - 1] = t;
+				// 覆盖其余方格
+				Solve(tr, tc, tr + sz - 1, tc + sz - 1, sz);
 			}
 
-			/**
-			* 棋盘覆盖
-			* tr 棋盘左上角方格行号
-			* tc 棋盘左上角方格列号
-			* dr 特殊方格所在行号
-			* dc 特殊方格所在列号
-			* size 棋盘大小
-			*/
-			void Solve(int **board, int tr, int tc, int dr, int dc, int size)
-			{
-				if (size == 1) {
-					return;
-				}
-				int t = tile++;
-				int sz = size / 2;
-
-				// 覆盖左上角子棋盘
-				if (dr < tr + sz && dc < tc + sz) {
-					// 特殊方格在此棋盘中
-					Solve(board, tr, tc, dr, dc, sz);
-				}
-				else {
-					// 此棋盘无特殊方格，用t号L型骨牌覆盖右下角
-					board[tr + sz - 1][tc + sz - 1] = t;
-					// 覆盖其余方格
-					Solve(board, tr, tc, tr + sz - 1, tc + sz - 1, sz);
-				}
-
-				// 覆盖右上角子棋盘
-				if (dr < tr + sz && dc >= tc + sz) {
-					// 特殊方格在此棋盘中
-					Solve(board, tr, tc + sz, dr, dc, sz);
-				}
-				else {
-					// 此棋盘无特殊方格，用t号L型骨牌覆盖左下角
-					board[tr + sz - 1][tc + sz] = t;
-					// 覆盖其余方格
-					Solve(board, tr, tc + sz, tr + sz - 1, tc + sz, sz);
-				}
-
-				// 覆盖左下角子棋盘
-				if (dr >= tr + sz && dc < tc + sz) {
-					// 特殊方格在此棋盘中
-					Solve(board, tr + sz, tc, dr, dc, sz);
-				}
-				else {
-					// 用t号L型骨牌覆盖右上角
-					board[tr + sz][tc + sz - 1] = t;
-					// 覆盖其余方格
-					Solve(board, tr + sz, tc, tr + sz, tc + sz - 1, sz);
-				}
-
-				// 覆盖右下角子棋盘
-				if (dr >= tr + sz&& dc >= tc + sz) {
-					// 特殊方格在此棋盘中
-					Solve(board, tr + sz, tc + sz, dr, dc, sz);
-				}
-				else {
-					// 用t号L型骨牌覆盖左上角
-					board[tr + sz][tc + sz] = t;
-					// 覆盖其余方格
-					Solve(board, tr + sz, tc + sz, tr + sz, tc + sz, sz);
-				}
+			// 覆盖右上角子棋盘
+			if (dr < tr + sz && dc >= tc + sz) {
+				// 特殊方格在此棋盘中
+				Solve(tr, tc + sz, dr, dc, sz);
+			}
+			else {
+				// 此棋盘无特殊方格，用t号L型骨牌覆盖左下角
+				board[tr + sz - 1][tc + sz] = t;
+				// 覆盖其余方格
+				Solve(tr, tc + sz, tr + sz - 1, tc + sz, sz);
 			}
 
-			void test()
-			{
-				int **board = NULL;
-				int size, dr, dc;
-				std::cout << "2.6 棋盘覆盖" << std::endl;
-				std::cout << "请输入：size，dr，dc" << std::endl;
-				std::cin >> size >> dr >> dc;
-				std::cout << "初始化" << std::endl;
-				board = InitMatrix(size);
-				std::cout << "棋盘覆盖" << std::endl;
-				ChessBoard::Init(board, dr, dc);
-				ChessBoard::Solve(board, 0, 0, dr, dc, size);
-				std::cout << "覆盖结果" << std::endl;
-				PrintMatrix(board, size);
+			// 覆盖左下角子棋盘
+			if (dr >= tr + sz && dc < tc + sz) {
+				// 特殊方格在此棋盘中
+				Solve(tr + sz, tc, dr, dc, sz);
+			}
+			else {
+				// 用t号L型骨牌覆盖右上角
+				board[tr + sz][tc + sz - 1] = t;
+				// 覆盖其余方格
+				Solve(tr + sz, tc, tr + sz, tc + sz - 1, sz);
+			}
+
+			// 覆盖右下角子棋盘
+			if (dr >= tr + sz&& dc >= tc + sz) {
+				// 特殊方格在此棋盘中
+				Solve(tr + sz, tc + sz, dr, dc, sz);
+			}
+			else {
+				// 用t号L型骨牌覆盖左上角
+				board[tr + sz][tc + sz] = t;
+				// 覆盖其余方格
+				Solve(tr + sz, tc + sz, tr + sz, tc + sz, sz);
 			}
 		}
 
+		void ChessBoard::Print()
+		{
+			board.Print();
+		}
+
+		void ChessBoard::test()
+		{
+			int size, dr, dc;
+			std::cout << "2.6 棋盘覆盖" << std::endl;
+			std::cout << "请输入：size，dr，dc" << std::endl;
+			std::cin >> size >> dr >> dc;
+			std::cout << "棋盘覆盖" << std::endl;
+			ChessBoard solver(size);
+			solver.Init(dr, dc);
+			solver.Solve(0, 0, dr, dc, size);
+			std::cout << "覆盖结果" << std::endl;
+			solver.Print();
+		}
+	
 		// 2.7 归并排序
 		namespace MergeSort {
 
@@ -334,240 +333,268 @@ namespace Algorithm {
 	}
 
 	// 第三章 动态规划
+	
 	namespace DynamicProgramming {
 
 		// 3.1 矩阵连乘问题
-		namespace MatrixChain {
 
-			void Solve(int *p, int **m, int **s, int n) {
-				for (int i = 0; i < n; i++) m[i][i] = 0;
-				// 对于每一行
-				for (int r = 0; r < n; r++) {
-					// 对于每一种分割方法
-					for (int i = 1; i <= n - r; i++) {
-						int j = i + r - 1;
-						m[i][j] = m[i + 1][j] + p[i - 1] * p[i] * p[j];
-						s[i][j] = i;
-						// 寻找最佳分割点
-						for (int k = i + 1; k < j; k++) {
-							int t = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
-							if (t < m[i][j]) {
-								m[i][j] = t;
-								s[i][j] = k;
-							}
+		template<class T>
+		MatrixChain<T>::MatrixChain()
+		{
+		}
+
+		template<class T>
+		void MatrixChain<T>::AddMatrix(Matrix<T> & m)
+		{
+			chain.push_back(m);
+		}
+
+		template<class T>
+		void MatrixChain<T>::Solve() {
+			int n = chain.size();
+			// 矩阵链长度r递增的顺序
+			for (int r = 1; r < n; r++) {
+				// 对于每一对r长的矩阵链（i，j）
+				for (int i = 0; i < n - r; i++) {
+					int j = i + r;// 右界
+					m[i][j] = m[i + 1][j] + chain[i].GetRowCount()*chain[i].GetColumnCount()*chain[j].GetColumnCount(); // 计算次数
+					s[i][j] = i; // 从i处断开
+					for (int k = i + 1; k < j; k++) {
+						// 从k断开
+						int t = m[i][k] + m[k + 1][j] + chain[i].GetRowCount()*chain[k].GetColumnCount()*chain[j].GetColumnCount();
+						if (t < m[i][j]) {
+							m[i][j] = t; // 记录新的最小值
+							s[i][j] = k; // 记录（i，j）断开的位置
 						}
 					}
 				}
 			}
+		}
 
-			void TraceBack(int i, int j, int **s)
-			{
-				if (i == j) return;
-				TraceBack(i, s[i][j], s);
-				TraceBack(s[i][j] + 1, j, s);
-				cout << "Multiply A" << i << ',' << s[i][j] << "and A" << (s[i][j] + 1) << "," << j << endl;
-			}
+		template<class T>
+		void MatrixChain<T>::Print()
+		{
+			int n = chain.size();
+			TraceBack(0, n - 1, s);
+			// 输出求解
+			cout << "m[i][j]" << endl;
+			m.Print();
+			cout << "s[i][j]" << endl;
+			s.Print();
+		}
 
-			void test()
-			{
-				// 矩阵的维数
-				int p[] = { 30, 35, 15, 5, 10, 20, 25 };
-				int **m, **s;
-				cout << "3.1 矩阵连乘问题" << endl;
-				try
-				{
-					m = InitMatrix(6, 6);
-					s = InitMatrix(6, 6);
-					MatrixChain::Solve(p, m, s, 6);
-					MatrixChain::TraceBack(0, 5, s);
-					delete[] m;
-					delete[] s;
-				}
-				catch (const std::exception&)
-				{
-					cout << "测试失败" << endl;
-				}
+		template<class T>
+		void MatrixChain<T>::PrintChain()
+		{
+			for (Matrix<T> m : chain) {
+				cout << m;
 			}
+			cout << endl;
+		}
+
+		template<class T>
+		void MatrixChain<T>::TraceBack(int i, int j, Matrix<int> & s)
+		{
+			if (i == j) return;
+			TraceBack(i, s[i][j], s); // （i，j）断开位置的左边
+			TraceBack(s[i][j] + 1, j, s); // （i，j）断开位置的右边
+			printf("Chain(%d,%d) = Chain(%d,%d) * Chain(%d,%d)\n", i, j, i, s[i][j], s[i][j] + 1, j);
+		}
+
+		template<class T>
+		int MatrixChain<T>::Count(Matrix<T> & a, Matrix<T> & b)
+		{
+			return a.row*b.row*b.col;
+		}
+
+		template<class T>
+		void MatrixChain<T>::test()
+		{
+			cout << "3.1 矩阵连乘问题" << endl;
+			MatrixChain<T> mat;
+			mat.AddMatrix(Matrix<T>(30, 35));
+			mat.AddMatrix(Matrix<T>(35, 15));
+			mat.AddMatrix(Matrix<T>(15, 5));
+			mat.AddMatrix(Matrix<T>(5, 10));
+			mat.AddMatrix(Matrix<T>(10, 20));
+			mat.AddMatrix(Matrix<T>(20, 25));
+			// 新增两个矩阵
+			mat.AddMatrix(Matrix<T>(25, 35));
+			mat.AddMatrix(Matrix<T>(35, 15));
+			mat.PrintChain();
+			mat.Solve();
+			mat.Print();
+			cout << "求解完毕" << endl;
 		}
 
 		// 3.3 最长公共子序列
-		namespace LongestCommonSubsequence {
 
-			/* 最长公共子序列 */
-			void Solve(string a, string b, int **c, int **s) {
-				int m = a.length();
-				int n = b.length();
-				// 初始化第1列
-				for (int i = 0; i < m; i++)c[i][0] = a[i] == b[0] ? 1 : 0;
-				// 初始化第1行
-				for (int i = 0; i < n; i++)c[0][i] = a[0] == b[i] ? 1 : 0;
-				// 动态规划
-				for (int i = 1; i < m; i++)
-					for (int j = 1; j < n; j++) {
-						if (a[i] == b[j]) {
-							c[i][j] = c[i - 1][j - 1] + 1;
-							s[i][j] = 1; // TOP LEFT
-						}
-						else if (c[i - 1][j] >= c[i][j - 1]) {
-							c[i][j] = c[i - 1][j];
-							s[i][j] = 2; // LEFT
-						}
-						else {
-							c[i][j] = c[i][j - 1];
-							s[i][j] = 3; // UP
-						}
+		void LCS::Solve(string a, string b, Matrix<int> & c, Matrix<int> & s) {
+			int m = a.length();
+			int n = b.length();
+			// 初始化第1列
+			for (int i = 0; i < m; i++)c[i][0] = a[i] == b[0] ? 1 : 0;
+			// 初始化第1行
+			for (int i = 0; i < n; i++)c[0][i] = a[0] == b[i] ? 1 : 0;
+			// 动态规划
+			for (int i = 1; i < m; i++)
+				for (int j = 1; j < n; j++) {
+					if (a[i] == b[j]) {
+						c[i][j] = c[i - 1][j - 1] + 1;
+						s[i][j] = 1; // TOP LEFT
 					}
-			}
-
-			/* 打印最长公共子序列 */
-			void PrintLCS(string a, string b, int **s)
-			{
-				int i = a.length() - 1;
-				int j = b.length() - 1;
-				string lcs = "";
-				while (i >= 0 && j >= 0) {
-					switch (s[i][j]) {
-					case 1:
-						lcs.push_back(a[i]);
-						i--, j--;
-						break;
-					case 2:
-						i--;
-						break;
-					default:
-						j--;
-						break;
+					else if (c[i - 1][j] >= c[i][j - 1]) {
+						c[i][j] = c[i - 1][j];
+						s[i][j] = 2; // LEFT
+					}
+					else {
+						c[i][j] = c[i][j - 1];
+						s[i][j] = 3; // UP
 					}
 				}
-				lcs.push_back(a[i]);
-				reverse(lcs.begin(), lcs.end());
-				cout << lcs << endl;
-			}
+		}
 
-			/* 3.3 测试最长公共子序列 */
-			void test() {
-				string a = "ABCBDAB";
-				string b = "BDCABA";
-				int **c, **s;
-				c = InitMatrix(a.length(), b.length());
-				s = InitMatrix(a.length(), b.length());
-				cout << "3.3 最长公共子序列" << endl;
-				cout << "a:" << a << endl;
-				cout << "b:" << b << endl;
-				cout << "Solve" << endl;
-				LongestCommonSubsequence::Solve(a, b, c, s);
-				cout << "PrintLCS" << endl;
-				LongestCommonSubsequence::PrintLCS(a, b, s);
-				delete[] c;
-				delete[] s;
+		void LCS::Print(string a, string b, Matrix<int> & s)
+		{
+			int i = a.length() - 1;
+			int j = b.length() - 1;
+			string lcs = "";
+			while (i >= 0 && j >= 0) {
+				switch (s[i][j]) {
+				case 1:
+					lcs.push_back(a[i]);
+					i--, j--;
+					break;
+				case 2:
+					i--;
+					break;
+				default:
+					j--;
+					break;
+				}
 			}
+			lcs.push_back(a[i]);
+			reverse(lcs.begin(), lcs.end());
+			cout << lcs << endl;
+		}
+
+		void LCS::test() {
+			string a = "ABCBDAB";
+			string b = "BDCABA";
+			Matrix<int> c(a.length(), b.length());
+			Matrix<int> s(a.length(), b.length());
+			cout << "3.3 最长公共子序列" << endl;
+			cout << "a:" << a << endl;
+			cout << "b:" << b << endl;
+			cout << "Solve" << endl;
+			LCS solver;
+			solver.Solve(a, b, c, s);
+			cout << "PrintLCS" << endl;
+			solver.Print(a, b, s);
 		}
 
 		// 3.4 最大子段和
-		namespace MaxSubSum {
 
-			/* 最大子段和问题的简单算法*/
-			int Solve(int n, int *a, int &besti, int &bestj)
-			{
-				int sum = 0;
-				for (int i = 0; i < n; i++) {
-					int thissum = 0;
-					for (int j = i; j < n; j++) {
-						thissum += a[j];
-						if (thissum > sum) {
-							sum = thissum;
-							besti = i;
-							bestj = j;
-						}
+		int MaxSubSum::Solve(int n, int *a, int &besti, int &bestj)
+		{
+			int sum = 0;
+			for (int i = 0; i < n; i++) {
+				int thissum = 0;
+				for (int j = i; j < n; j++) {
+					thissum += a[j];
+					if (thissum > sum) {
+						sum = thissum;
+						besti = i;
+						bestj = j;
 					}
 				}
-				return sum;
 			}
-
-			/* 最大子段和问题的分治算法*/
-			int SolveDC(int *a, int left, int right)
-			{
-				int sum = 0;
-				if (left == right) {
-					sum = a[left] > 0 ? a[left] : 0;
-				}
-				else {
-					int mid = (left + right) / 2;
-					int left_sum = SolveDC(a, left, mid);
-					int right_sum = SolveDC(a, mid + 1, right);
-					// 左边和
-					int s1 = 0;
-					int left_s = 0;
-					for (int i = mid; i >= left; i--) {
-						left_s += a[i];
-						if (left_s > s1) {
-							s1 = left_s;
-						}
-					}
-					// 右边和
-					int s2 = 0;
-					int right_s = 0;
-					for (int i = mid + 1; i <= right; i++) {
-						right_s += a[i];
-						if (right_s > s2) {
-							s2 = right_s;
-						}
-					}
-					// 归并结果
-					sum = s1 + s2;
-					if (sum < left_sum) sum = left_sum;
-					if (sum < right_sum) sum = right_sum;
-				}
-				return sum;
-			}
-
-			/* 最大子段和问题的动态规划算法*/
-			int SolveDP(int *a, int left, int right)
-			{
-				int sum = 0, b = 0;
-				for (int i = left; i < right; i++) {
-					if (b > 0) {
-						b += a[i];
-					}
-					else {
-						b = a[i];
-					}
-					if (b > sum) {
-						sum = b;
-					}
-				}
-				return sum;
-			}
-
-			/* 测试3.4 最大子段和*/
-			void test()
-			{
-				int a[] = { -2, 11,-4, 13, -5, -2 };
-				int sum, besti, bestj;
-				cout << "3.4 最大子段和" << endl;
-				sum = MaxSubSum::Solve(6, a, besti, bestj);
-				cout << "Simple Solution:" << setw(4) << sum << endl;
-				sum = MaxSubSum::SolveDC(a, 0, 5);
-				cout << "Divide and Conquer:" << setw(4) << sum << endl;
-				sum = MaxSubSum::SolveDP(a, 0, 6);
-				cout << "Dynamic Programming:" << setw(4) << sum << endl;
-			}
+			return sum;
 		}
 
+		int MaxSubSum::SolveDC(int *a, int left, int right)
+		{
+			int sum = 0;
+			if (left == right) {
+				sum = a[left] > 0 ? a[left] : 0;
+			}
+			else {
+				int mid = (left + right) / 2;
+				int left_sum = SolveDC(a, left, mid);
+				int right_sum = SolveDC(a, mid + 1, right);
+				// 左边和
+				int s1 = 0;
+				int left_s = 0;
+				for (int i = mid; i >= left; i--) {
+					left_s += a[i];
+					if (left_s > s1) {
+						s1 = left_s;
+					}
+				}
+				// 右边和
+				int s2 = 0;
+				int right_s = 0;
+				for (int i = mid + 1; i <= right; i++) {
+					right_s += a[i];
+					if (right_s > s2) {
+						s2 = right_s;
+					}
+				}
+				// 归并结果
+				sum = s1 + s2;
+				if (sum < left_sum) sum = left_sum;
+				if (sum < right_sum) sum = right_sum;
+			}
+			return sum;
+		}
+
+		int MaxSubSum::SolveDP(int *a, int left, int right)
+		{
+			int sum = 0, b = 0;
+			for (int i = left; i < right; i++) {
+				if (b > 0) {
+					b += a[i];
+				}
+				else {
+					b = a[i];
+				}
+				if (b > sum) {
+					sum = b;
+				}
+			}
+			return sum;
+		}
+
+		void MaxSubSum::test()
+		{
+			int a[] = { -2, 11,-4, 13, -5, -2 };
+			int sum, besti, bestj;
+			cout << "3.4 最大子段和" << endl;
+			MaxSubSum solver;
+			sum = solver.Solve(6, a, besti, bestj);
+			cout << "Simple Solution:" << setw(4) << sum << endl;
+			sum = solver.SolveDC(a, 0, 5);
+			cout << "Divide and Conquer:" << setw(4) << sum << endl;
+			sum = solver.SolveDP(a, 0, 6);
+			cout << "Dynamic Programming:" << setw(4) << sum << endl;
+		}
+	
+		// 测试
 		void test()
 		{
 			cout << "第三章 动态规划" << endl;
 			MaxSubSum::test();
-			MatrixChain::test();
-			LongestCommonSubsequence::test();
-			getchar();
+			MatrixChain<double>::test();
+			LCS::test();
 		}
 	}
 
 	// 第五章 回溯法
+
 	namespace Backtracking {
 
 		// 5.2 装载问题
+		
 		template<class T>
 		Loading<T>::Loading(T * w, T c, int n)
 		{
@@ -617,6 +644,7 @@ namespace Algorithm {
 		}
 
 		// 5.2 装载问题
+		
 		template<class T>
 		XLoading<T>::XLoading(T *w, T c, int n, int *bestx)
 		{
@@ -682,6 +710,7 @@ namespace Algorithm {
 		}
 
 		// 5.2 装载问题
+		
 		template<class T>
 		T MaxMLoading(T *w, T c, int n, int *bestx) {
 			// 返回最优载重量及其相应解，初始化根节点
@@ -738,6 +767,7 @@ namespace Algorithm {
 		}
 
 		// 5.3 批处理作业调度
+		
 		template<class T>
 		void Swap(T &a, T &b) {
 			T t = a;
@@ -804,21 +834,93 @@ namespace Algorithm {
 			}
 		}
 
+		// 骑士巡游
+
+		BoxPop::BoxPop()
+		{
+		}
+
+		BoxPop::BoxPop(int m, int n)
+		{
+			this->m = m;
+			this->n = n;
+			grid = new int*[m];
+			for (int i = 0; i < m; i++) {
+				grid[i] = new int[n];
+				for (int j = 0; j < n; j++) {
+					grid[i][j] = 0;
+				}
+			}
+		}
+
+		void BoxPop::Solve(int i, int j)
+		{
+			Backtracking(i, j, 1);
+		}
+
+		void BoxPop::Show()
+		{
+			for (Point p : path) {
+				std::cout << p;
+			}
+			std::cout << std::endl;
+		}
+
+		void BoxPop::test()
+		{
+			// 骑士巡游
+			std::cout << "骑士巡游" << std::endl;
+			BoxPop bp(5, 5);
+			bp.Solve(0, 0);
+			std::cout << "搜索完毕" << std::endl;
+			getchar();
+		}
+
+		void BoxPop::Backtracking(int x, int y, int step)
+		{
+			// 访问（x，y）
+			grid[x][y] = step;
+			path.push_back(Point(x, y));
+			// 输出path
+			if (step == m*n) {
+				Show();
+				return;
+			}
+			// 深度优先遍历
+			for (int i = 0; i < 8; i++) {
+				int next_x = x + dirs[i][0];
+				int next_y = y + dirs[i][1];
+				if (IsValid(next_x, next_y)) {
+					// 访问（next_x, next_y）
+					Backtracking(next_x, next_y, step + 1);
+				}
+			}
+			// 回溯
+			path.pop_back();
+			grid[x][y] = 0;
+		}
+
+		bool BoxPop::IsValid(int i, int j)
+		{
+			return !(i < 0 || j < 0 || i >= m || j >= n || grid[i][j] > 0);
+		}
+
 		// 测试
 		void test() {
 			cout << "第五章 回溯法" << endl;
-			Loading<int>::test();
-			XLoading<int>::test();
-			Flowshop::test();
-			getchar();
+			//Loading<int>::test();
+			//XLoading<int>::test();
+			//Flowshop::test();
+			BoxPop::test();
 		}
 	}
 
 	void test() {
-		DivideAndConquer::test();
+		//DivideAndConquer::test();
 		DynamicProgramming::test();
 		Backtracking::test();
 	}
+
 }
 
 void main()

@@ -3,32 +3,55 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <list>
+#include <vector>
 #include <math.h>
 
 using namespace std;
 
 namespace Algorithm {
 
-	/**
-	* 初始化矩阵
-	* rows 行数
-	* cols 列数
-	*/
-	int **InitMatrix(int rows, int cols);
+	// 点
+	class Point {
+		int x, y;
+	public:
+		Point() :x(0), y(0) {  }
+		Point(int x, int y) :x(x), y(y) {  }
+		friend ostream & operator << (ostream & out, const Point & p) {
+			out << '(' << p.x << ',' << p.y << ')';
+			return out;
+		}
+		friend istream & operator >> (istream & in, Point & p) {
+			in >> p.x >> p.y;
+			return in;
+		}
+	};
 
-	/**
-	* 初始化矩阵
-	* mat 矩阵
-	* size 大小
-	*/
-	int **InitMatrix(int size);
-
-	/**
-	* 打印矩阵
-	* mat 矩阵
-	* size 大小
-	*/
-	void PrintMatrix(int **mat, int size);
+	// 矩阵
+	template<class T>
+	class Matrix {
+	private:
+		int row, col;
+		T **mat;
+	public:
+		Matrix() { row = 0; col = 0; mat = NULL; }
+		Matrix(int size);
+		Matrix(int r, int c);
+		int GetRowCount() { return row; }
+		int GetColumnCount() { return col; }
+		T * operator [](int i);
+		void Print();
+	public:
+		friend ostream & operator << (ostream & out, const Matrix & p) {
+			out << '(' << p.row << ',' << p.col << ')';
+			return out;
+		}
+		friend istream & operator >> (istream & in, Matrix & p) {
+			in >> p.row >> p.col;
+			return in;
+		}
+		friend class MatrixChain;
+	};
 
 	/**
 	* 打印向量
@@ -41,22 +64,20 @@ namespace Algorithm {
 	namespace DivideAndConquer {
 
 		// 棋盘覆盖
-		namespace ChessBoard {
+		class ChessBoard {
+		private:
+			int size;
+			Matrix<int> board;
+			static int tile;
+		public:
+			ChessBoard(int n);
+			void Init(int dr, int dc);
+			void Solve(int tr, int tc, int dr, int dc, int size);
+			void Print();
+			static void test();
+		};
 
-			static int tile = 0;
-
-			void Init(int **board, int dr, int dc);
-			/**
-			* 棋盘覆盖
-			* tr 棋盘左上角方格行号
-			* tc 棋盘左上角方格列号
-			* dr 特殊方格所在行号
-			* dc 特殊方格所在列号
-			* size 棋盘大小
-			*/
-			void Solve(int **board, int tr, int tc, int dr, int dc, int size);
-			void test();
-		}
+		int ChessBoard::tile = 0;
 
 		// 归并排序
 		namespace MergeSort {
@@ -87,44 +108,54 @@ namespace Algorithm {
 	}
 
 	namespace DynamicProgramming {
-
-		namespace MaxSubSum {
-
-			/* 最大子段和问题的简单算法*/
+		
+		// 最大子段和
+		class MaxSubSum {
+		public:
+			// 最大子段和问题的简单算法
 			int Solve(int n, int *a, int &besti, int &bestj);
-			/* 最大子段和问题的分治算法*/
+			// 最大子段和问题的分治算法
 			int SolveDC(int *a, int left, int right);
-			/* 最大子段和问题的动态规划算法*/
+			// 最大子段和问题的动态规划算法
 			int SolveDP(int *a, int left, int right);
-			/* 测试最大子段和*/
-			void test();
-		}
+			// 测试最大子段和
+			static void test();
+		};
 
-		namespace MatrixChain {
 
-			/* 矩阵连乘求解 */
-			void Solve(int *p, int **m, int **s, int n);
-			/* 回溯解 */
-			void TraceBack(int i, int j, int **s);
-			/* 3.1 测试矩阵连乘 */
-			void test();
-		}
+		// 矩阵连乘
+		template<class T>
+		class MatrixChain {
+		private:
+			int n;
+			Matrix<int> m;
+			Matrix<int> s;
+			vector<Matrix<T>> chain;
+			void TraceBack(int i, int j, Matrix<int> & s);
+			int Count(Matrix<T> &a, Matrix<T> &b);
+		public:
+			MatrixChain();
+			void AddMatrix(Matrix<T> & m);
+			void Solve();
+			void Print();
+			void PrintChain();
+			static void test();
+		};
 
-		namespace LongestCommonSubsequence {
-
-			/* 最长公共子序列 */
-			void Solve(string a, string b, int **c, int **s);
-			/* 打印最长公共子序列 */
-			void PrintLCS(string a, string b, int **s);
-			/* 3.3 测试最长公共子序列 */
-			void test();
-		}
+		// 最长公共子序列
+		class LCS {
+		public:
+			void Solve(string a, string b, Matrix<int> & c, Matrix<int> & s);
+			void Print(string a, string b, Matrix<int> & s);
+			static void test();
+		};
 
 		void test();
 	}
 
 	namespace Backtracking {
 
+		// 最大装载
 		template<class T>
 		class Loading {
 		public:
@@ -174,6 +205,29 @@ namespace Algorithm {
 			int f; // 完成时间和
 			int bestf; // 当前最优值
 			int n; // 作业数
+		};
+
+
+		// 骑士巡游
+		class BoxPop {
+			int **grid;
+			int m, n;
+			static int dirs[8][2];
+			list<Point> path;
+		public:
+			BoxPop();
+			BoxPop(int m, int n);
+			void Solve(int i, int j);
+			void Show();
+			static void test();
+		protected:
+			void Backtracking(int i, int j, int step);
+			bool IsValid(int i, int j);
+		};
+
+		int BoxPop::dirs[8][2] = { 
+			{ 1,2 },{ 2,1},{2,-1 },{1,-2 },
+			{-1,-2 },{-2,-1 },{-2,1 },{-1,2 }
 		};
 
 		void test();
