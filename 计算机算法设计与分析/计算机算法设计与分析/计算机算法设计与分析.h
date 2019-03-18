@@ -11,20 +11,49 @@ using namespace std;
 
 namespace Algorithm {
 
-	// 点
-	class Point {
-		int x, y;
+	// 向量
+	template<class T>
+	class Vector {
+		T x, y;
 	public:
-		Point() :x(0), y(0) {  }
-		Point(int x, int y) :x(x), y(y) {  }
-		friend ostream & operator << (ostream & out, const Point & p) {
+		static vector<Vector<int>> EightDirs;
+		static vector<Vector<int>> QuadDirs;
+	public:
+		Vector() :x(0), y(0) {  }
+		Vector(T x, T y) :x(x), y(y) {  }
+		Vector(Vector<T> &b) { x = b.x; y = b.y; }
+		T norm() { return sqrt(x*x + y*y); }
+		Vector& operator - (Vector<T> &b) {
+			return Vector(x - b.x, y - b.y);
+		}
+		Vector& operator + (Vector<T> &b) {
+			return Vector(x + b.x, y + b.y);
+		}
+		Vector& operator = (Vector<T> &b) {
+			x = b.x; y = b.y;
+		}
+		bool operator ==(Vector<T> &b) {
+			return (x == b.x && y = b.y);
+		}
+		friend ostream & operator << (ostream & out, const Vector & p) {
 			out << '(' << p.x << ',' << p.y << ')';
 			return out;
 		}
-		friend istream & operator >> (istream & in, Point & p) {
+		friend istream & operator >> (istream & in, Vector & p) {
 			in >> p.x >> p.y;
 			return in;
 		}
+	};
+
+	template<class T>
+	vector<Vector<int>> Vector<T>::QuadDirs = {
+		Vector<int>(0, 1), Vector<int>(1,0), Vector<int>(-1,0), Vector<int>(0,-1),
+	};
+
+	template<class T>
+	vector<Vector<int>> Vector<T>::EightDirs = {
+		Vector<int>(1, 2), Vector<int>(2,1), Vector<int>(2,-1), Vector<int>(1,-2),
+		Vector<int>(-1, -2), Vector<int>(-2,-1), Vector<int>(-2,1), Vector<int>(-1,2)
 	};
 
 	// 矩阵
@@ -41,6 +70,7 @@ namespace Algorithm {
 		int GetColumnCount() { return col; }
 		T * operator [](int i);
 		void Print();
+		Matrix<T> & operator = (Matrix<T> &b) { row = b.row; col = b.col; if (mat) { delete[] mat; } return *this; }
 	public:
 		friend ostream & operator << (ostream & out, const Matrix & p) {
 			out << '(' << p.row << ',' << p.col << ')';
@@ -53,11 +83,21 @@ namespace Algorithm {
 		friend class MatrixChain;
 	};
 
-	/**
-	* 打印向量
-	* a 向量
-	* n 长度
-	*/
+	template<class T>
+	class Triangle {
+		Vector<T> a, b, c;
+	public:
+		Triangle(Vector<T> &a, Vector<T> &b, Vector<T> &c) :a(a), b(b), c(c) {  }
+		T area() { return abs((a - b).norm()) + abs((a - c).norm()) + abs(b - c).norm(); }
+	};
+
+	template<class T>
+	class Polygon {
+		vector<Vector<T>> list;
+	public:
+		void AddEdge(Vector<T> &a) { list.push_back(a); }
+	};
+
 	template<class T>
 	void PrintArray(T a[], int n);
 
@@ -213,7 +253,7 @@ namespace Algorithm {
 			int **grid;
 			int m, n;
 			static int dirs[8][2];
-			list<Point> path;
+			list<Vector<int>> path;
 		public:
 			BoxPop();
 			BoxPop(int m, int n);
@@ -228,6 +268,50 @@ namespace Algorithm {
 		int BoxPop::dirs[8][2] = { 
 			{ 1,2 },{ 2,1},{2,-1 },{1,-2 },
 			{-1,-2 },{-2,-1 },{-2,1 },{-1,2 }
+		};
+
+		// 玩家
+		class Player {
+			Vector<int> x;
+		public:
+			Player() {  }
+			Vector<int> & GetPosition() { return x; }
+			void SetPosition(Vector<int> v) { x = v; }
+		};
+
+		// HDU1016 Prime Ring Problem
+		class PrimeRing {
+			int number;
+			int *table;
+			bool *visited;
+			bool prime[100];
+		protected:
+			bool isPrime(int num);
+			void Backtracking(int step);
+		public:
+			PrimeRing();
+			void Solve(int n);
+			void Print();
+			static void test();
+		};
+
+		// 井字棋游戏
+		class TicTacToe {
+			Player a, b;// 玩家
+			Matrix<int> table; // 棋盘
+		public:
+			
+		};
+
+		// 拼图游戏
+		class Jigsaw {
+			Matrix<int> x;
+		public:
+			static int dirs[4][2];
+		};
+
+		int Jigsaw::dirs[4][2] = {
+			{0,1},{1,0},{-1,0 },{0,-1}
 		};
 
 		void test();

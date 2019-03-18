@@ -55,7 +55,6 @@ namespace Algorithm {
 	}
 
 	// 第二章 分治算法
-
 	namespace DivideAndConquer {
 
 		// 2.6 棋盘覆盖
@@ -333,7 +332,6 @@ namespace Algorithm {
 	}
 
 	// 第三章 动态规划
-	
 	namespace DynamicProgramming {
 
 		// 3.1 矩阵连乘问题
@@ -590,7 +588,6 @@ namespace Algorithm {
 	}
 
 	// 第五章 回溯法
-
 	namespace Backtracking {
 
 		// 5.2 装载问题
@@ -860,7 +857,7 @@ namespace Algorithm {
 
 		void BoxPop::Show()
 		{
-			for (Point p : path) {
+			for (Vector<int> p : path) {
 				std::cout << p;
 			}
 			std::cout << std::endl;
@@ -880,7 +877,7 @@ namespace Algorithm {
 		{
 			// 访问（x，y）
 			grid[x][y] = step;
-			path.push_back(Point(x, y));
+			path.push_back(Vector<int>(x, y));
 			// 输出path
 			if (step == m*n) {
 				Show();
@@ -905,22 +902,103 @@ namespace Algorithm {
 			return !(i < 0 || j < 0 || i >= m || j >= n || grid[i][j] > 0);
 		}
 
+		// 素数环
+
+		bool PrimeRing::isPrime(int num)
+		{
+			return prime[num];
+		}
+
+		PrimeRing::PrimeRing()
+		{
+			for (int i = 0; i < 100; i++)
+				prime[i] = true;
+			for (int i = 2; i < 100; i++)
+				if (prime[i])
+					for (int j = 2 * i; j < 100; j+=i)
+						prime[j] = false;
+		}
+
+		void PrimeRing::Solve(int n)
+		{
+			// 素数环初始化
+			number = n;
+			table = new int[n];
+			visited = new bool[n];
+			memset(visited, false, sizeof(bool)*n);
+			// 回溯
+			table[0] = 1;
+			visited[0] = true;
+			Backtracking(1);
+			// 清理空间
+			delete[] table;
+			delete[] visited;
+		}
+
+		void PrimeRing::Backtracking(int step)
+		{
+			// 输出结果
+			if (step == number) {
+				if (isPrime(table[0] + table[number - 1])) {
+					Print();
+					return;
+				}
+			}
+			// 深搜
+			for (int i = 1; i < number; i++) {
+				table[step] = i + 1;
+				if (visited[i] == false && isPrime(table[step - 1] + table[step])) {
+					visited[i] = true;
+					Backtracking(step + 1);
+					visited[i] = false;
+				}
+			}
+		}
+
+		void PrimeRing::Print()
+		{
+			cout << table[0];
+			for (int i = 1; i < number; i++) {
+				cout << " " << table[i];
+			}
+			cout << endl;
+		}
+		
+		void PrimeRing::test()
+		{
+			int num, Case = 1;
+			PrimeRing solver;
+			do{
+				cin >> num;
+				if (num > 0 && num < 20) {
+					cout << "Case " << Case++ << ":" << endl;
+					solver.Solve(num);
+					cout << endl;
+				}
+			} while (num > 0 && num < 20);
+		}
+
+		void main() {
+			PrimeRing::test();
+		}
+
 		// 测试
+
 		void test() {
 			cout << "第五章 回溯法" << endl;
 			//Loading<int>::test();
 			//XLoading<int>::test();
 			//Flowshop::test();
-			BoxPop::test();
+			//BoxPop::test();
+			PrimeRing::test();
 		}
-	}
+}
 
 	void test() {
 		//DivideAndConquer::test();
-		DynamicProgramming::test();
+		//DynamicProgramming::test();
 		Backtracking::test();
 	}
-
 }
 
 void main()
