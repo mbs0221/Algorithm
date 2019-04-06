@@ -13,7 +13,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E33355D8-FE66-4F75-9E5E-CD0B62D94A00}</ProjectGuid>
     <RootNamespace>Algorithm</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -77,9 +76,11 @@
     <Text Include="str2.txt" />
     <Text Include="Text.txt" />
     <Text Include="Text1.txt" />
+    <Text Include="Transactions.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm.h" />
+    <ClInclude Include="algorithms.h" />
     <ClInclude Include="BranchAndBound.h" />
     <ClInclude Include="btree.h" />
     <ClInclude Include="find.h" />
@@ -89,9 +90,17 @@
     <ClInclude Include="sort.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="tree.h" />
+    <ClInclude Include="计算机算法设计与分析.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="algorithm.cpp" />
+    <ClCompile Include="bp_network.cpp" />
+    <ClCompile Include="fptree.cpp" />
+    <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="Josephus.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="trie.cpp" />
+    <ClCompile Include="计算机算法设计与分析.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
