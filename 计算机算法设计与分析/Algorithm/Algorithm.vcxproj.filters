@@ -54,6 +54,9 @@
     <Text Include="bp_network.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="Transactions.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph.h">
@@ -65,22 +68,28 @@
     <ClInclude Include="sort.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="find.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="tree.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="string.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="btree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="network.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BranchAndBound.h">
+    <ClInclude Include="bp_network.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="knapsack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="trie.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ds.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="algorithm.h">
@@ -91,5 +100,27 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="bp_network.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Josephus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="trie.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ds.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="algorithm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

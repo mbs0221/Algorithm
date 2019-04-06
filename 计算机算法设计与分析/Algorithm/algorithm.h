@@ -1,441 +1,340 @@
 #pragma once
 
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <list>
+
+#include "ds.h"
 
 using namespace std;
+using namespace DataStructure;
 
 namespace Algorithm {
 
 	template<class T>
-	class SMatrix;
+	void PrintArray(T a[], int n);
 
-	// 十字链表节点
-	template<class T>
-	class OLNode {
-		friend SMatrix<T>;
-	private:
-		int row, col;
-		T element;
-		OLNode<T> *right, *down;
-	public:
-		OLNode() {
-			right = NULL;
-			down = NULL;
+	// 分治
+	namespace DivideAndConquer {
+
+		// 棋盘覆盖
+		class ChessBoard {
+		private:
+			int size;
+			Matrix<int> board;
+			static int tile;
+		public:
+			ChessBoard(int n);
+			void Init(int dr, int dc);
+			void Solve(int tr, int tc, int dr, int dc, int size);
+			void Print();
+			static void test();
+		};
+
+		int ChessBoard::tile = 0;
+
+		// 归并排序
+		namespace MergeSort {
+
+			template<class T> void MergeArray(T a[], T b[], int left, int mid, int right);
+			template<class T> void Sort(T a[], T b[], int left, int right);
+			void test();
 		}
-		OLNode(int row, int col, T val) :row(row), col(col), element(val) {
-			right = NULL;
-			down = NULL;
+
+		// 非递归版归并排序
+		namespace MergeSortNonrecursive {
+			template<class T> void Merge(T a[], T b[], int left, int mid, int right);
+			template<class T> void MergePass(T a[], T b[], int sz, int n);
+			template<class T> void Sort(T a[], T b[], int n);
+			void test();
 		}
-	};
-
-	// 稀疏矩阵 - 十字链表表示
-	template<class T>
-	class SMatrix {
-	private:
-		int rowNum, colNum;
-	public:
-		OLNode<T> *rowhead, *colhead;
-		SMatrix(int row, int col) :rowNum(row), colNum(col) {
-			rowhead = colhead = NULL;
-		}
-		void Insert(int row, int col, T val);
-		T Remove(int row, int col);
-		T Get(int row, int col);
-		SMatrix<T>& operator +(SMatrix<T> &b);
-	};
-
-#define MAX_SIZE 100
-
-	// 三元组
-	template<class T>
-	class Triple {
-		int row, col;
-		T e;
-		Triple(int row, int col, int e) :row(row), col(col), e(e) {  }
-		//friend class TSMatrix<T>;
-	};
-
-	// 稀疏矩阵 - 三元组表示
-	template<class T>
-	class TSMatrix {
-	private:
-		int row, col, length;
-		Triple<T> data[MAX_SIZE];
-	public:
-		TSMatrix<T>() :row(0), col(0), length(0) {  }
-		TSMatrix<T>(int row, int col, int length) :row(row), col(col), length(length) {  }
-		TSMatrix<T>& Transpose();
-	};
-
-	namespace Tree {
-
-		// 二叉树节点
-		template<class T>
-		class BinaryTreeNode {
-		private:
-			T element;
-			BinaryTreeNode<T> *left, *right;
-		public:
-			BinaryTreeNode(T element, BinaryTreeNode<T> *left, BinaryTreeNode<T> *right);
-			// 基本操作
-			bool isLeaf() { return left == NULL && right == NULL; }
-			T getValue() { return element; }
-			BinaryTreeNode<T>* getLeftChild() { return left; }
-			BinaryTreeNode<T>* getRightChild() { return right; }
-			// 比较
-			bool operator < (const BinaryTreeNode & B) { return element < B.element; }
-			bool operator <= (const BinaryTreeNode & B) { return element <= B.element; }
-			bool operator == (const BinaryTreeNode & B) { return element == B.element; }
-			bool operator >= (const BinaryTreeNode & B) { return element >= B.element; }
-			bool operator > (const BinaryTreeNode & B) { return element > B.element; }
-		};
-
-		enum Tag { LEFT, RIGHT };
-		template<class T>
-		class StackElement {
-			BinaryTreeNode<T> *pointer;
-			Tag tag;
-		};
-
-		// 二叉树
-		template<class T>
-		class BinaryTree {
-		private:
-			BinaryTreeNode<T> *root;
-		protected:
-			void DeleteBinaryTree(BinaryTreeNode<T>* root);
-		public:
-			BinaryTree(const T& elem, BinaryTree<T>& leftTree, BinaryTree<T>& rightTree);
-			~BinaryTree();
-			int LeafNumber(BinaryTreeNode<T> *root);
-			int GetHeight(BinaryTreeNode<T> *root);
-			int Exchange(BinaryTreeNode<T> *root);
-			BinaryTreeNode<T>* GetRoot();
-			BinaryTreeNode<T>* Parent(BinaryTreeNode<T>* current);
-			BinaryTreeNode<T>* LeftSibling(BinaryTreeNode<T>* current);
-			bool isEmpty() const;
-			// 增删查改
-			virtual void Insert(BinaryTreeNode<T> *node);
-			bool Compare(BinaryTreeNode<T> *root1, BinaryTreeNode<T> *root2);
-			bool RootPath(BinaryTreeNode<T> *root, BinaryTreeNode<T> *current);
-			void CollectiveAncester(BinaryTreeNode<T> *root, BinaryTreeNode<T> *pchild, BinaryTreeNode<T> *qchild);
-			// 遍历
-			void DepthOrder(BinaryTreeNode<T> *root, void(*Visit)(T element));
-			void PreOrderWithoutRecursion(void(*Visit)(T element));
-			void InOrderWithoutRecursion(void(*Visit)(T element));
-			void PostOrderWithoutRecursion(void(*Visit)(T element));
-			void LevelOrder(void(*Visit)(T element));
-		};
-
-		// 穿线二叉树
-		template<class T>
-		class ThreadBinaryTreeNode : BinaryTreeNode<T> {
-			bool ltag, rtag;
-		};
-
-		template<class T>
-		class ThreadBinaryTree : BinaryTree<T> {
-		public:
-			void Insert(ThreadBinaryTreeNode<T> *p, ThreadBinaryTreeNode<T> *r);
-			// 线索化
-			void PreOrderThreading();
-			void InOrderThreading();
-			// 遍历
-			void PreOrderThread(void(*Visit)(T elem));
-			void InOrderThread(void(*Visit)(T elem));
-			void PostOrder(ThreadBinaryTreeNode<T> *root, void(*Visit)(ThreadBinaryTreeNode<T> *node));
-			ThreadBinaryTreeNode<T> FindPreInPostOrder(ThreadBinaryTreeNode<T> *pointer);
-		};
-
-		// 二叉搜索树
-		template<class T>
-		class BinarySearchTree : BinaryTree<T> {
-		public:
-			int PrintRange(BinaryTreeNode<T> *root, T min, T max);
-			int SmallCount(BinaryTreeNode<T> *root, T key);
-			int SmallCountWithoutRecursion(T key);
-			bool isBST(BinaryTreeNode<T> *root);
-			bool Search(T key);
-			bool SearchWithoutRecursion(T key);
-			virtual void Insert(BinaryTreeNode<T> *node);
-			void Delete(BinaryTreeNode<T> *node);
-			void DeleteNode(BinaryTreeNode<T> *root, T key);
-			void DeleteNodeEx(BinaryTreeNode<T> *root);
-		};
-
-		// AVLTreeNode
-		template<class T>
-		class AVLTreeNode : public BinaryTreeNode<T> {
-			int factor;
-		};
-
-		// AVLTree
-		template<class T>
-		class AVLTree : public BinarySearchTree<T> {
-		public:
-			virtual void Insert(AVLTreeNode<T> *node);
-		protected:
-			void LLRotate(AVLTreeNode<T> *a);
-			void LRRotate(AVLTreeNode<T> *a);
-			void RRRotate(AVLTreeNode<T> *a);
-			void RLRotate(AVLTreeNode<T> *a);
-		};
-
-		// 带左链的层次表示
-		template<class T>
-		class LLinkRTag {
-			T element;
-			int LLink, RTag;
-		};
-
-		// 带右链的先根次序表示法
-		template<class T>
-		class LTagRLink {
-			T element;
-			int LTag, RLink;
-		};
-
-		// 带双标记位的先根次序表示法
-		template<class T>
-		class LTagRTag {
-			T element;
-			int LTag, RTag;
-		};
-
-		// 带度数的后跟次序表示法
-		template<class T>
-		class DegreePost {
-			T element;
-			int degree;
-		};
-
-		// 树节点-左子右兄表示法
-		template<class T>
-		class TreeNode {
-			T mValue;
-			TreeNode<T> *pChild, *pSibling;
-		public:
-			TreeNode(T value) :mValue(value) {  }
-			bool isLeaf() { return pChild == NULL; }
-			void setValue(T value) { mValue = value; }
-			void insertFirst(TreeNode<T>* node) {
-				//以第一个子结点的身份插入结点
-				if (!pChild) {
-					pChild = node;
-				}
-				else {
-					node->pSibling = pChild;
-					pChild = node;
-				}
-			}
-			TreeNode<T>* RightSibling() { return pSibling; }
-			TreeNode<T>* LeftMostChild() { return pChild; }
-			void setChild(TreeNode<T> *child) { pChild = child; }
-			void setSibling(TreeNode<T> *sibling) { pSibling = sibling; }
-		};
-
-		// 树-左子右兄表示法
-		template<class T>
-		class Tree {
-		private:
-			TreeNode<T> *root;
-			Tree() { root = NULL; }
-			TreeNode<T>* Convert(vector<DegreePost<T>> nodes);
-			TreeNode<T>* Parent(TreeNode<T> *current);
-			void DestroyNodes(TreeNode<T> *root);
-			void DeleteSubTree(TreeNode<T> *root);
-		};
-
-		// 最小堆ADT定义
-		template <class T>
-		class MinHeap {
-		private:
-			T *heapArray;		//存放堆数据的数组
-			int CurrentSize;	//当前堆中元素数目
-			int MaxSize;		//堆所能容纳的最大元素数目
-			void BuildHeap();	//建堆
-		public:
-			MinHeap(const int n);//n最大元素数
-			~MinHeap() { delete[] heapArray; }; //析构函数
-			int LeftChild(int pos) const; 	//返回左孩子位置
-			int RightChild(int pos) const; 	//返回右孩子位置
-			int Parent(int pos) const; 		// 返回父结点位置
-			bool isEmpty();
-			bool isLeaf(int pos) const;		//如果是叶结点，返回true
-			bool isMinHeap();				// 是最小堆	
-			bool Remove(int pos, T& node); 	// 删除给定下标的元素
-			bool Insert(const T& newNode);	//向堆中插入新元素
-			T&  RemoveMin(); 				//从堆顶删除最小值
-			void SiftUp(int position);		//从position向上开始调整，使序列成为堆
-			void SiftDown(int left);		//筛选法函数，参数left表示开始处理的数组下标
-		};
-
-		// HuffmanTreeNode类
-
-		template<class T>
-		class HuffmanTreeNode : BinaryTreeNode<T> {
-
-		};
-
-		// Huffman树
-		template <class T>
-		class HuffmanTree : BinaryTree<T> {
-		private:
-			HuffmanTreeNode<T>* root;
-			void MergeTree(HuffmanTreeNode<T> &ht1, HuffmanTreeNode<T> &ht2, HuffmanTreeNode<T>* parent);
-			void DeleteTree(HuffmanTreeNode<T>* root);
-		public:
-			HuffmanTree(T weight[], int n);
-			virtual ~HuffmanTree() { DeleteTree(root); }
-		};
-
-		// Trie字典树
-#define KIND 26
-
-		template<class T>
-		class TrieNode {
-		public:
-			TrieNode<T> *next[KIND];
-			TrieNode<T> *fail;
-			int count;
-			TrieNode() :fail(NULL), count(0) { memset(next, NULL, sizeof(next)); }
-		};
-
-		template<class T>
-		class TrieTree {
-			TrieNode<T> *root;
-		public:
-			void insert(char *str);
-			void build_ac_automation();
-			int query(char *str);
-		};
-
-		// 红黑树节点
-		enum COLOR { RED, BLACK };
-
-		template<class T>
-		class RBNode : BinaryTreeNode<T> {
-			T key;
-			COLOR color;
-			RBNode<T> *parent;
-		public:
-			RBNode(RBNode<T> *parent = NULL, RBNode<T> *left = NULL, RBNode<T> *right = NULL, T key = NULL, COLOR color = RED);
-			bool isLeaf() { return key = NULL; }
-		};
-
-		// 红黑树
-		template<class T>
-		class RBTree :BinarySearchTree<T> {
-		public:
-			void Insert(const T & key);
-			void Remove(const T & key);
-			void Find(const T & key);
-			void RedToBlack(RBNode<T> *root);
-		};
-	}
-	// 邻接多重表
-	template<class T>
-	class AMEdge {
-		int u, v; // 顶点u，v
-		AMEdge<T> *ulink, *vlink;
-		T element;
-	};
-
-	template<class TV, class TE>
-	class AMVertex {
-		TV element;
-		AMEdge<TE> *head;
-	};
-
-	template<class TV, class TE>
-	class AMGraph{
-		vector<AMVertex<TV, TE>*> vec;
-	public:
-		void AddVertex(AMVertex<TV, TE> *v);
-		void AddEdge(AMEdge<TE> *e);
-		void RemoveVertex(int v);
-		void RemoveEdge(int u, int v);
-	};
-
-	// 十字链表
-	template<class T>
-	class Point {
-		int id;
-		T element;
-	};
-
-	template<class T>
-	class Edge {
-		int from, to;
-		T element;
-	};
-
-	template<class TA>
-	class Arc {
-		int head, tail;
-		Arc<TA> *hLink, *tLink;
-		TA element;
-	};
-
-	template<class TV, class TA>
-	class Vertex {
-		TV element;
-		Arc<TA> *first_in, *first_out;
-		Vertex(TV e) {
-			element = e;
-			first_in = NULL;
-			first_out = NULL;
-		}
-	};
-
-	// 邻接矩阵
-	class Graph {
-		int **matrix;
-		void toposort();
-	};
-
-	template<class TV, class TA>
-	class OLGraph{
-		vector<Vertex<TV, TA>> vertices;
-		int numVertices, numArcs;
-	public:
-		OLGraph() {  }
-		OLGraph(vector<Point<TV>> points, vector<Edge<TA>> edges);
-	};
-
-	namespace Sort {
-		// 插入排序算法
-		template<class T>
-		void InsertSort(T *vec, int n);
-
-		// 折半插入排序
-		template<class T>
-		void BinaryInsertSort(T *vec, int n);
-
-		// 2-路插入排序
-		template<class T>
-		void TwoWayInsertSort(T *vec, T *dst, int n);
-
-		// 希尔排序
-		template<class T>
-		void ShellSort(T *vec, int left, int right);
-
-		// 冒泡排序
-		template<class T>
-		void BubbleSort(T *vec, int n);
 
 		// 快速排序
-		template<class T>
-		void QuickSort(T *vec, int left, int right);
+		namespace QuickSort {
+			template<class T>
+			int Partition(T a[], int p, int r);
+			template<class T>
+			void Sort(T a[], int left, int right);
+			void test();
+		}
 
-		// 选择排序
-		template<class T>
-		void SelectSort(T *vec, int n);
+		void test();
 	}
-}
+
+	// 动态规划
+	namespace DynamicProgramming {
+		
+		// 最大子段和
+		class MaxSubSum {
+		public:
+			// 最大子段和问题的简单算法
+			int Solve(int n, int *a, int &besti, int &bestj);
+			// 最大子段和问题的分治算法
+			int SolveDC(int *a, int left, int right);
+			// 最大子段和问题的动态规划算法
+			int SolveDP(int *a, int left, int right);
+			// 测试最大子段和
+			static void test();
+		};
+
+
+		// 3.11 最优二叉搜索树
+		class OptimalBST {
+			int n;
+			Matrix<int> a, b;
+			Matrix<int> m, s, w;
+		public:
+			void Solve();
+		};
+
+		// 矩阵连乘
+		template<class T>
+		class MatrixChain {
+		private:
+			int n;
+			Matrix<int> m;
+			Matrix<int> s;
+			vector<Matrix<T>> chain;
+			void TraceBack(int i, int j, Matrix<int> & s);
+			int Count(Matrix<T> &a, Matrix<T> &b);
+		public:
+			MatrixChain();
+			void AddMatrix(Matrix<T> & m);
+			void Solve();
+			void Print();
+			void PrintChain();
+			static void test();
+		};
+
+		// 最长公共子序列
+		class LCS {
+			Matrix<int> c, s;
+			string a, b;
+		public:
+			LCS(string &a, string &b);
+			void Solve();
+			void Print();
+			static void test();
+		};
+
+		// 最长上升子序列
+		class LAS {
+			Matrix<int> dp;
+		public:
+			void Solve(int nums[], int N);
+			void Print();
+			static void test();
+		};
+
+		// 字符串
+		class String {
+		public:
+			int EditDistance(string a, string & b);
+			static void test();
+		};
+		void test();
+	}
+
+	// 回溯法
+	namespace Backtracking {
+
+		// 最大装载
+		template<class T>
+		class Loading {
+		public:
+			Loading(T *w, T c, int n);
+			~Loading();
+			static void test();
+			friend T MaxLoading(T *, T, int);
+
+		private:
+			void Backtrack(int n);
+			int n; // 集装箱数
+			T *w, c, cw, bestw; // 集装箱重量数组，每一艘轮船的载重量，当前载重量，当前最优载重量
+		};
+
+		template<class T>
+		class XLoading {
+		public:
+			XLoading(T *w, T c, int n, int *bestx);
+			~XLoading();
+			static void test();
+			friend T MaxXLoading(T *w, T c, int n, int *bestx);
+
+		private:
+			void Backtrack(int i);
+			int n; // 集装箱数
+			int *x, *bestx; // 当前解，当前最优解
+			T *w, c, cw, bestw; // 集装箱重量数组，每一艘轮船的载重量，当前载重量，当前最优载重量
+			T r; // 剩余集装箱重量
+		};
+
+		template<class T>
+		T MaxMLoading(T *w, T c, int n, int *bestx);
+
+		class Flowshop {
+			friend int Flow(int**, int, int *);
+		public:
+			Flowshop(int **, int, int *);
+			~Flowshop();
+			static void test();
+		private:
+			void Backtrack(int i);
+			int **M; // 各作业所需的处理时间
+			int *x; // 当前作业调度
+			int *bestx; // 当前最优作业调度
+			int *f2; // 机器2完成处理的时间
+			int f1; // 机器1完成处理的时间
+			int f; // 完成时间和
+			int bestf; // 当前最优值
+			int n; // 作业数
+		};
+
+
+		// 骑士巡游
+		class BoxPop {
+			int **grid;
+			int m, n;
+			static int dirs[8][2];
+			list<Vector<int>> path;
+		public:
+			BoxPop();
+			BoxPop(int m, int n);
+			void Solve(int i, int j);
+			void Show();
+			static void test();
+		protected:
+			void Backtracking(int i, int j, int step);
+			bool IsValid(int i, int j);
+		};
+
+		int BoxPop::dirs[8][2] = { 
+			{ 1,2 },{ 2,1},{2,-1 },{1,-2 },
+			{-1,-2 },{-2,-1 },{-2,1 },{-1,2 }
+		};
+
+		// 玩家
+		class Player {
+			Vector<int> x;
+		public:
+			Player() {  }
+			Vector<int> & GetPosition() { return x; }
+			void SetPosition(Vector<int> v) { x = v; }
+		};
+
+		// HDU1016 Prime Ring Problem
+		class PrimeRing {
+			int number;
+			int *table;
+			bool *visited;
+			bool prime[100];
+		protected:
+			bool isPrime(int num);
+			void Backtracking(int step);
+		public:
+			PrimeRing();
+			void Solve(int n);
+			void Print();
+			static void test();
+		};
+
+		// 井字棋游戏
+		class TicTacToe {
+			Player a, b;// 玩家
+			Matrix<int> table; // 棋盘
+		public:
+			
+		};
+
+		// 拼图游戏
+		class Jigsaw {
+			Matrix<int> m;
+		public:
+			void Solve();
+		};
+
+
+		//class Jigsaw
+		//{
+		//	int matrix[4][4] =
+		//	{
+		//		{ 1,  2,  3,  4 },
+		//		{ 5,  6,  7,  8 },
+		//		{ 9,  10, 11, 12 },
+		//		{ 13, 14, 15, 0 }
+		//	};
+
+		//	int distance(int **mat1, int **mat2)
+		//	{
+		//		int count = 0;
+		//		for (int i = 0; i < 4; i++)
+		//		{
+		//			for (int j = 0; j < 4; j++)
+		//			{
+		//				if (mat1[i][j] != mat2[i][j])
+		//				{
+		//					count++;
+		//				}
+		//			}
+		//		}
+		//	}
+
+		//	void solve(int **correct, int **matrix, int n)
+		//	{
+		//		int step = 0;
+		//		std::priority_queue<Dir> q;
+		//		q.push(Dir(3, 3));
+		//		while (!q.empty()) {
+		//			int d = distance(correct, matrix);// 在位方格数
+
+
+		//		}
+		//	}
+		//};
+		void test();
+	}
+	
+	// 数据挖掘
+	namespace DataMining {
+		
+		// 频繁项集
+		class Item {
+			int id;
+			int frequency;
+			double support;
+		public:
+			Item() { id = 0; frequency = 0; support = 0; }
+			Item(const Item &item) { id = item.id; frequency = item.frequency; support = item.support; }
+			Item(int id, int freq) :id(id), frequency(freq) {  }
+			int getId() { return id; }
+			int getFrequency() { return this->frequency; }
+			double getSupport() { return this->support; }
+			void setSupport(double s) { support = s; }
+			void increase() { this->frequency++; }
+			bool operator < (Item &b) { return frequency < b.frequency; }
+			bool operator <= (Item &b) { return frequency <= b.frequency; }
+			bool operator == (Item &b) { return frequency == b.frequency; }
+			bool operator >= (Item &b) { return frequency >= b.frequency; }
+			bool operator > (Item &b) { return frequency > b.frequency; }
+		};
+
+		// FP-Tree Node
+		class FPTreeNote {
+			Item item;
+			FPTreeNote *child, *sibling;
+			FPTreeNote *next;
+		};
+
+		// FP-Tree
+		class FPTree {
+			map<string, Item*> table;
+			FPTreeNote *root;
+		public:
+			void put(string item);
+			void build(list<string> ts);
+			static void test();
+		};
+
+		void readlines(list<string> &lines, string file);
+
+		void test();
+	}
+	void test();
+};

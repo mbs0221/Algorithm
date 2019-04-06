@@ -79,28 +79,31 @@
     <Text Include="Transactions.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="algorithm.h" />
-    <ClInclude Include="algorithms.h" />
-    <ClInclude Include="BranchAndBound.h" />
-    <ClInclude Include="btree.h" />
-    <ClInclude Include="find.h" />
+    <ClInclude Include="ds.h" />
+    <ClInclude Include="bp_network.h" />
     <ClInclude Include="graph.h" />
+    <ClInclude Include="graphics.h" />
+    <ClInclude Include="knapsack.h" />
     <ClInclude Include="minheap.h" />
     <ClInclude Include="network.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="tree.h" />
-    <ClInclude Include="计算机算法设计与分析.h" />
+    <ClInclude Include="trie.h" />
+    <ClInclude Include="algorithm.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="algorithm.cpp" />
+    <ClCompile Include="ds.cpp" />
     <ClCompile Include="bp_network.cpp" />
-    <ClCompile Include="fptree.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="Josephus.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="trie.cpp" />
-    <ClCompile Include="计算机算法设计与分析.cpp" />
+    <ClCompile Include="algorithm.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
